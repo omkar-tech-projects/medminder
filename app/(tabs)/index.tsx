@@ -1,41 +1,69 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet } from 'react-native';
+import { Screen, AppHeader, EmptyState, Card, Badge, Text } from '@/components';
 import { useTheme } from '@/theme';
+import { format } from 'date-fns';
 
 export default function HomeScreen() {
-  const { colors, spacing, textPresets } = useTheme();
+  const { colors, spacing } = useTheme();
+  const today = format(new Date(), 'EEEE, MMMM d');
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={[styles.header, { paddingHorizontal: spacing[4] }]}>
-        <Text style={[textPresets.headingLarge, { color: colors.textPrimary }]}>
-          Good morning
+    <Screen scroll edges={['top']}>
+      <AppHeader
+        title="Good morning"
+        subtitle={today}
+        rightAction={{
+          icon: 'add',
+          onPress: () => undefined,
+          accessibilityLabel: 'Add medication',
+        }}
+      />
+
+      <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
+        <Text variant="overline" color={colors.textTertiary} style={styles.sectionLabel}>
+          Today's doses
         </Text>
-        <Text style={[textPresets.bodyMedium, { color: colors.textSecondary, marginTop: spacing[1] }]}>
-          Here's your schedule for today
-        </Text>
+
+        <Card style={styles.summaryCard}>
+          <View style={styles.summaryRow}>
+            {[
+              { label: 'Taken', value: '0', color: colors.success },
+              { label: 'Upcoming', value: '0', color: colors.brandPrimary },
+              { label: 'Missed', value: '0', color: colors.danger },
+            ].map(({ label, value, color }) => (
+              <View key={label} style={styles.summaryCell}>
+                <Text variant="displaySmall" color={color}>{value}</Text>
+                <Text variant="caption" color={colors.textSecondary}>{label}</Text>
+              </View>
+            ))}
+          </View>
+        </Card>
       </View>
 
-      <View style={[styles.placeholder, { margin: spacing[4] }]}>
-        <Text style={[textPresets.bodyMedium, { color: colors.textTertiary, textAlign: 'center' }]}>
-          Dose timeline — coming soon
-        </Text>
+      <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
+        <View style={styles.sectionRow}>
+          <Text variant="overline" color={colors.textTertiary} style={styles.sectionLabel}>
+            Schedule
+          </Text>
+          <Badge label="0 doses" variant="neutral" size="sm" />
+        </View>
+
+        <EmptyState
+          icon="medical-outline"
+          title="No medications yet"
+          subtitle="Scan a prescription or add a medication manually to get started."
+          action={{ label: 'Add medication', onPress: () => undefined }}
+        />
       </View>
-    </SafeAreaView>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    paddingTop: 16,
-    paddingBottom: 8,
-  },
-  placeholder: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  section: { marginBottom: 24 },
+  sectionLabel: { marginBottom: 12 },
+  sectionRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 },
+  summaryCard: { padding: 20 },
+  summaryRow: { flexDirection: 'row', justifyContent: 'space-around' },
+  summaryCell: { alignItems: 'center', gap: 4 },
 });

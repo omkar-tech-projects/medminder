@@ -132,4 +132,10 @@ export const textPresets = {
     fontWeight: typography.fontWeight.regular,
     letterSpacing: typography.letterSpacing.wide,
   },
+  overline: {
+    fontSize: typography.fontSize.xs,
+    lineHeight: typography.lineHeight.xs,
+    fontWeight: typography.fontWeight.semiBold,
+    letterSpacing: typography.letterSpacing.widest,
+  },
 } as const;

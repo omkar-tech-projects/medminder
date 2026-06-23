@@ -33,6 +33,13 @@ const palette = {
   red500: '#EF4444',
   red600: '#DC2626',
 
+  // Info
+  sky50: '#F0F9FF',
+  sky300: '#7DD3FC',
+  sky500: '#0EA5E9',
+  sky600: '#0284C7',
+  sky900: '#0C4A6E',
+
   // Neutral
   white: '#FFFFFF',
   black: '#000000',
@@ -81,6 +88,7 @@ export const lightColors = {
   textPrimary: palette.gray900,
   textSecondary: palette.gray600,
   textTertiary: palette.gray400,
+  textDisabled: palette.gray300,
   textInverse: palette.white,
   textPlaceholder: palette.gray400,
 
@@ -107,6 +115,10 @@ export const lightColors = {
   danger: palette.red500,
   dangerLight: palette.red50,
   dangerDark: palette.red600,
+
+  info: palette.sky600,
+  infoLight: palette.sky50,
+  infoDark: palette.sky600,
 
   // Dose status
   doseTaken: palette.green500,
@@ -153,6 +165,7 @@ export const darkColors: ColorScheme = {
   textPrimary: palette.gray50,
   textSecondary: palette.gray400,
   textTertiary: palette.gray600,
+  textDisabled: palette.gray700,
   textInverse: palette.gray900,
   textPlaceholder: palette.gray600,
 
@@ -179,6 +192,10 @@ export const darkColors: ColorScheme = {
   danger: palette.red400,
   dangerLight: palette.red600,
   dangerDark: palette.red500,
+
+  info: palette.sky300,
+  infoLight: palette.sky900,
+  infoDark: palette.sky500,
 
   // Dose status
   doseTaken: palette.green400,

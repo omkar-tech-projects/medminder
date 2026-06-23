@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
+import { View } from 'react-native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'react-native';
+import { ToastContainer } from '@/components';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -21,12 +23,21 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <>
+    <View style={{ flex: 1 }}>
       <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen
+          name="gallery"
+          options={{
+            headerShown: true,
+            title: 'Component Gallery',
+            presentation: 'modal',
+          }}
+        />
         <Stack.Screen name="+not-found" />
       </Stack>
-    </>
+      <ToastContainer />
+    </View>
   );
 }

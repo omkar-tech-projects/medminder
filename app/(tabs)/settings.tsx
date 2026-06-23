@@ -1,70 +1,82 @@
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet } from 'react-native';
+import { router } from 'expo-router';
+import { Screen, AppHeader, ListItem, Text } from '@/components';
 import { useTheme } from '@/theme';
 
-export default function SettingsScreen() {
-  const { colors, spacing, textPresets, radii } = useTheme();
+const SECTIONS: { title: string; items: { label: string; subtitle: string; icon: React.ComponentProps<typeof ListItem>['leftIcon'] }[] }[] = [
+  {
+    title: 'Notifications',
+    items: [
+      { label: 'Reminders', subtitle: 'Lead time, re-remind interval, quiet hours', icon: 'notifications-outline' },
+      { label: 'Refill alerts', subtitle: 'Warning threshold before course ends', icon: 'alarm-outline' },
+    ],
+  },
+  {
+    title: 'Appearance',
+    items: [
+      { label: 'Theme', subtitle: 'Light / dark / system', icon: 'contrast-outline' },
+    ],
+  },
+  {
+    title: 'Data & Privacy',
+    items: [
+      { label: 'Claude API key', subtitle: 'Required for prescription scanning', icon: 'key-outline' },
+      { label: 'Calendar sync', subtitle: 'Add doses to device calendar', icon: 'calendar-outline' },
+      { label: 'Export data', subtitle: 'Download your full history as JSON', icon: 'download-outline' },
+      { label: 'Clear all data', subtitle: 'Permanently delete all medications and history', icon: 'trash-outline' },
+    ],
+  },
+];
 
-  const sections = [
-    { label: 'Notifications', description: 'Lead time, re-remind interval, quiet hours' },
-    { label: 'Medications', description: 'Refill warning threshold' },
-    { label: 'Appearance', description: 'Light / dark / system theme' },
-    { label: 'AI', description: 'Claude API key' },
-    { label: 'Calendar', description: 'Device calendar sync' },
-    { label: 'Data', description: 'Export or clear all data' },
-  ];
+export default function SettingsScreen() {
+  const { colors, spacing } = useTheme();
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={[styles.header, { paddingHorizontal: spacing[4] }]}>
-        <Text style={[textPresets.headingLarge, { color: colors.textPrimary }]}>Settings</Text>
-      </View>
+    <Screen scroll edges={['top']}>
+      <AppHeader title="Settings" />
 
-      <ScrollView
-        contentContainerStyle={{ padding: spacing[4] }}
-        showsVerticalScrollIndicator={false}
-      >
-        {sections.map(({ label, description }) => (
-          <View
-            key={label}
-            style={[
-              styles.row,
-              {
-                backgroundColor: colors.surface,
-                borderRadius: radii.lg,
-                padding: spacing[4],
-                marginBottom: spacing[3],
-                borderWidth: 1,
-                borderColor: colors.border,
-              },
-            ]}
-          >
-            <Text style={[textPresets.labelLarge, { color: colors.textPrimary }]}>{label}</Text>
-            <Text
-              style={[textPresets.bodySmall, { color: colors.textSecondary, marginTop: spacing[1] }]}
-            >
-              {description}
-            </Text>
+      {SECTIONS.map(({ title, items }) => (
+        <View key={title} style={[styles.section, { paddingHorizontal: spacing[5] }]}>
+          <Text variant="overline" color={colors.textTertiary} style={styles.sectionLabel}>
+            {title}
+          </Text>
+          <View style={{ gap: 8 }}>
+            {items.map((item) => (
+              <ListItem
+                key={item.label}
+                title={item.label}
+                subtitle={item.subtitle}
+                leftIcon={item.icon}
+                showChevron
+                onPress={() => undefined}
+                destructive={item.label === 'Clear all data'}
+              />
+            ))}
           </View>
-        ))}
-      </ScrollView>
-    </SafeAreaView>
+        </View>
+      ))}
+
+      {__DEV__ && (
+        <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
+          <Text variant="overline" color={colors.textTertiary} style={styles.sectionLabel}>
+            Developer
+          </Text>
+          <ListItem
+            title="Component Gallery"
+            subtitle="Preview all UI components"
+            leftIcon="flask-outline"
+            showChevron
+            onPress={() => router.push('/gallery')}
+          />
+        </View>
+      )}
+
+      <View style={{ height: spacing[8] }} />
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    paddingTop: 16,
-    paddingBottom: 8,
-  },
-  row: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.04,
-    shadowRadius: 2,
-    elevation: 1,
-  },
+  section: { marginBottom: 28 },
+  sectionLabel: { marginBottom: 10 },
 });
