@@ -55,6 +55,10 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="onboarding" />
         <Stack.Screen
+          name="capture"
+          options={{ presentation: 'fullScreenModal', headerShown: false, animation: 'slide_from_bottom' }}
+        />
+        <Stack.Screen
           name="gallery"
           options={{ headerShown: true, title: 'Component Gallery', presentation: 'modal' }}
         />

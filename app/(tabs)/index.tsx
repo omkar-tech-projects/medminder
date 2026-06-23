@@ -80,6 +80,7 @@ export default function HomeScreen() {
             icon="medical-outline"
             title="No medications yet"
             subtitle="Scan a prescription and we'll set up your reminders automatically."
+            action={{ label: 'Scan a prescription', onPress: () => router.push('/capture/index') }}
           />
         </View>
       )}
@@ -88,7 +89,7 @@ export default function HomeScreen() {
       <View style={[styles.ctaBlock, { paddingHorizontal: spacing[5] }]}>
         <Button
           label="Scan a prescription"
-          onPress={() => undefined}
+          onPress={() => router.push('/capture/index')}
           variant="primary"
           fullWidth
           leftIcon="scan-outline"

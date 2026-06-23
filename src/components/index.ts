@@ -11,4 +11,5 @@ export { AppHeader } from './AppHeader';
 export { ToastContainer } from './ToastContainer';
 export { DoseTimelineItem } from './DoseTimelineItem';
 export { OnboardingStep } from './OnboardingStep';
+export { PermissionDenied } from './PermissionDenied';
 export type { BadgeVariant } from './Badge';
