@@ -10,4 +10,5 @@ export { BottomSheet } from './BottomSheet';
 export { AppHeader } from './AppHeader';
 export { ToastContainer } from './ToastContainer';
 export { DoseTimelineItem } from './DoseTimelineItem';
+export { OnboardingStep } from './OnboardingStep';
 export type { BadgeVariant } from './Badge';
