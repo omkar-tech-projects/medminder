@@ -2,19 +2,19 @@ import { View, StyleSheet } from 'react-native';
 import { useTheme } from '@/theme';
 import { Text } from './Text';
 
-type Variant = 'success' | 'danger' | 'warning' | 'info' | 'neutral' | 'primary';
+export type BadgeVariant = 'success' | 'danger' | 'warning' | 'info' | 'neutral' | 'primary';
 type Size = 'sm' | 'md';
 
 interface BadgeProps {
   label: string;
-  variant?: Variant;
+  variant?: BadgeVariant;
   size?: Size;
 }
 
 export function Badge({ label, variant = 'neutral', size = 'md' }: BadgeProps) {
   const { colors, radii } = useTheme();
 
-  const palette: Record<Variant, { bg: string; text: string }> = {
+  const palette: Record<BadgeVariant, { bg: string; text: string }> = {
     success: { bg: colors.successLight, text: colors.successDark },
     danger: { bg: colors.dangerLight, text: colors.dangerDark },
     warning: { bg: colors.warningLight, text: colors.warningDark },
