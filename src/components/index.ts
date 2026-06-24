@@ -29,7 +29,6 @@ export { CourseEndModal } from './CourseEndModal';
 export { RefillSettingsSheet } from './RefillSettingsSheet';
 export { NotificationSettingsSheet } from './NotificationSettingsSheet';
 export { ThemeSheet } from './ThemeSheet';
-export { ProfileSheet } from './ProfileSheet';
 export { ProfileSwitcherSheet } from './ProfileSwitcherSheet';
 export { ProfileFormSheet } from './ProfileFormSheet';
 export { MedicineOverrideSheet } from './MedicineOverrideSheet';
