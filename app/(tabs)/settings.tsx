@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { View, Alert, StyleSheet } from 'react-native';
+import { View, Alert, StyleSheet, Share, Platform } from 'react-native';
 import { router } from 'expo-router';
+import { File, Paths } from 'expo-file-system';
+import { format } from 'date-fns';
 import {
   Screen,
   AppHeader,
@@ -16,6 +18,8 @@ import { useTheme } from '@/theme';
 import { useSettingsStore } from '@/store/settings-store';
 import { useProfileStore } from '@/store/profile-store';
 import { rescheduleAllFutureNotifications } from '@/services/reschedule-service';
+import { getAllMedicines, deleteMedicine } from '@/db/queries/medicines';
+import { getAllDoseLogsForProfile } from '@/db/queries/dose-logs';
 
 export default function SettingsScreen() {
   const { colors, spacing } = useTheme();
@@ -28,6 +32,7 @@ export default function SettingsScreen() {
   const [refillSheetOpen, setRefillSheetOpen] = useState(false);
   const [themeSheetOpen, setThemeSheetOpen] = useState(false);
   const [profileSheetOpen, setProfileSheetOpen] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   const themeLabel = s.theme === 'light' ? 'Light' : s.theme === 'dark' ? 'Dark' : 'System';
   const nameLabel = activeName.trim().length > 0 ? activeName : 'Not set';
@@ -44,6 +49,53 @@ export default function SettingsScreen() {
           onPress: () => {
             s.resetToDefaults();
             void rescheduleAllFutureNotifications().catch(() => undefined);
+          },
+        },
+      ],
+    );
+  }
+
+  async function handleExportJson(): Promise<void> {
+    if (exporting) return;
+    setExporting(true);
+    try {
+      const meds = getAllMedicines(activeProfileId);
+      const logs = getAllDoseLogsForProfile(activeProfileId);
+      const payload = JSON.stringify(
+        { exportedAt: new Date().toISOString(), medicines: meds, doseLogs: logs },
+        null,
+        2,
+      );
+      const filename = `medminder-export-${format(new Date(), 'yyyy-MM-dd')}.json`;
+      if (Platform.OS === 'ios') {
+        const file = new File(Paths.document, filename);
+        file.write(payload);
+        await Share.share({ url: file.uri, title: filename });
+      } else {
+        await Share.share({ message: payload, title: filename });
+      }
+    } catch {
+      Alert.alert('Export failed', 'Could not export your data. Please try again.');
+    } finally {
+      setExporting(false);
+    }
+  }
+
+  function handleClearData(): void {
+    Alert.alert(
+      'Clear all data?',
+      'This permanently deletes all medications and history for the active profile. This cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete everything',
+          style: 'destructive',
+          onPress: () => {
+            const meds = getAllMedicines(activeProfileId);
+            for (const m of meds) {
+              deleteMedicine(m.id);
+            }
+            router.replace('/(tabs)');
           },
         },
       ],
@@ -124,18 +176,11 @@ export default function SettingsScreen() {
         </Text>
         <View style={{ gap: 8 }}>
           <ListItem
-            title="Claude API key"
-            subtitle="Required for prescription scanning"
-            leftIcon="key-outline"
-            showChevron
-            onPress={() => undefined}
-          />
-          <ListItem
-            title="Export data"
+            title={exporting ? 'Exporting…' : 'Export data'}
             subtitle="Download your full history as JSON"
             leftIcon="download-outline"
             showChevron
-            onPress={() => undefined}
+            onPress={() => void handleExportJson()}
           />
           <ListItem
             title="Reset all settings"
@@ -146,10 +191,10 @@ export default function SettingsScreen() {
           />
           <ListItem
             title="Clear all data"
-            subtitle="Permanently delete all medications and history"
+            subtitle="Permanently delete all medications and history for this profile"
             leftIcon="trash-outline"
             showChevron
-            onPress={() => undefined}
+            onPress={handleClearData}
             destructive
           />
         </View>

@@ -63,6 +63,16 @@ export function getDoseLogsForMedicine(medicineId: string): DoseLog[] {
   return db.select().from(doseLogs).where(eq(doseLogs.medicineId, medicineId)).all();
 }
 
+export function getAllDoseLogsForProfile(profileId: string): DoseLog[] {
+  const all = db
+    .select()
+    .from(doseLogs)
+    .innerJoin(medicines, eq(doseLogs.medicineId, medicines.id))
+    .where(eq(medicines.profileId, profileId))
+    .all();
+  return all.map((row) => row.dose_logs);
+}
+
 export interface OverduePendingDoseWithProfile {
   doseLogId: string;
   medicineId: string;
