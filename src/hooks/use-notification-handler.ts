@@ -1,10 +1,16 @@
 import { useCallback, useEffect } from 'react';
 import * as Notifications from 'expo-notifications';
 import { NOTIFICATION_ACTIONS } from '@/lib/constants';
-import { cancelNotificationsForDoseLog } from '@/services/notification-service';
+import {
+  cancelNotificationsForDoseLog,
+  scheduleSnoozeNotification,
+} from '@/services/notification-service';
 import { useDoseStore } from '@/store/dose-store';
+import { useSettingsStore } from '@/store/settings-store';
 
-function processResponse(response: Notifications.NotificationResponse): void {
+export async function processResponse(
+  response: Notifications.NotificationResponse,
+): Promise<void> {
   const data = response.notification.request.content.data ?? {};
   const doseLogId = typeof data['doseLogId'] === 'string' ? data['doseLogId'] : null;
   const isTest = data['isTest'] === true;
@@ -12,25 +18,38 @@ function processResponse(response: Notifications.NotificationResponse): void {
   if (isTest || !doseLogId) return;
 
   if (response.actionIdentifier === NOTIFICATION_ACTIONS.MARK_TAKEN) {
-    // Write to DB + update in-memory store so the UI reflects the change immediately.
     useDoseStore.getState().markTaken(doseLogId, 'notification');
     void cancelNotificationsForDoseLog(doseLogId);
+  } else if (response.actionIdentifier === NOTIFICATION_ACTIONS.SNOOZE) {
+    await cancelNotificationsForDoseLog(doseLogId);
+    const { snoozeDurationMin, quietHoursEnabled, quietHoursStart, quietHoursEnd, notificationSoundEnabled } =
+      useSettingsStore.getState();
+    const medicineName = typeof data['medicineName'] === 'string' ? data['medicineName'] : '';
+    const dosage = typeof data['dosage'] === 'string' ? data['dosage'] : '';
+    await scheduleSnoozeNotification({
+      doseLogId,
+      medicineName,
+      dosage,
+      snoozeMinutes: snoozeDurationMin,
+      quietHoursEnabled,
+      quietHoursStart,
+      quietHoursEnd,
+      soundEnabled: notificationSoundEnabled,
+    });
   }
-  // SNOOZE or default tap (open app): pre-scheduled nag chain continues on its own.
+  // Default tap (open app): pre-scheduled nag chain continues on its own.
 }
 
 export function useNotificationHandler(): void {
   const handleResponse = useCallback((response: Notifications.NotificationResponse): void => {
-    processResponse(response);
+    void processResponse(response);
   }, []);
 
   useEffect(() => {
-    // Handle the response that brought the app out of a killed state.
     void Notifications.getLastNotificationResponseAsync().then((response) => {
       if (response) handleResponse(response);
     });
 
-    // Handle responses while app is running (foreground or background).
     const sub = Notifications.addNotificationResponseReceivedListener(handleResponse);
     return () => sub.remove();
   }, [handleResponse]);

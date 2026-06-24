@@ -94,7 +94,7 @@ export async function scheduleNotificationsForDoseLog(
           title: 'Upcoming dose',
           body: `${medicineName} in ${leadMinutes} min`,
           categoryIdentifier: NOTIFICATION_CATEGORY,
-          data: { doseLogId },
+          data: { doseLogId, medicineName, dosage },
           sound: soundEnabled,
         },
         trigger: {
@@ -119,7 +119,7 @@ export async function scheduleNotificationsForDoseLog(
             title: `Time for ${medicineName}`,
             body: dosage,
             categoryIdentifier: NOTIFICATION_CATEGORY,
-            data: { doseLogId },
+            data: { doseLogId, medicineName, dosage },
             sound: soundEnabled,
           },
           trigger: {
@@ -204,6 +204,50 @@ export async function cancelRefillNotificationsForMedicine(medicineId: string): 
       .filter((n) => n.identifier.startsWith(prefix))
       .map((n) => Notifications.cancelScheduledNotificationAsync(n.identifier)),
   );
+}
+
+export interface SnoozeNotificationParams {
+  doseLogId: string;
+  medicineName: string;
+  dosage: string;
+  snoozeMinutes: number;
+  quietHoursEnabled?: boolean;
+  quietHoursStart?: string;
+  quietHoursEnd?: string;
+  soundEnabled?: boolean;
+}
+
+export async function scheduleSnoozeNotification(params: SnoozeNotificationParams): Promise<void> {
+  if (!(await hasPermission())) return;
+  const {
+    doseLogId,
+    medicineName,
+    dosage,
+    snoozeMinutes,
+    quietHoursEnabled = true,
+    quietHoursStart = '22:00',
+    quietHoursEnd = '07:00',
+    soundEnabled = true,
+  } = params;
+  const fireAt = addMinutes(new Date(), snoozeMinutes);
+  const shifted = quietHoursEnabled
+    ? shiftOutOfQuietHours(fireAt, quietHoursStart, quietHoursEnd)
+    : fireAt;
+  await Notifications.scheduleNotificationAsync({
+    identifier: `${doseLogId}:snooze`,
+    content: {
+      title: `Time for ${medicineName}`,
+      body: dosage,
+      categoryIdentifier: NOTIFICATION_CATEGORY,
+      data: { doseLogId, medicineName, dosage },
+      sound: soundEnabled,
+    },
+    trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.DATE,
+      date: shifted,
+      channelId: NOTIFICATION_CHANNELS.DOSE_REMINDERS,
+    },
+  });
 }
 
 // Schedules a single test notification 3 seconds from now.
