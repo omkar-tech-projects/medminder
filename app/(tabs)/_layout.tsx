@@ -51,6 +51,13 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="medications"
+        options={{
+          title: 'Medicines',
+          tabBarIcon: tabIcon('medkit-outline', 'medkit'),
+        }}
+      />
+      <Tabs.Screen
         name="calendar"
         options={{
           title: 'Calendar',
