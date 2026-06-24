@@ -1,10 +1,4 @@
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  type ViewStyle,
-  type StyleProp,
-} from 'react-native';
+import { View, TouchableOpacity, StyleSheet, type ViewStyle, type StyleProp } from 'react-native';
 import { useTheme } from '@/theme';
 
 interface CardProps {
@@ -67,13 +61,7 @@ interface CardFooterProps {
 export function CardFooter({ children, style }: CardFooterProps) {
   const { colors, spacing } = useTheme();
   return (
-    <View
-      style={[
-        styles.footer,
-        { borderTopColor: colors.border, paddingTop: spacing[3] },
-        style,
-      ]}
-    >
+    <View style={[styles.footer, { borderTopColor: colors.border, paddingTop: spacing[3] }, style]}>
       {children}
     </View>
   );

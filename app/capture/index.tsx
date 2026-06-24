@@ -30,14 +30,13 @@ export default function CaptureIndexScreen() {
   const openGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
-      Alert.alert(
-        'Photo library access needed',
-        'To pick photos, allow access in Settings.',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Open Settings', onPress: () => void import('expo-linking').then(({ default: L }) => L.openSettings()) },
-        ],
-      );
+      Alert.alert('Photo library access needed', 'To pick photos, allow access in Settings.', [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Open Settings',
+          onPress: () => void import('expo-linking').then(({ default: L }) => L.openSettings()),
+        },
+      ]);
       return;
     }
 
@@ -76,7 +75,10 @@ export default function CaptureIndexScreen() {
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           accessibilityLabel="Cancel and go back"
           accessibilityRole="button"
-          style={[styles.closeBtn, { backgroundColor: colors.backgroundTertiary, borderRadius: radii.full }]}
+          style={[
+            styles.closeBtn,
+            { backgroundColor: colors.backgroundTertiary, borderRadius: radii.full },
+          ]}
         >
           <Ionicons name="close" size={20} color={colors.textSecondary} />
         </TouchableOpacity>
@@ -84,7 +86,11 @@ export default function CaptureIndexScreen() {
         <Text variant="headingSmall">Add prescription</Text>
 
         {pages.length > 0 ? (
-          <Badge label={`${pages.length} page${pages.length !== 1 ? 's' : ''}`} variant="primary" size="sm" />
+          <Badge
+            label={`${pages.length} page${pages.length !== 1 ? 's' : ''}`}
+            variant="primary"
+            size="sm"
+          />
         ) : (
           <View style={{ width: 60 }} accessibilityElementsHidden />
         )}

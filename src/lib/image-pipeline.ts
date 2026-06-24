@@ -9,11 +9,10 @@ function captureDir(): Directory {
 }
 
 export async function processAndStore(sourceUri: string): Promise<string> {
-  const processed = await manipulateAsync(
-    sourceUri,
-    [{ resize: { width: MAX_WIDTH } }],
-    { compress: QUALITY, format: SaveFormat.JPEG },
-  );
+  const processed = await manipulateAsync(sourceUri, [{ resize: { width: MAX_WIDTH } }], {
+    compress: QUALITY,
+    format: SaveFormat.JPEG,
+  });
 
   const dir = captureDir();
   if (!dir.exists) {

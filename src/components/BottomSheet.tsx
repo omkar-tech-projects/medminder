@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
   Dimensions,
+  useAnimatedValue,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@/theme';
@@ -32,8 +33,8 @@ export function BottomSheet({
   const { colors, radii, spacing } = useTheme();
   const insets = useSafeAreaInsets();
 
-  const translateY = useRef(new Animated.Value(height)).current;
-  const backdropOpacity = useRef(new Animated.Value(0)).current;
+  const translateY = useAnimatedValue(height);
+  const backdropOpacity = useAnimatedValue(0);
 
   const close = () => {
     Animated.parallel([
@@ -55,7 +56,7 @@ export function BottomSheet({
         Animated.timing(backdropOpacity, { toValue: 1, duration: 250, useNativeDriver: true }),
       ]).start();
     }
-  }, [visible]);
+  }, [backdropOpacity, height, translateY, visible]);
 
   const panResponder = useRef(
     PanResponder.create({
@@ -83,8 +84,14 @@ export function BottomSheet({
       statusBarTranslucent
     >
       <View style={styles.overlay}>
-        <TouchableWithoutFeedback onPress={close} accessibilityRole="button" accessibilityLabel="Close sheet">
-          <Animated.View style={[styles.backdrop, { opacity: backdropOpacity, backgroundColor: colors.overlay }]} />
+        <TouchableWithoutFeedback
+          onPress={close}
+          accessibilityRole="button"
+          accessibilityLabel="Close sheet"
+        >
+          <Animated.View
+            style={[styles.backdrop, { opacity: backdropOpacity, backgroundColor: colors.overlay }]}
+          />
         </TouchableWithoutFeedback>
 
         <Animated.View
@@ -113,9 +120,7 @@ export function BottomSheet({
             </Text>
           )}
 
-          <View style={[styles.content, { paddingHorizontal: spacing[5] }]}>
-            {children}
-          </View>
+          <View style={[styles.content, { paddingHorizontal: spacing[5] }]}>{children}</View>
         </Animated.View>
       </View>
     </Modal>

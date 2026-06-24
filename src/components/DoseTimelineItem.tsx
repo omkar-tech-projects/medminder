@@ -17,19 +17,19 @@ const STATUS_BADGE: Record<string, BadgeVariant> = {
   [DOSE_STATUS.TAKEN]: 'success',
   [DOSE_STATUS.MISSED]: 'danger',
   [DOSE_STATUS.PENDING]: 'primary',
-  [DOSE_STATUS.SNOOZED]: 'warning',
+  [DOSE_STATUS.SKIPPED]: 'warning',
 };
 
 const STATUS_LABEL: Record<string, string> = {
   [DOSE_STATUS.TAKEN]: 'Taken',
   [DOSE_STATUS.MISSED]: 'Missed',
   [DOSE_STATUS.PENDING]: 'Upcoming',
-  [DOSE_STATUS.SNOOZED]: 'Snoozed',
+  [DOSE_STATUS.SKIPPED]: 'Skipped',
 };
 
 export function DoseTimelineItem({ dose, isLast, onPress }: DoseTimelineItemProps) {
   const { colors, spacing, radii } = useTheme();
-  const isFuture = dose.status === DOSE_STATUS.PENDING || dose.status === DOSE_STATUS.SNOOZED;
+  const isFuture = dose.status === DOSE_STATUS.PENDING || dose.status === DOSE_STATUS.SKIPPED;
 
   const dotBorderColor = isFuture ? colors.brandPrimary : dose.medicationColor;
   const dotBgColor = isFuture ? colors.brandPrimaryLight : dose.medicationColor;
@@ -59,8 +59,12 @@ export function DoseTimelineItem({ dose, isLast, onPress }: DoseTimelineItemProp
       <View style={styles.content}>
         <View style={styles.topRow}>
           <View style={styles.nameBlock}>
-            <Text variant="labelLarge" numberOfLines={1}>{dose.medicationName}</Text>
-            <Text variant="bodySmall" color={colors.textSecondary}>{dose.dosage}</Text>
+            <Text variant="labelLarge" numberOfLines={1}>
+              {dose.medicationName}
+            </Text>
+            <Text variant="bodySmall" color={colors.textSecondary}>
+              {dose.dosage}
+            </Text>
           </View>
           <Badge label={statusLabel} variant={badgeVariant} size="sm" />
         </View>

@@ -22,6 +22,7 @@
         "NSCameraUsageDescription": "MedMinder uses the camera to scan your prescription.",
         "NSPhotoLibraryUsageDescription": "MedMinder accesses your photos to upload a prescription image.",
         "NSCalendarsUsageDescription": "MedMinder can add dose reminders to your calendar.",
+        "NSCalendarsFullAccessUsageDescription": "MedMinder can add dose reminders to your calendar.",
         "NSFaceIDUsageDescription": "MedMinder uses Face ID to protect your medication data."
       }
     },
@@ -46,7 +47,7 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
+      "output": "server",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
@@ -78,7 +79,14 @@
       ],
       "expo-sqlite",
       "expo-status-bar",
-      "expo-splash-screen"
+      "expo-splash-screen",
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "MedMinder can add dose reminders to your calendar."
+        }
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

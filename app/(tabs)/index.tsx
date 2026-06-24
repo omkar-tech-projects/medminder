@@ -1,30 +1,74 @@
+import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
+import { ProfileSwitcherSheet } from '@/components/ProfileSwitcherSheet';
 import {
-  Screen, AppHeader, Button, Card, Text, EmptyState, DoseTimelineItem,
+  Screen,
+  AppHeader,
+  Button,
+  Card,
+  Text,
+  EmptyState,
+  DoseTimelineItem,
+  DoseDetailSheet,
+  RefillWarningCard,
+  CourseEndModal,
 } from '@/components';
 import { useTheme } from '@/theme';
 import { useHomeScreen } from '@/hooks/use-home-screen';
+import { useDoseConfirmation } from '@/hooks/use-dose-confirmation';
+import { useRefillWarnings } from '@/hooks/use-refill-warnings';
+import type { TodayDose } from '@/repositories/dose-repository';
 
 export default function HomeScreen() {
   const { colors, spacing } = useTheme();
   const { greeting, name, dateLabel, doses, summary, hasMedications } = useHomeScreen();
+  const { confirmTaken } = useDoseConfirmation();
+  const [selectedDose, setSelectedDose] = useState<TodayDose | null>(null);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const {
+    warnings,
+    endedCourses,
+    dismiss,
+    setRefillReminder,
+    load: reloadRefill,
+  } = useRefillWarnings();
 
   const headingText = name.trim().length > 0 ? `${greeting}, ${name}` : greeting;
 
   return (
     <Screen scroll edges={['top']} contentContainerStyle={{ paddingBottom: 48 }}>
-
       {/* Greeting */}
       <AppHeader
         title={headingText}
         subtitle={dateLabel}
         rightAction={{
           icon: 'person-outline',
-          onPress: () => undefined,
-          accessibilityLabel: 'Profile',
+          onPress: () => setProfileOpen(true),
+          accessibilityLabel: 'Edit profile',
         }}
       />
+
+      {warnings.length > 0 && (
+        <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
+          {warnings.map((w) => (
+            <RefillWarningCard
+              key={`${w.medicineId}:${w.type}`}
+              warning={w}
+              onDismiss={() => dismiss(`${w.medicineId}:${w.type}`)}
+              onSetReminder={(d) => setRefillReminder(w.medicineId, w.medicineName, d)}
+            />
+          ))}
+        </View>
+      )}
+
+      {endedCourses.length > 0 && endedCourses[0] != null && (
+        <CourseEndModal
+          medicine={endedCourses[0]}
+          onDone={() => reloadRefill()}
+          onDismiss={() => dismiss(`${endedCourses[0]!.id}:ended`)}
+        />
+      )}
 
       {hasMedications ? (
         <>
@@ -32,7 +76,7 @@ export default function HomeScreen() {
           <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
             <Card style={styles.summaryCard} elevated={false}>
               <Text variant="overline" color={colors.textTertiary} style={styles.summaryHeading}>
-                Today's progress
+                {"Today's progress"}
               </Text>
 
               <Text
@@ -41,8 +85,10 @@ export default function HomeScreen() {
                 style={styles.summaryLine}
                 accessibilityLabel={`${summary.taken} of ${summary.total} doses taken today`}
               >
-                <Text variant="headingLarge" color={colors.success}>{summary.taken}</Text>
-                {' '}of {summary.total} taken
+                <Text variant="headingLarge" color={colors.success}>
+                  {summary.taken}
+                </Text>{' '}
+                of {summary.total} taken
               </Text>
 
               <View style={styles.statsRow}>
@@ -58,7 +104,7 @@ export default function HomeScreen() {
           {/* Timeline */}
           <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
             <Text variant="overline" color={colors.textTertiary} style={styles.sectionLabel}>
-              Today's schedule
+              {"Today's schedule"}
             </Text>
 
             <View>
@@ -67,7 +113,7 @@ export default function HomeScreen() {
                   key={dose.id}
                   dose={dose}
                   isLast={i === doses.length - 1}
-                  onPress={() => undefined}
+                  onPress={() => setSelectedDose(dose)}
                 />
               ))}
             </View>
@@ -80,7 +126,7 @@ export default function HomeScreen() {
             icon="medical-outline"
             title="No medications yet"
             subtitle="Scan a prescription and we'll set up your reminders automatically."
-            action={{ label: 'Scan a prescription', onPress: () => router.push('/capture/index') }}
+            action={{ label: 'Scan a prescription', onPress: () => router.push('/capture') }}
           />
         </View>
       )}
@@ -89,7 +135,7 @@ export default function HomeScreen() {
       <View style={[styles.ctaBlock, { paddingHorizontal: spacing[5] }]}>
         <Button
           label="Scan a prescription"
-          onPress={() => router.push('/capture/index')}
+          onPress={() => router.push('/capture')}
           variant="primary"
           fullWidth
           leftIcon="scan-outline"
@@ -107,6 +153,27 @@ export default function HomeScreen() {
         />
       </View>
 
+      {/* Dose detail sheet */}
+      <DoseDetailSheet
+        dose={selectedDose}
+        visible={selectedDose != null}
+        onClose={() => setSelectedDose(null)}
+        onConfirmTaken={(id) => {
+          confirmTaken(id);
+          setSelectedDose(null);
+        }}
+        onMedicineSettings={
+          selectedDose
+            ? () => {
+                const mid = selectedDose.medicineId;
+                setSelectedDose(null);
+                router.push({ pathname: '/medicine/[id]', params: { id: mid } } as never);
+              }
+            : undefined
+        }
+      />
+
+      <ProfileSwitcherSheet visible={profileOpen} onClose={() => setProfileOpen(false)} />
     </Screen>
   );
 }
@@ -115,8 +182,12 @@ function StatCell({ label, value, color }: { label: string; value: number; color
   const { colors } = useTheme();
   return (
     <View style={styles.statCell} accessibilityLabel={`${value} ${label}`}>
-      <Text variant="headingMedium" color={color}>{String(value)}</Text>
-      <Text variant="caption" color={colors.textTertiary}>{label}</Text>
+      <Text variant="headingMedium" color={color}>
+        {String(value)}
+      </Text>
+      <Text variant="caption" color={colors.textTertiary}>
+        {label}
+      </Text>
     </View>
   );
 }

@@ -58,12 +58,7 @@ export function ListItem({
           {leftContent != null
             ? leftContent
             : leftIcon != null && (
-                <View
-                  style={[
-                    styles.iconCircle,
-                    { backgroundColor: colors.brandPrimaryLight },
-                  ]}
-                >
+                <View style={[styles.iconCircle, { backgroundColor: colors.brandPrimaryLight }]}>
                   <Ionicons name={leftIcon} size={18} color={colors.brandPrimary} />
                 </View>
               )}

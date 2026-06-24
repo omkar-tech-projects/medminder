@@ -13,9 +13,7 @@ export default function NotFoundScreen() {
           Screen not found
         </Text>
         <Link href="/" style={{ marginTop: spacing[4] }}>
-          <Text style={[textPresets.bodyMedium, { color: colors.brandPrimary }]}>
-            Go to Home
-          </Text>
+          <Text style={[textPresets.bodyMedium, { color: colors.brandPrimary }]}>Go to Home</Text>
         </Link>
       </View>
     </>

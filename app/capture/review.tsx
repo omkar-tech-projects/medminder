@@ -6,7 +6,6 @@ import { Text, Button, Badge } from '@/components';
 import { useTheme } from '@/theme';
 import { useCaptureStore, type CapturedPage } from '@/store/capture-store';
 import { deletePage, clearAllPages } from '@/lib/image-pipeline';
-import { useToast } from '@/store/ui-store';
 
 const { width: SCREEN_W } = Dimensions.get('window');
 const GRID_GAP = 12;
@@ -19,7 +18,6 @@ export default function CaptureReviewScreen() {
   const pages = useCaptureStore((s) => s.pages);
   const removePage = useCaptureStore((s) => s.removePage);
   const clear = useCaptureStore((s) => s.clear);
-  const toast = useToast();
 
   const handleRemove = (page: CapturedPage) => {
     deletePage(page.uri);
@@ -36,12 +34,12 @@ export default function CaptureReviewScreen() {
   };
 
   const handleAddMore = () => {
-    router.push('/capture/index');
+    router.push('/capture');
   };
 
   const handleAnalyse = () => {
     if (pages.length === 0) return;
-    toast.info('AI analysis coming in the next step — images ready!');
+    router.push('/analyse');
   };
 
   const renderItem = ({ item, index }: { item: CapturedPage; index: number }) => (
@@ -54,8 +52,12 @@ export default function CaptureReviewScreen() {
       />
 
       {/* Page number badge */}
-      <View style={[styles.pageNum, { backgroundColor: colors.brandPrimary, borderRadius: radii.full }]}>
-        <Text variant="labelSmall" color="#fff">{index + 1}</Text>
+      <View
+        style={[styles.pageNum, { backgroundColor: colors.brandPrimary, borderRadius: radii.full }]}
+      >
+        <Text variant="labelSmall" color="#fff">
+          {index + 1}
+        </Text>
       </View>
 
       {/* Remove button */}
@@ -107,7 +109,9 @@ export default function CaptureReviewScreen() {
           accessibilityRole="button"
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
-          <Text variant="labelSmall" color={colors.danger}>Discard</Text>
+          <Text variant="labelSmall" color={colors.danger}>
+            Discard
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -116,7 +120,7 @@ export default function CaptureReviewScreen() {
         color={colors.textTertiary}
         style={[styles.hint, { paddingHorizontal: spacing[5] }]}
       >
-        Tap ✕ to remove a page. Tap "Add more" to capture additional pages.
+        {'Tap ✕ to remove a page. Tap "Add more" to capture additional pages.'}
       </Text>
 
       {/* Thumbnail grid */}

@@ -1,32 +1,105 @@
 import { create } from 'zustand';
 import * as SecureStore from 'expo-secure-store';
+import {
+  getAllProfiles,
+  insertProfile,
+  updateProfile as updateProfileRecord,
+  deleteProfile as deleteProfileRecord,
+  DEFAULT_PROFILE_ID,
+} from '@/db/queries/profiles';
+import type { Profile, NewProfile } from '@/db/schema';
+import { newId } from '@/lib/id';
 
-const PROFILE_STORE_KEY = 'medminder_user_profile';
-
-interface Profile {
-  name: string;
-}
+const ACTIVE_PROFILE_KEY = 'medminder_active_profile_id';
 
 type ProfileState = {
+  profiles: Profile[];
+  activeProfileId: string;
+  /** Backward-compat: name of the active profile (used by use-home-screen + settings). */
   name: string;
   isLoaded: boolean;
   load: () => Promise<void>;
-  setName: (name: string) => Promise<void>;
+  setActiveProfile: (id: string) => Promise<void>;
+  /** Backward-compat: updates the active profile's name. */
+  setName: (name: string) => void;
+  createProfile: (name: string, avatarColor: string) => Profile;
+  updateProfile: (id: string, data: Partial<NewProfile>) => void;
+  deleteProfile: (id: string) => void;
 };
 
-export const useProfileStore = create<ProfileState>((set) => ({
+function deriveName(profiles: Profile[], activeId: string): string {
+  return profiles.find((p) => p.id === activeId)?.name ?? '';
+}
+
+export const useProfileStore = create<ProfileState>((set, get) => ({
+  profiles: [],
+  activeProfileId: DEFAULT_PROFILE_ID,
   name: '',
   isLoaded: false,
 
   async load() {
-    const raw = await SecureStore.getItemAsync(PROFILE_STORE_KEY);
-    const profile: Profile = raw != null ? (JSON.parse(raw) as Profile) : { name: '' };
-    set({ name: profile.name, isLoaded: true });
+    const profiles = getAllProfiles();
+    const storedId = await SecureStore.getItemAsync(ACTIVE_PROFILE_KEY);
+    const activeProfileId =
+      storedId != null && profiles.some((p) => p.id === storedId)
+        ? storedId
+        : (profiles[0]?.id ?? DEFAULT_PROFILE_ID);
+    set({ profiles, activeProfileId, name: deriveName(profiles, activeProfileId), isLoaded: true });
   },
 
-  async setName(name: string) {
-    const profile: Profile = { name };
-    await SecureStore.setItemAsync(PROFILE_STORE_KEY, JSON.stringify(profile));
-    set({ name });
+  async setActiveProfile(id) {
+    await SecureStore.setItemAsync(ACTIVE_PROFILE_KEY, id);
+    const { profiles } = get();
+    set({ activeProfileId: id, name: deriveName(profiles, id) });
+  },
+
+  setName(name) {
+    const { activeProfileId } = get();
+    updateProfileRecord(activeProfileId, { name });
+    const profiles = getAllProfiles();
+    set({ profiles, name });
+  },
+
+  createProfile(name, avatarColor) {
+    const now = new Date().toISOString();
+    const profile: Profile = {
+      id: newId('prof'),
+      name,
+      avatarColor,
+      isDefault: 0,
+      caregiverName: null,
+      caregiverContact: null,
+      caregiverAlertEnabled: 0,
+      createdAt: now,
+      updatedAt: now,
+    };
+    insertProfile(profile);
+    const profiles = getAllProfiles();
+    set({ profiles });
+    return profile;
+  },
+
+  updateProfile(id, data) {
+    updateProfileRecord(id, data);
+    const { activeProfileId } = get();
+    const profiles = getAllProfiles();
+    set({ profiles, name: deriveName(profiles, activeProfileId) });
+  },
+
+  deleteProfile(id) {
+    const { profiles, activeProfileId } = get();
+    if (profiles.length <= 1) return;
+    deleteProfileRecord(id);
+    const remaining = getAllProfiles();
+    let newActiveId = activeProfileId;
+    if (activeProfileId === id) {
+      newActiveId = remaining[0]?.id ?? DEFAULT_PROFILE_ID;
+      void SecureStore.setItemAsync(ACTIVE_PROFILE_KEY, newActiveId);
+    }
+    set({
+      profiles: remaining,
+      activeProfileId: newActiveId,
+      name: deriveName(remaining, newActiveId),
+    });
   },
 }));

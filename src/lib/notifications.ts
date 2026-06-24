@@ -8,7 +8,6 @@ export async function setupNotificationChannels(): Promise<void> {
       name: 'Dose Reminders',
       importance: Notifications.AndroidImportance.HIGH,
       vibrationPattern: [0, 250, 250, 250],
-      sound: 'default',
     });
     await Notifications.setNotificationChannelAsync(NOTIFICATION_CHANNELS.REFILL_ALERTS, {
       name: 'Refill Alerts',

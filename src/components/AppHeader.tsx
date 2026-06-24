@@ -8,6 +8,11 @@ type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 interface AppHeaderProps {
   title: string;
   subtitle?: string;
+  leftAction?: {
+    icon: IoniconName;
+    onPress: () => void;
+    accessibilityLabel: string;
+  };
   rightAction?: {
     icon: IoniconName;
     onPress: () => void;
@@ -16,7 +21,13 @@ interface AppHeaderProps {
   rightContent?: React.ReactNode;
 }
 
-export function AppHeader({ title, subtitle, rightAction, rightContent }: AppHeaderProps) {
+export function AppHeader({
+  title,
+  subtitle,
+  leftAction,
+  rightAction,
+  rightContent,
+}: AppHeaderProps) {
   const { colors, spacing } = useTheme();
 
   return (
@@ -30,6 +41,17 @@ export function AppHeader({ title, subtitle, rightAction, rightContent }: AppHea
         },
       ]}
     >
+      {leftAction != null && (
+        <TouchableOpacity
+          onPress={leftAction.onPress}
+          accessibilityLabel={leftAction.accessibilityLabel}
+          accessibilityRole="button"
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          style={styles.iconBtn}
+        >
+          <Ionicons name={leftAction.icon} size={24} color={colors.textPrimary} />
+        </TouchableOpacity>
+      )}
       <View style={styles.textBlock}>
         <Text variant="headingLarge" color={colors.textPrimary} numberOfLines={1}>
           {title}
@@ -56,10 +78,7 @@ export function AppHeader({ title, subtitle, rightAction, rightContent }: AppHea
                   accessibilityLabel={rightAction.accessibilityLabel}
                   accessibilityRole="button"
                   hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-                  style={[
-                    styles.iconBtn,
-                    { backgroundColor: colors.brandPrimaryLight },
-                  ]}
+                  style={[styles.iconBtn, { backgroundColor: colors.brandPrimaryLight }]}
                 >
                   <Ionicons name={rightAction.icon} size={20} color={colors.brandPrimary} />
                 </TouchableOpacity>

@@ -4,8 +4,7 @@ import { CameraView, useCameraPermissions, type CameraType } from 'expo-camera';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Text } from '@/components';
-import { PermissionDenied } from '@/components';
+import { Text, PermissionDenied } from '@/components';
 import { useTheme } from '@/theme';
 import { useCaptureStore } from '@/store/capture-store';
 import { processAndStore } from '@/lib/image-pipeline';
@@ -113,9 +112,14 @@ export default function CaptureCamera() {
             onPress={goToReview}
             accessibilityLabel={`Review ${pageCount} pages`}
             accessibilityRole="button"
-            style={[styles.doneBtn, { borderRadius: radii.full, backgroundColor: colors.brandPrimary }]}
+            style={[
+              styles.doneBtn,
+              { borderRadius: radii.full, backgroundColor: colors.brandPrimary },
+            ]}
           >
-            <Text variant="labelSmall" color="#fff">Done</Text>
+            <Text variant="labelSmall" color="#fff">
+              Done
+            </Text>
             <Ionicons name="arrow-forward" size={14} color="#fff" style={{ marginLeft: 4 }} />
           </TouchableOpacity>
         ) : (

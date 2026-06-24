@@ -1,5 +1,5 @@
-import { useRef, useEffect } from 'react';
-import { View, Animated, StyleSheet, TouchableOpacity } from 'react-native';
+import { useRef, useCallback, useEffect } from 'react';
+import { View, Animated, StyleSheet, TouchableOpacity, useAnimatedValue } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useUIStore, type Toast, type ToastType } from '@/store/ui-store';
@@ -20,31 +20,45 @@ interface ToastItemProps {
 
 function ToastItem({ toast, onDismiss }: ToastItemProps) {
   const { colors } = useTheme();
-  const opacity = useRef(new Animated.Value(0)).current;
-  const translateY = useRef(new Animated.Value(-16)).current;
+  const opacity = useAnimatedValue(0);
+  const translateY = useAnimatedValue(-16);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const dismiss = () => {
+  const dismiss = useCallback(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
     Animated.parallel([
       Animated.timing(opacity, { toValue: 0, duration: 200, useNativeDriver: true }),
       Animated.timing(translateY, { toValue: -12, duration: 200, useNativeDriver: true }),
     ]).start(() => onDismiss(toast.id));
-  };
+  }, [opacity, translateY, onDismiss, toast.id]);
 
   useEffect(() => {
     Animated.parallel([
       Animated.timing(opacity, { toValue: 1, duration: 250, useNativeDriver: true }),
-      Animated.spring(translateY, { toValue: 0, damping: 15, stiffness: 220, useNativeDriver: true }),
+      Animated.spring(translateY, {
+        toValue: 0,
+        damping: 15,
+        stiffness: 220,
+        useNativeDriver: true,
+      }),
     ]).start();
 
-    const t = setTimeout(dismiss, toast.duration);
-    return () => clearTimeout(t);
-  }, []);
+    timerRef.current = setTimeout(dismiss, toast.duration);
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [dismiss, opacity, toast.duration, translateY]);
+
+  const handleUndo = useCallback(() => {
+    toast.undoAction?.();
+    dismiss();
+  }, [toast, dismiss]);
 
   const palette: Record<ToastType, { bg: string; icon: string; text: string }> = {
     success: { bg: colors.successDark, icon: colors.textInverse, text: colors.textInverse },
-    error:   { bg: colors.dangerDark,  icon: colors.textInverse, text: colors.textInverse },
+    error: { bg: colors.dangerDark, icon: colors.textInverse, text: colors.textInverse },
     warning: { bg: colors.warningDark, icon: colors.textInverse, text: colors.textInverse },
-    info:    { bg: colors.infoDark,    icon: colors.textInverse, text: colors.textInverse },
+    info: { bg: colors.infoDark, icon: colors.textInverse, text: colors.textInverse },
   };
 
   const { bg, icon: iconColor, text } = palette[toast.type];
@@ -59,6 +73,19 @@ function ToastItem({ toast, onDismiss }: ToastItemProps) {
       <Text variant="bodySmall" color={text} style={styles.message} numberOfLines={2}>
         {toast.message}
       </Text>
+      {toast.undoAction != null && (
+        <TouchableOpacity
+          onPress={handleUndo}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          accessibilityLabel="Undo"
+          accessibilityRole="button"
+          style={styles.undoBtn}
+        >
+          <Text variant="labelSmall" color={text} style={styles.undoText}>
+            Undo
+          </Text>
+        </TouchableOpacity>
+      )}
       <TouchableOpacity
         onPress={dismiss}
         hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
@@ -79,10 +106,7 @@ export function ToastContainer() {
   if (toasts.length === 0) return null;
 
   return (
-    <View
-      style={[styles.container, { top: insets.top + 8 }]}
-      pointerEvents="box-none"
-    >
+    <View style={[styles.container, { top: insets.top + 8 }]} pointerEvents="box-none">
       {toasts.map((t) => (
         <ToastItem key={t.id} toast={t} onDismiss={removeToast} />
       ))}
@@ -112,4 +136,6 @@ const styles = StyleSheet.create({
   },
   icon: { marginRight: 10 },
   message: { flex: 1, fontWeight: '500', marginRight: 8 },
+  undoBtn: { marginRight: 10 },
+  undoText: { fontWeight: '700', textDecorationLine: 'underline' },
 });

@@ -3,6 +3,7 @@ import { lightColors, darkColors, type ColorScheme } from './colors';
 import { spacing, type SpacingKey, type SpacingValue } from './spacing';
 import { radii, type RadiusKey } from './radii';
 import { typography, textPresets } from './typography';
+import { useSettingsStore } from '@/store/settings-store';
 
 export type Theme = {
   colors: ColorScheme;
@@ -32,8 +33,10 @@ const darkTheme: Theme = {
 };
 
 export function useTheme(): Theme {
-  const scheme = useColorScheme();
-  return scheme === 'dark' ? darkTheme : lightTheme;
+  const systemScheme = useColorScheme();
+  const themePref = useSettingsStore((s) => s.theme);
+  const effective = themePref === 'system' ? systemScheme : themePref;
+  return effective === 'dark' ? darkTheme : lightTheme;
 }
 
 export { lightColors, darkColors, spacing, radii, typography, textPresets };

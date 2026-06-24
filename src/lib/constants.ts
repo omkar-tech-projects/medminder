@@ -19,7 +19,7 @@ export const DOSE_STATUS = {
   PENDING: 'pending',
   TAKEN: 'taken',
   MISSED: 'missed',
-  SNOOZED: 'snoozed',
+  SKIPPED: 'skipped',
 } as const;
 
 export const FREQUENCY = {

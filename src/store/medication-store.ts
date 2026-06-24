@@ -1,14 +1,22 @@
 import { create } from 'zustand';
-import type { Medication } from '@/db/schema';
-import { getAllMedications, insertMedication, updateMedication, deleteMedication } from '@/db/queries/medications';
-import type { NewMedication } from '@/db/schema';
+import { format } from 'date-fns';
+import type { Medicine, NewMedicine } from '@/db/schema';
+import {
+  getAllMedicines,
+  insertMedicine,
+  updateMedicine,
+  deleteMedicine,
+  pauseMedicine,
+  resumeMedicine,
+} from '@/db/queries/medicines';
+import { useProfileStore } from '@/store/profile-store';
 
 type MedicationState = {
-  medications: Medication[];
+  medications: Medicine[];
   isLoading: boolean;
   load: () => void;
-  add: (data: NewMedication) => void;
-  update: (id: string, data: Partial<NewMedication>) => void;
+  add: (data: NewMedicine) => void;
+  update: (id: string, data: Partial<NewMedicine>) => void;
   remove: (id: string) => void;
   pause: (id: string) => void;
   resume: (id: string) => void;
@@ -20,35 +28,38 @@ export const useMedicationStore = create<MedicationState>((set, get) => ({
 
   load() {
     set({ isLoading: true });
-    const medications = getAllMedications();
+    const profileId = useProfileStore.getState().activeProfileId;
+    const medications = getAllMedicines(profileId);
     set({ medications, isLoading: false });
   },
 
   add(data) {
-    insertMedication(data);
+    insertMedicine(data);
     get().load();
   },
 
   update(id, data) {
-    updateMedication(id, data);
+    updateMedicine(id, data);
     get().load();
   },
 
   remove(id) {
-    deleteMedication(id);
+    deleteMedicine(id);
     get().load();
   },
 
   pause(id) {
-    updateMedication(id, { paused: 1 });
+    pauseMedicine(id);
     get().load();
   },
 
   resume(id) {
-    updateMedication(id, { paused: 0 });
+    resumeMedicine(id);
     get().load();
   },
 }));
 
-export const selectActiveMedications = (state: MedicationState) =>
-  state.medications.filter((m) => m.paused === 0 && (!m.endDate || m.endDate >= new Date().toISOString().slice(0, 10)));
+const today = () => format(new Date(), 'yyyy-MM-dd');
+
+export const selectActiveMedications = (state: MedicationState): Medicine[] =>
+  state.medications.filter((m) => m.active === 1 && (m.endDate == null || m.endDate >= today()));

@@ -2,13 +2,13 @@ import type { DoseStatus } from '@/types/dose';
 
 export interface TodayDose {
   id: string;
-  medicationId: string;
+  medicineId: string;
   medicationName: string;
   medicationColor: string;
   dosage: string;
   scheduledAt: string;
   status: DoseStatus;
-  takenAt: string | null;
+  respondedAt: string | null;
 }
 
 export interface AdherenceSummary {
@@ -20,6 +20,6 @@ export interface AdherenceSummary {
 
 export interface DoseRepository {
   getTodayDoses: () => TodayDose[];
-  getAdheranceSummary: () => AdherenceSummary;
-  markTaken: (doseId: string, takenAt: string) => void;
+  getAdherenceSummary: () => AdherenceSummary;
+  markTaken: (doseId: string, respondedAt: string) => void;
 }

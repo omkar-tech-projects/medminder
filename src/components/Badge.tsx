@@ -34,11 +34,7 @@ export function Badge({ label, variant = 'neutral', size = 'md' }: BadgeProps) {
       ]}
       accessibilityRole="text"
     >
-      <Text
-        variant={size === 'sm' ? 'labelSmall' : 'caption'}
-        color={text}
-        style={styles.label}
-      >
+      <Text variant={size === 'sm' ? 'labelSmall' : 'caption'} color={text} style={styles.label}>
         {label}
       </Text>
     </View>

@@ -57,7 +57,7 @@ export async function extractMedicationsFromImage(base64Image: string): Promise<
     throw new Error(`Claude API error ${response.status}: ${error}`);
   }
 
-  const data = (await response.json()) as { content: Array<{ type: string; text: string }> };
+  const data = (await response.json()) as { content: { type: string; text: string }[] };
   const text = data.content.find((c) => c.type === 'text')?.text ?? '{"medications":[]}';
 
   const parsed: unknown = JSON.parse(text);

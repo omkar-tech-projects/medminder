@@ -1,8 +1,16 @@
 import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
-  Screen, Text, Button, Card, Input, Badge, ListItem,
-  EmptyState, BottomSheet, AppHeader,
+  Screen,
+  Text,
+  Button,
+  Card,
+  Input,
+  Badge,
+  ListItem,
+  EmptyState,
+  BottomSheet,
+  AppHeader,
 } from '@/components';
 import { useToast } from '@/store/ui-store';
 import { useTheme } from '@/theme';
@@ -23,14 +31,29 @@ export default function GalleryScreen() {
 
   return (
     <Screen scroll edges={['bottom']} contentContainerStyle={{ paddingBottom: 48 }}>
-
       {/* ── Typography ── */}
       <AppHeader title="Component Gallery" subtitle="Design system preview" />
       {sep}
       <Section label="Typography">
-        {(['displayLarge', 'displaySmall', 'headingLarge', 'headingMedium', 'headingSmall',
-          'bodyLarge', 'bodyMedium', 'bodySmall', 'labelLarge', 'labelSmall', 'caption', 'overline'] as const).map((v) => (
-          <Text key={v} variant={v}>{v}</Text>
+        {(
+          [
+            'displayLarge',
+            'displaySmall',
+            'headingLarge',
+            'headingMedium',
+            'headingSmall',
+            'bodyLarge',
+            'bodyMedium',
+            'bodySmall',
+            'labelLarge',
+            'labelSmall',
+            'caption',
+            'overline',
+          ] as const
+        ).map((v) => (
+          <Text key={v} variant={v}>
+            {v}
+          </Text>
         ))}
       </Section>
       {sep}
@@ -69,8 +92,19 @@ export default function GalleryScreen() {
 
       {/* ── Inputs ── */}
       <Section label="Inputs">
-        <Input label="Medication name" placeholder="e.g. Metformin 500mg" value={inputVal} onChangeText={setInputVal} leftIcon="medical-outline" />
-        <Input label="Dosage" placeholder="e.g. 1 tablet" hint="How much to take per dose" leftIcon="flask-outline" />
+        <Input
+          label="Medication name"
+          placeholder="e.g. Metformin 500mg"
+          value={inputVal}
+          onChangeText={setInputVal}
+          leftIcon="medical-outline"
+        />
+        <Input
+          label="Dosage"
+          placeholder="e.g. 1 tablet"
+          hint="How much to take per dose"
+          leftIcon="flask-outline"
+        />
         <Input label="With error" placeholder="Required" error="This field is required" />
         <Input placeholder="No label, right icon" rightIcon="eye-outline" secureTextEntry />
       </Section>
@@ -84,18 +118,43 @@ export default function GalleryScreen() {
             Next dose at 08:00 · 28 days remaining
           </Text>
         </Card>
-        <Card onPress={() => undefined} elevated={false} style={{ borderColor: colors.brandPrimary }}>
-          <Text variant="labelLarge" color={colors.brandPrimary}>Tappable card</Text>
+        <Card
+          onPress={() => undefined}
+          elevated={false}
+          style={{ borderColor: colors.brandPrimary }}
+        >
+          <Text variant="labelLarge" color={colors.brandPrimary}>
+            Tappable card
+          </Text>
         </Card>
       </Section>
       {sep}
 
       {/* ── List Items ── */}
       <Section label="List Items">
-        <ListItem title="Notifications" subtitle="Manage reminder settings" leftIcon="notifications-outline" showChevron onPress={() => undefined} />
-        <ListItem title="Taken · 08:03" right={<Badge label="Taken" variant="success" size="sm" />} />
-        <ListItem title="Delete medication" leftIcon="trash-outline" onPress={() => undefined} destructive />
-        <ListItem title="Disabled item" subtitle="Cannot interact" leftIcon="lock-closed-outline" disabled />
+        <ListItem
+          title="Notifications"
+          subtitle="Manage reminder settings"
+          leftIcon="notifications-outline"
+          showChevron
+          onPress={() => undefined}
+        />
+        <ListItem
+          title="Taken · 08:03"
+          right={<Badge label="Taken" variant="success" size="sm" />}
+        />
+        <ListItem
+          title="Delete medication"
+          leftIcon="trash-outline"
+          onPress={() => undefined}
+          destructive
+        />
+        <ListItem
+          title="Disabled item"
+          subtitle="Cannot interact"
+          leftIcon="lock-closed-outline"
+          disabled
+        />
       </Section>
       {sep}
 
@@ -113,21 +172,46 @@ export default function GalleryScreen() {
       {/* ── Toast ── */}
       <Section label="Toast / Snackbar">
         <View style={styles.row}>
-          <Button label="Success" variant="ghost" size="sm" onPress={() => toast.success('Dose marked as taken!')} />
-          <Button label="Error" variant="ghost" size="sm" onPress={() => toast.error('Failed to save.')} />
-          <Button label="Warning" variant="ghost" size="sm" onPress={() => toast.warning('Refill due in 2 days.')} />
-          <Button label="Info" variant="ghost" size="sm" onPress={() => toast.info('Reminder set for 8:00 AM.')} />
+          <Button
+            label="Success"
+            variant="ghost"
+            size="sm"
+            onPress={() => toast.success('Dose marked as taken!')}
+          />
+          <Button
+            label="Error"
+            variant="ghost"
+            size="sm"
+            onPress={() => toast.error('Failed to save.')}
+          />
+          <Button
+            label="Warning"
+            variant="ghost"
+            size="sm"
+            onPress={() => toast.warning('Refill due in 2 days.')}
+          />
+          <Button
+            label="Info"
+            variant="ghost"
+            size="sm"
+            onPress={() => toast.info('Reminder set for 8:00 AM.')}
+          />
         </View>
       </Section>
       {sep}
 
       {/* ── Bottom Sheet ── */}
       <Section label="Bottom Sheet">
-        <Button label="Open Bottom Sheet" onPress={() => setSheetOpen(true)} variant="secondary" fullWidth />
+        <Button
+          label="Open Bottom Sheet"
+          onPress={() => setSheetOpen(true)}
+          variant="secondary"
+          fullWidth
+        />
         <BottomSheet visible={sheetOpen} onClose={() => setSheetOpen(false)} title="Example Sheet">
           <Text variant="bodyMedium" color={colors.textSecondary}>
-            Drag down or tap the backdrop to dismiss. Use this for contextual actions,
-            pickers, and confirmations.
+            Drag down or tap the backdrop to dismiss. Use this for contextual actions, pickers, and
+            confirmations.
           </Text>
           <Button
             label="Close"
@@ -138,7 +222,6 @@ export default function GalleryScreen() {
           />
         </BottomSheet>
       </Section>
-
     </Screen>
   );
 }
@@ -147,7 +230,9 @@ function Section({ label, children }: { label: string; children: React.ReactNode
   const { colors, spacing } = useTheme();
   return (
     <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
-      <Text variant="overline" color={colors.textTertiary} style={styles.secLabel}>{label}</Text>
+      <Text variant="overline" color={colors.textTertiary} style={styles.secLabel}>
+        {label}
+      </Text>
       <View style={styles.secContent}>{children}</View>
     </View>
   );

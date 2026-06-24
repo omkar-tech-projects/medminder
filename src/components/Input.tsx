@@ -83,11 +83,7 @@ export function Input({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           placeholderTextColor={colors.textPlaceholder}
-          style={[
-            styles.input,
-            { color: colors.inputText },
-            style,
-          ]}
+          style={[styles.input, { color: colors.inputText }, style]}
           accessibilityLabel={label}
           {...rest}
         />
@@ -100,11 +96,7 @@ export function Input({
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             style={{ marginLeft: spacing[2] }}
           >
-            <Ionicons
-              name={rightIcon}
-              size={18}
-              color={colors.textTertiary}
-            />
+            <Ionicons name={rightIcon} size={18} color={colors.textTertiary} />
           </TouchableOpacity>
         )}
       </TouchableOpacity>
