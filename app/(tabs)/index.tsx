@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import { ProfileSwitcherSheet } from '@/components/ProfileSwitcherSheet';
+import { ViewingAsBanner } from '@/components/ViewingAsBanner';
 import {
   Screen,
   AppHeader,
@@ -38,6 +39,7 @@ export default function HomeScreen() {
 
   return (
     <Screen scroll edges={['top']} contentContainerStyle={{ paddingBottom: 48 }}>
+      <ViewingAsBanner />
       {/* Greeting */}
       <AppHeader
         title={headingText}

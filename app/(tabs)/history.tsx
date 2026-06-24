@@ -11,6 +11,7 @@ import {
   HistoryLogRow,
   Text,
 } from '@/components';
+import { ViewingAsBanner } from '@/components/ViewingAsBanner';
 import { useTheme } from '@/theme';
 import { useHistoryScreen } from '@/hooks/use-history-screen';
 import { useExport } from '@/hooks/use-export';
@@ -63,6 +64,7 @@ export default function HistoryScreen() {
 
   const ListHeader = (
     <View>
+      <ViewingAsBanner />
       <AppHeader
         title="History"
         rightContent={

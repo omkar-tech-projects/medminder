@@ -88,6 +88,13 @@ const MIGRATIONS = [
   // Seed the default profile and assign all existing medicines to it
   `INSERT OR IGNORE INTO profiles (id, name, avatar_color, is_default, caregiver_alert_enabled, created_at, updated_at) VALUES ('profile:default', 'Me', '#3B82F6', 1, 0, datetime('now'), datetime('now'))`,
   `UPDATE medicines SET profile_id = 'profile:default' WHERE profile_id IS NULL`,
+  // Family & phone number support
+  `ALTER TABLE profiles ADD COLUMN is_primary INTEGER NOT NULL DEFAULT 0`,
+  `ALTER TABLE profiles ADD COLUMN phone_number TEXT`,
+  `ALTER TABLE profiles ADD COLUMN relationship TEXT`,
+  `ALTER TABLE profiles ADD COLUMN date_of_birth TEXT`,
+  // The default profile is always the primary/owner profile
+  `UPDATE profiles SET is_primary = 1 WHERE id = 'profile:default'`,
 ];
 for (const stmt of MIGRATIONS) {
   try {

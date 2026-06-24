@@ -11,7 +11,7 @@ export default function OnboardingNameScreen() {
     if (value.trim().length > 0) {
       await setProfileName(value.trim());
     }
-    router.push('/onboarding/notifications');
+    router.push('/onboarding/phone');
   };
 
   return (
@@ -23,7 +23,7 @@ export default function OnboardingNameScreen() {
       primaryLabel="Continue"
       onPrimary={() => proceed(name)}
       secondaryLabel="Skip"
-      onSecondary={() => router.push('/onboarding/notifications')}
+      onSecondary={() => router.push('/onboarding/phone')}
       skipToEnd={() => router.push('/onboarding/disclaimer')}
       keyboardAware
     >

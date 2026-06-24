@@ -8,6 +8,7 @@ import {
   DoseDetailSheet,
   Text,
 } from '@/components';
+import { ViewingAsBanner } from '@/components/ViewingAsBanner';
 import { useTheme } from '@/theme';
 import { useCalendarScreen } from '@/hooks/use-calendar-screen';
 import { useDoseConfirmation } from '@/hooks/use-dose-confirmation';
@@ -45,6 +46,7 @@ export default function CalendarScreen() {
 
   return (
     <Screen scroll edges={['top']} contentContainerStyle={{ paddingBottom: 48 }}>
+      <ViewingAsBanner />
       <AppHeader
         title="Calendar"
         rightAction={

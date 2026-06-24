@@ -72,6 +72,13 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="family"
+        options={{
+          title: 'Family',
+          tabBarIcon: tabIcon('people-outline', 'people'),
+        }}
+      />
+      <Tabs.Screen
         name="settings"
         options={{
           title: 'Settings',

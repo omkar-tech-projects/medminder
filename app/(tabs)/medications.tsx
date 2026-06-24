@@ -4,6 +4,7 @@ import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { format, differenceInDays, parseISO } from 'date-fns';
 import { Screen, AppHeader, EmptyState, Badge, Text } from '@/components';
+import { ViewingAsBanner } from '@/components/ViewingAsBanner';
 import { useTheme } from '@/theme';
 import { useProfileStore } from '@/store/profile-store';
 import { getActiveMedicines } from '@/db/queries/medicines';
@@ -79,6 +80,7 @@ export default function MedicationsScreen() {
 
   return (
     <Screen edges={['top']}>
+      <ViewingAsBanner />
       <AppHeader
         title="Medicines"
         rightContent={

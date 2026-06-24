@@ -293,6 +293,11 @@ export function getTodayDoses(date: string, profileId?: string | null): TodayDos
     }));
 }
 
+export function getTodayAdherenceSummaryForProfile(profileId: string): AdherenceSummary {
+  const today = format(new Date(), 'yyyy-MM-dd');
+  return getAdherenceSummary(today, profileId);
+}
+
 export function getAdherenceSummary(date: string, profileId?: string | null): AdherenceSummary {
   const rows = db
     .select({ status: doseLogs.status, profileId: medicines.profileId })

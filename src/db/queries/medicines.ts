@@ -8,6 +8,10 @@ export function getAllMedicines(profileId?: string | null): Medicine[] {
   return profileId != null ? all.filter((m) => m.profileId === profileId) : all;
 }
 
+export function getActiveMedicineCount(profileId: string): number {
+  return getActiveMedicines(profileId).length;
+}
+
 export function getActiveMedicines(profileId?: string | null): Medicine[] {
   const today = format(new Date(), 'yyyy-MM-dd');
   return db

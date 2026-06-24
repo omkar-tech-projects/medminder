@@ -29,7 +29,9 @@
     "caregiverPrefix": "Caregiver: {{contact}}",
     "addPerson": "Add person",
     "switchToA11y": "Switch to {{name}}",
-    "editA11y": "Edit {{name}}"
+    "editA11y": "Edit {{name}}",
+    "adherenceSummary": "{{taken}} of {{total}} taken today",
+    "noMedicines": "No medicines"
   },
   "caregiverAlert": {
     "title": "Missed dose alert",
@@ -38,5 +40,72 @@
     "notify": "Notify",
     "cannotSendTitle": "Cannot send alert",
     "cannotSendBody": "Unable to open a messaging app. Please verify the caregiver contact in profile settings."
+  },
+  "onboardingPhone": {
+    "title": "Your phone number",
+    "body": "Stored only on your device — never shared. Used to link this profile to you so family members can identify who set up their reminders.",
+    "label": "Phone number",
+    "placeholder": "Enter your number",
+    "countryPickerTitle": "Select country",
+    "countrySearchPlaceholder": "Search countries…",
+    "primary": "Continue",
+    "skip": "Skip for now"
+  },
+  "family": {
+    "title": "Family",
+    "dashboardTitle": "Everyone today",
+    "totalDue": "Due",
+    "totalTaken": "Taken",
+    "totalMissed": "Missed",
+    "missedAlert": "{{name}} missed a dose",
+    "addMember": "Add family member",
+    "noMembers": "No family members yet",
+    "noMembersSubtitle": "Add a family member to manage their medicines from this device.",
+    "activeMedicines_one": "{{count}} medicine",
+    "activeMedicines_other": "{{count}} medicines",
+    "noMedicines": "No medicines",
+    "nextDose": "Next: {{time}}",
+    "noDosesToday": "No doses today",
+    "adherence": "{{taken}} / {{total}} taken",
+    "viewProfile": "View {{name}}'s medicines",
+    "editMember": "Edit",
+    "deleteMember": "Remove",
+    "deleteConfirmTitle": "Remove {{name}}?",
+    "deleteConfirmMessage": "This permanently deletes {{name}}'s medicines and history. This cannot be undone.",
+    "deleteConfirmCancel": "Cancel",
+    "deleteConfirmButton": "Remove"
+  },
+  "familyForm": {
+    "addTitle": "Add family member",
+    "editTitle": "Edit family member",
+    "nameLabel": "Name",
+    "namePlaceholder": "e.g. Dad, Priya",
+    "phoneLabel": "Phone number",
+    "phonePlaceholder": "Enter number",
+    "phoneHint": "Stored locally — never sent or shared",
+    "relationshipLabel": "Relationship",
+    "dobLabel": "Date of birth",
+    "dobPlaceholder": "YYYY-MM-DD (optional)",
+    "colourLabel": "Colour",
+    "save": "Save",
+    "saveA11y": "Save family member",
+    "nameA11y": "Family member name",
+    "phoneA11y": "Phone number",
+    "countryCodeA11y": "Select country code",
+    "relationshipA11y": "Select relationship",
+    "dobA11y": "Date of birth",
+    "colourA11y": "Select colour {{colour}}",
+    "relationships": {
+      "self": "Self",
+      "spouse": "Spouse / Partner",
+      "parent": "Parent",
+      "child": "Child",
+      "other": "Other"
+    }
+  },
+  "viewingAs": {
+    "banner": "Viewing {{name}}'s medicines",
+    "backButton": "Back to my profile",
+    "bannerA11y": "Currently viewing {{name}}'s medicines. Tap to return to your own profile."
   }
 }

@@ -12,6 +12,10 @@ export function getProfileById(id: string): Profile | undefined {
   return db.select().from(profiles).where(eq(profiles.id, id)).get();
 }
 
+export function getPrimaryProfile(): Profile | undefined {
+  return db.select().from(profiles).where(eq(profiles.isPrimary, 1)).get();
+}
+
 export function insertProfile(data: NewProfile): void {
   db.insert(profiles).values(data).run();
 }

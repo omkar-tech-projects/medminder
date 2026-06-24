@@ -5,6 +5,14 @@ export const profiles = sqliteTable('profiles', {
   name: text('name').notNull(),
   avatarColor: text('avatar_color').notNull().default('#3B82F6'),
   isDefault: integer('is_default').notNull().default(0),
+  /** True for the device-owner's profile (the first profile ever created). */
+  isPrimary: integer('is_primary').notNull().default(0),
+  /** E.164-style string including dial code, e.g. "+919876543210". Informational only. */
+  phoneNumber: text('phone_number'),
+  /** self | spouse | parent | child | other */
+  relationship: text('relationship'),
+  /** ISO date string, e.g. "1990-04-15". */
+  dateOfBirth: text('date_of_birth'),
   caregiverName: text('caregiver_name'),
   caregiverContact: text('caregiver_contact'),
   caregiverAlertEnabled: integer('caregiver_alert_enabled').notNull().default(0),

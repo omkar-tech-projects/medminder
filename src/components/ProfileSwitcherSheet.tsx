@@ -8,6 +8,7 @@ import { Text } from './Text';
 import { ProfileFormSheet } from './ProfileFormSheet';
 import { useTheme } from '@/theme';
 import { useProfileStore } from '@/store/profile-store';
+import { getTodayAdherenceSummaryForProfile } from '@/db/queries/dose-logs';
 import type { Profile } from '@/db/schema';
 
 interface ProfileSwitcherSheetProps {
@@ -22,6 +23,18 @@ function initials(name: string): string {
     .join('')
     .slice(0, 2)
     .toUpperCase();
+}
+
+function relationshipLabel(rel: string | null): string | null {
+  if (!rel) return null;
+  const map: Record<string, string> = {
+    self: 'Self',
+    spouse: 'Spouse',
+    parent: 'Parent',
+    child: 'Child',
+    other: 'Other',
+  };
+  return map[rel] ?? null;
 }
 
 export function ProfileSwitcherSheet({ visible, onClose }: ProfileSwitcherSheetProps) {
@@ -48,6 +61,8 @@ export function ProfileSwitcherSheet({ visible, onClose }: ProfileSwitcherSheetP
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
           {profiles.map((profile) => {
             const isActive = profile.id === activeProfileId;
+            const adherence = getTodayAdherenceSummaryForProfile(profile.id);
+            const relLabel = relationshipLabel(profile.relationship);
             return (
               <TouchableOpacity
                 key={profile.id}
@@ -72,13 +87,19 @@ export function ProfileSwitcherSheet({ visible, onClose }: ProfileSwitcherSheetP
                 </View>
                 <View style={styles.rowText}>
                   <Text variant="bodyMedium">{profile.name}</Text>
-                  {profile.caregiverAlertEnabled === 1 && profile.caregiverContact && (
-                    <Text variant="caption" color={colors.textTertiary}>
-                      {t('profileSwitcher.caregiverPrefix', {
-                        contact: profile.caregiverName ?? profile.caregiverContact,
-                      })}
-                    </Text>
-                  )}
+                  <Text variant="caption" color={colors.textTertiary}>
+                    {[
+                      relLabel,
+                      adherence.total > 0
+                        ? t('profileSwitcher.adherenceSummary', {
+                            taken: adherence.taken,
+                            total: adherence.total,
+                          })
+                        : t('profileSwitcher.noMedicines'),
+                    ]
+                      .filter(Boolean)
+                      .join('  ·  ')}
+                  </Text>
                 </View>
                 {isActive && (
                   <Ionicons name="checkmark-circle" size={20} color={colors.brandPrimary} />
