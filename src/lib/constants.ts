@@ -1,7 +1,5 @@
 export const APP_NAME = 'MedMinder';
 export const DB_NAME = 'medminder.db';
-export const ANTHROPIC_API_KEY_STORE_KEY = 'ANTHROPIC_API_KEY';
-export const CLAUDE_MODEL = 'claude-sonnet-4-6';
 
 export const NOTIFICATION_CHANNELS = {
   DOSE_REMINDERS: 'dose-reminders',

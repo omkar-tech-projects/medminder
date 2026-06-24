@@ -67,9 +67,7 @@ describe('processResponse — SNOOZE', () => {
         dosage: '40 mg',
       }),
     );
-    expect(mockSnooze).toHaveBeenCalledWith(
-      expect.objectContaining({ snoozeMinutes: 2 }),
-    );
+    expect(mockSnooze).toHaveBeenCalledWith(expect.objectContaining({ snoozeMinutes: 2 }));
   });
 
   it('ignores test notifications', async () => {
@@ -88,9 +86,7 @@ describe('processResponse — SNOOZE', () => {
 
 describe('processResponse — MARK_TAKEN', () => {
   it('marks dose taken and cancels nag chain', async () => {
-    await processResponse(
-      fakeResponse(NOTIFICATION_ACTIONS.MARK_TAKEN, { doseLogId: 'dl:3' }),
-    );
+    await processResponse(fakeResponse(NOTIFICATION_ACTIONS.MARK_TAKEN, { doseLogId: 'dl:3' }));
     expect(mockMarkTaken).toHaveBeenCalledWith('dl:3', 'notification');
     expect(mockCancel).toHaveBeenCalledWith('dl:3');
     expect(mockSnooze).not.toHaveBeenCalled();

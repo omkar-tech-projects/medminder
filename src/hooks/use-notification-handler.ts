@@ -8,9 +8,7 @@ import {
 import { useDoseStore } from '@/store/dose-store';
 import { useSettingsStore } from '@/store/settings-store';
 
-export async function processResponse(
-  response: Notifications.NotificationResponse,
-): Promise<void> {
+export async function processResponse(response: Notifications.NotificationResponse): Promise<void> {
   const data = response.notification.request.content.data ?? {};
   const doseLogId = typeof data['doseLogId'] === 'string' ? data['doseLogId'] : null;
   const isTest = data['isTest'] === true;
@@ -22,8 +20,13 @@ export async function processResponse(
     void cancelNotificationsForDoseLog(doseLogId);
   } else if (response.actionIdentifier === NOTIFICATION_ACTIONS.SNOOZE) {
     await cancelNotificationsForDoseLog(doseLogId);
-    const { snoozeDurationMin, quietHoursEnabled, quietHoursStart, quietHoursEnd, notificationSoundEnabled } =
-      useSettingsStore.getState();
+    const {
+      snoozeDurationMin,
+      quietHoursEnabled,
+      quietHoursStart,
+      quietHoursEnd,
+      notificationSoundEnabled,
+    } = useSettingsStore.getState();
     const medicineName = typeof data['medicineName'] === 'string' ? data['medicineName'] : '';
     const dosage = typeof data['dosage'] === 'string' ? data['dosage'] : '';
     await scheduleSnoozeNotification({

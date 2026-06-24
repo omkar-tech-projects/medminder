@@ -17,6 +17,7 @@
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
     "@hookform/resolvers": "^5.4.0",
+    "@react-native-ml-kit/text-recognition": "^2.0.0",
     "date-fns": "^3.6.0",
     "drizzle-orm": "^0.36.4",
     "expo": "latest",

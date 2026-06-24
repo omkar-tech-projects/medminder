@@ -33,19 +33,45 @@ Single shared codebase via Expo / React Native.
 
 ---
 
+## Dev Build Required
+
+**The prescription capture + analysis flow requires a custom dev build. Do NOT use Expo Go.**
+
+ML Kit text recognition (`@react-native-ml-kit/text-recognition`) is a native module that
+Expo Go does not bundle. Expo Go will silently fail or crash on the camera → analyse → review
+path.
+
+To build:
+```bash
+# iOS (requires macOS + Xcode)
+npx expo run:ios
+
+# Android (Windows / macOS / Linux)
+npx expo run:android
+
+# Or via EAS
+eas build --profile development
+```
+
+All other app features (home, history, calendar, settings, notifications) continue to work in
+Expo Go for early UI iteration.
+
+---
+
 ## Core User Flow
 
 ```
 1. Onboarding          → Greet user, request notification permission
 2. Scan / Upload       → Camera or photo library — prescription image
-3. AI Extraction       → Claude API (vision) parses medicine + dosage + frequency + duration
-4. Review & Edit       → Editable form pre-filled from AI; user corrects / adds lines
-5. Confirm & Schedule  → User picks dose times; reminders are written to DB + scheduled
-6. Pre-Dose Reminder   → Push notification 5 min before each scheduled dose
-7. Dose Response       → "Taken" or "Not yet" from notification or in-app
-8. Re-Remind Loop      → Every 5 min until "Taken"; auto-log "missed" after 2 hours
-9. Daily History       → Every dose event logged with timestamp and status
-10. Refill Warning     → Notification + in-app badge N days before course ends
+3. OCR Extraction      → ML Kit text recognition (on-device, offline, free)
+4. Parser              → prescription-parser.ts maps OCR text → AnalysisResponse schema
+5. Review & Edit       → Editable form pre-filled from parser; user corrects / adds lines
+6. Confirm & Schedule  → User picks dose times; reminders are written to DB + scheduled
+7. Pre-Dose Reminder   → Push notification 5 min before each scheduled dose
+8. Dose Response       → "Taken" or "Not yet" from notification or in-app
+9. Re-Remind Loop      → Every 5 min until "Taken"; auto-log "missed" after 2 hours
+10. Daily History      → Every dose event logged with timestamp and status
+11. Refill Warning     → Notification + in-app badge N days before course ends
 ```
 
 ---
@@ -58,14 +84,19 @@ Single shared codebase via Expo / React Native.
 - No account or login required (MVP is entirely local)
 - Shown only on first launch; skippable via deep link
 
-### F-02 · Prescription Scanning & AI Extraction
+### F-02 · Prescription Scanning & OCR Extraction
 - Capture via device camera (`expo-camera`) or photo library (`expo-image-picker`)
-- Image sent to Claude API (vision model, base64) for structured extraction
-- Extracted fields: medicine name, dosage amount, dosage unit, frequency label,
-  times-per-day count, duration in days, special instructions
-- Full-screen loading state while AI processes
-- Fallback: manual entry form if AI returns an error or confidence is low
-- Multiple medicines detected in one prescription are each shown as a card
+- On-device OCR via `@react-native-ml-kit/text-recognition` — no network call, no API key
+- `src/parsers/prescription-parser.ts` maps raw OCR text → `AnalysisResponse` schema:
+  drug name (fuzzy-match against `assets/drug-dictionary.json`), strength, form,
+  frequency (Indian shorthand 1-0-1, OD/BD/TDS/QID, "twice daily", etc.),
+  timing (a/c, p/c, before/after food), duration (days/weeks/months)
+- Per-field and overall confidence scores; `needsReview` flag when confidence < 0.8
+  or a scheduling-required field (frequencyPerDay) is absent
+- Full-screen loading state during OCR
+- Fallback: manual entry form when needsReview or on error
+- Multiple medicines in one prescription are each shown as a card
+- **Requires dev build** — does not run in Expo Go
 
 ### F-03 · Review & Edit
 - Pre-filled editable form card per detected medicine
@@ -116,7 +147,6 @@ Single shared codebase via Expo / React Native.
 - Refill warning threshold (default: 3 days before end)
 - Theme: light / dark / system
 - Language: English (i18n-ready; `i18next` wired up but only EN strings at MVP)
-- Claude API key entry (stored in `expo-secure-store`)
 - Export all data as JSON
 - Clear all data (requires confirmation)
 
@@ -139,13 +169,13 @@ Single shared codebase via Expo / React Native.
 | Camera | expo-camera + expo-image-picker | latest | Prescription capture |
 | Database | expo-sqlite + drizzle-orm | latest | Local-first, typed SQL, migrations |
 | State | Zustand | 4.x | Minimal boilerplate, no provider wrapping |
-| AI | Anthropic Claude API | claude-sonnet-4-6 | Vision + structured output for Rx parsing |
+| OCR | @react-native-ml-kit/text-recognition | 2.x | On-device, offline, free Rx text extraction |
 | Forms | react-hook-form + zod | latest | Schema-driven validation, TS type inference |
 | Dates | date-fns | 3.x | Lightweight, tree-shakeable |
 | Calendar | expo-calendar | latest | Device calendar sync |
 | Calendar (opt) | Google Calendar REST API | v3 | Post-MVP only |
 | Animations | react-native-reanimated | 3.x | 60 fps gesture-driven UI |
-| Secure storage | expo-secure-store | latest | API key; never AsyncStorage for secrets |
+| Secure storage | expo-secure-store | latest | Sensitive values; never AsyncStorage for secrets |
 | Background tasks | expo-task-manager + expo-background-fetch | latest | Daily refill check |
 | Styling | React Native StyleSheet + design tokens | — | No heavy UI-lib dependency |
 

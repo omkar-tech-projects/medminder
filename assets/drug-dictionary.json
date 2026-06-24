@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Paracetamol",
+    "aliases": ["Dolo", "Crocin", "Calpol", "Fepanil", "Paracip", "Pacimol", "Pyrigesic", "Dolopar"]
+  },
+  {
+    "name": "Azithromycin",
+    "aliases": ["Azithral", "Zithromax", "Azee", "Azibest", "Aziwin", "Azithrocin"]
+  },
+  {
+    "name": "Pantoprazole",
+    "aliases": ["Pan", "Pantop", "Pantocid", "Nexpro", "Pantocar", "Pantodac", "Pantosec"]
+  },
+  {
+    "name": "Amoxicillin",
+    "aliases": ["Augmentin", "Mox", "Amoxil", "Amoxyclav", "Clavam", "Co-amoxiclav"]
+  },
+  {
+    "name": "Metformin",
+    "aliases": ["Glycomet", "Glucophage", "Bigomet", "Obimet", "Metsmall", "Glucored"]
+  },
+  {
+    "name": "Atorvastatin",
+    "aliases": ["Atorva", "Lipitor", "Storvas", "Tonact", "Aztor", "Atocor"]
+  },
+  {
+    "name": "Amlodipine",
+    "aliases": ["Amlong", "Norvasc", "Amlip", "Amlovas", "Stamlo", "Calcigard"]
+  },
+  {
+    "name": "Omeprazole",
+    "aliases": ["Omez", "Prilosec", "Omesec", "Omiped", "Losec", "Ocid"]
+  },
+  {
+    "name": "Calcium Carbonate",
+    "aliases": ["Shelcal", "Calcimax", "Calcium Sandoz", "Ostocalcium", "Caltrate"]
+  },
+  {
+    "name": "Ibuprofen",
+    "aliases": ["Brufen", "Advil", "Combiflam", "Nurofen", "Ibugesic", "Espride"]
+  },
+  {
+    "name": "Cetirizine",
+    "aliases": ["Cetzine", "Alerid", "Cetcip", "Zyrtec", "Allercet", "Histazine"]
+  },
+  {
+    "name": "Montelukast",
+    "aliases": ["Montair", "Singulair", "Montek", "Montina", "Romilast"]
+  },
+  {
+    "name": "Ondansetron",
+    "aliases": ["Emeset", "Zofran", "Vomikind", "Perinorm", "Ondem", "Ondanset"]
+  },
+  {
+    "name": "Domperidone",
+    "aliases": ["Dompan", "Motilium", "Domstal", "Vomistop", "Nausea", "Domin"]
+  },
+  {
+    "name": "Diclofenac",
+    "aliases": ["Voveran", "Voltaren", "Diclomax", "Rolosol", "Diclomol"]
+  },
+  {
+    "name": "Nimesulide",
+    "aliases": ["Nise", "Nimheal", "Nimulid", "Nimodol", "Nimucet"]
+  },
+  {
+    "name": "Ranitidine",
+    "aliases": ["Rantac", "Zantac", "Aciloc", "Zinetac", "Histac"]
+  },
+  {
+    "name": "Amoxicillin Clavulanate",
+    "aliases": ["Augmentin", "Moxclav", "Clavamel", "Clavox", "Amoxyclav"]
+  },
+  {
+    "name": "Metronidazole",
+    "aliases": ["Flagyl", "Metrogyl", "Metron", "Aldezol", "Metrogear"]
+  },
+  {
+    "name": "Ciprofloxacin",
+    "aliases": ["Ciplox", "Cifran", "Ciprobid", "Ciproxin", "Ciprolet"]
+  },
+  {
+    "name": "Doxycycline",
+    "aliases": ["Doxt", "Vibramycin", "Doxicip", "Biodoxi", "Doxinate"]
+  },
+  {
+    "name": "Levocetirizine",
+    "aliases": ["Xyzal", "Levocet", "Levorid", "Lcz", "Levofexo"]
+  },
+  {
+    "name": "Losartan",
+    "aliases": ["Losar", "Cozaar", "Losacar", "Repace", "Losatec"]
+  },
+  {
+    "name": "Telmisartan",
+    "aliases": ["Telma", "Micardis", "Telmikind", "Telmisave", "Telsar"]
+  },
+  {
+    "name": "Glimepiride",
+    "aliases": ["Amaryl", "Glucoryl", "Glimisave", "Glycomet GP", "Glimy"]
+  },
+  {
+    "name": "Rosuvastatin",
+    "aliases": ["Rozavel", "Crestor", "Rosave", "Roseday", "Rosutor"]
+  },
+  {
+    "name": "Aspirin",
+    "aliases": ["Ecosprin", "Disprin", "Loprin", "Ecotrin", "Aspin"]
+  },
+  {
+    "name": "Clopidogrel",
+    "aliases": ["Clopivas", "Plavix", "Deplatt", "Clopilet", "Agrivas"]
+  },
+  {
+    "name": "Gabapentin",
+    "aliases": ["Gabapin", "Neurontin", "Gaba", "Gabacap", "Gabantin"]
+  },
+  {
+    "name": "Pregabalin",
+    "aliases": ["Lyrica", "Pregastar", "Nervigesic", "Pregalin", "Pregabid"]
+  }
+]
