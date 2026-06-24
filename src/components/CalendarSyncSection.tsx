@@ -6,6 +6,7 @@ import { ListItem } from './ListItem';
 import { useTheme } from '@/theme';
 import { useSettingsStore } from '@/store/settings-store';
 import { useMedicationStore, selectActiveMedications } from '@/store/medication-store';
+import { useShallow } from 'zustand/shallow';
 import { useCalendarSync } from '@/hooks/use-calendar-sync';
 import { requestDeviceCalendarPermission } from '@/services/device-calendar-service';
 import {
@@ -20,7 +21,7 @@ export function CalendarSyncSection() {
   const calendarSync = useSettingsStore((s) => s.calendarSync);
   const googleCalendarEnabled = useSettingsStore((s) => s.googleCalendarEnabled);
   const update = useSettingsStore((s) => s.update);
-  const medicines = useMedicationStore(selectActiveMedications);
+  const medicines = useMedicationStore(useShallow(selectActiveMedications));
   const { syncAll, desyncAll, syncMedicineToggle } = useCalendarSync();
 
   const [syncing, setSyncing] = useState(false);
