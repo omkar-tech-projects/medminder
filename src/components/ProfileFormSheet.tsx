@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View, Switch, Alert, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { BottomSheet } from './BottomSheet';
 import { Input } from './Input';
 import { Button } from './Button';
@@ -19,6 +20,7 @@ interface ProfileFormSheetProps {
 export function ProfileFormSheet({ target, visible, onClose, onSaved }: ProfileFormSheetProps) {
   const { colors, spacing, radii } = useTheme();
   const store = useProfileStore();
+  const { t } = useTranslation();
 
   const isNew = target === 'new';
   const [name, setName] = useState('');
@@ -66,12 +68,12 @@ export function ProfileFormSheet({ target, visible, onClose, onSaved }: ProfileF
     if (isNew) return;
     const prof = target as Profile;
     Alert.alert(
-      'Delete profile?',
-      `This permanently deletes "${prof.name}" and all their medications and history.`,
+      t('profileForm.deleteConfirmTitle'),
+      t('profileForm.deleteConfirmMessage', { name: prof.name }),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('profileForm.deleteConfirmCancel'), style: 'cancel' },
         {
-          text: 'Delete',
+          text: t('profileForm.deleteConfirmButton'),
           style: 'destructive',
           onPress: () => {
             store.deleteProfile(prof.id);
@@ -89,22 +91,22 @@ export function ProfileFormSheet({ target, visible, onClose, onSaved }: ProfileF
     <BottomSheet
       visible={visible}
       onClose={onClose}
-      title={isNew ? 'Add person' : 'Edit profile'}
+      title={isNew ? t('profileForm.addTitle') : t('profileForm.editTitle')}
       height={560}
     >
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
         <Input
           label="Name"
-          placeholder="e.g. Dad, Sarah"
+          placeholder={t('profileForm.namePlaceholder')}
           value={name}
           onChangeText={setName}
           autoCapitalize="words"
           maxLength={40}
-          accessibilityLabel="Profile name"
+          accessibilityLabel={t('profileForm.nameInputA11y')}
         />
 
         <Text variant="caption" color={colors.textTertiary} style={{ marginTop: spacing[3] }}>
-          Colour
+          {t('profileForm.colourLabel')}
         </Text>
         <View style={[styles.colorRow, { marginTop: spacing[1] }]}>
           {MEDICATION_COLORS.map((c) => (
@@ -112,7 +114,7 @@ export function ProfileFormSheet({ target, visible, onClose, onSaved }: ProfileF
               key={c}
               onPress={() => setAvatarColor(c)}
               accessibilityRole="radio"
-              accessibilityLabel={`Select colour ${c}`}
+              accessibilityLabel={t('profileForm.colourA11y', { colour: c })}
               style={[
                 styles.colorDot,
                 { backgroundColor: c },
@@ -127,15 +129,15 @@ export function ProfileFormSheet({ target, visible, onClose, onSaved }: ProfileF
 
         <View style={[styles.toggleRow, { marginTop: spacing[4] }]}>
           <View style={styles.toggleLabel}>
-            <Text variant="bodyMedium">Caregiver alerts</Text>
+            <Text variant="bodyMedium">{t('profileForm.caregiverAlertsTitle')}</Text>
             <Text variant="caption" color={colors.textTertiary} style={{ marginTop: 2 }}>
-              Send an SMS or email when a dose is missed.
+              {t('profileForm.caregiverAlertsSubtitle')}
             </Text>
           </View>
           <Switch
             value={caregiverEnabled}
             onValueChange={setCaregiverEnabled}
-            accessibilityLabel="Enable caregiver alerts"
+            accessibilityLabel={t('profileForm.caregiverSwitchA11y')}
           />
         </View>
 
@@ -153,43 +155,43 @@ export function ProfileFormSheet({ target, visible, onClose, onSaved }: ProfileF
             ]}
           >
             <Input
-              label="Caregiver name"
-              placeholder="e.g. Dr. Smith"
+              label={t('profileForm.caregiverNameLabel')}
+              placeholder={t('profileForm.caregiverNamePlaceholder')}
               value={caregiverName}
               onChangeText={setCaregiverName}
               autoCapitalize="words"
               maxLength={60}
-              accessibilityLabel="Caregiver name"
+              accessibilityLabel={t('profileForm.caregiverNameA11y')}
             />
             <Input
-              label="Contact (phone or email)"
-              placeholder="e.g. +1 555 0100 or care@example.com"
+              label={t('profileForm.contactLabel')}
+              placeholder={t('profileForm.contactPlaceholder')}
               value={caregiverContact}
               onChangeText={setCaregiverContact}
               keyboardType="email-address"
               maxLength={120}
               containerStyle={{ marginTop: spacing[3] }}
-              accessibilityLabel="Caregiver contact"
+              accessibilityLabel={t('profileForm.caregiverContactA11y')}
             />
           </View>
         )}
 
         <Button
-          label="Save"
+          label={t('profileForm.save')}
           variant="primary"
           fullWidth
           onPress={handleSave}
           style={{ marginTop: spacing[5] }}
-          accessibilityLabel="Save profile"
+          accessibilityLabel={t('profileForm.saveA11y')}
         />
         {canDelete && (
           <Button
-            label="Delete profile"
+            label={t('profileForm.deleteProfile')}
             variant="destructive"
             fullWidth
             onPress={handleDelete}
             style={{ marginTop: spacing[2] }}
-            accessibilityLabel="Delete this profile"
+            accessibilityLabel={t('profileForm.deleteA11y')}
           />
         )}
       </ScrollView>

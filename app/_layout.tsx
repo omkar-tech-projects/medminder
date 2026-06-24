@@ -1,3 +1,4 @@
+import '@/lib/i18n';
 import { useEffect } from 'react';
 import { View, useColorScheme } from 'react-native';
 import { Stack, useRouter, useSegments } from 'expo-router';

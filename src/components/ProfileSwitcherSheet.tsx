@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { BottomSheet } from './BottomSheet';
 import { Button } from './Button';
 import { Text } from './Text';
@@ -26,6 +27,7 @@ function initials(name: string): string {
 export function ProfileSwitcherSheet({ visible, onClose }: ProfileSwitcherSheetProps) {
   const { colors, spacing, radii } = useTheme();
   const { profiles, activeProfileId, setActiveProfile } = useProfileStore();
+  const { t } = useTranslation();
   const [formTarget, setFormTarget] = useState<Profile | 'new' | null>(null);
 
   async function handleSwitch(id: string): Promise<void> {
@@ -37,7 +39,12 @@ export function ProfileSwitcherSheet({ visible, onClose }: ProfileSwitcherSheetP
 
   return (
     <>
-      <BottomSheet visible={visible} onClose={onClose} title="Profiles" height={420}>
+      <BottomSheet
+        visible={visible}
+        onClose={onClose}
+        title={t('profileSwitcher.title')}
+        height={420}
+      >
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
           {profiles.map((profile) => {
             const isActive = profile.id === activeProfileId;
@@ -46,7 +53,7 @@ export function ProfileSwitcherSheet({ visible, onClose }: ProfileSwitcherSheetP
                 key={profile.id}
                 onPress={() => void handleSwitch(profile.id)}
                 accessibilityRole="button"
-                accessibilityLabel={`Switch to ${profile.name}`}
+                accessibilityLabel={t('profileSwitcher.switchToA11y', { name: profile.name })}
                 style={[
                   styles.row,
                   {
@@ -67,7 +74,9 @@ export function ProfileSwitcherSheet({ visible, onClose }: ProfileSwitcherSheetP
                   <Text variant="bodyMedium">{profile.name}</Text>
                   {profile.caregiverAlertEnabled === 1 && profile.caregiverContact && (
                     <Text variant="caption" color={colors.textTertiary}>
-                      {`Caregiver: ${profile.caregiverName ?? profile.caregiverContact}`}
+                      {t('profileSwitcher.caregiverPrefix', {
+                        contact: profile.caregiverName ?? profile.caregiverContact,
+                      })}
                     </Text>
                   )}
                 </View>
@@ -78,7 +87,7 @@ export function ProfileSwitcherSheet({ visible, onClose }: ProfileSwitcherSheetP
                   onPress={() => setFormTarget(profile)}
                   hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                   accessibilityRole="button"
-                  accessibilityLabel={`Edit ${profile.name}`}
+                  accessibilityLabel={t('profileSwitcher.editA11y', { name: profile.name })}
                   style={{ marginLeft: spacing[3] }}
                 >
                   <Ionicons name="pencil-outline" size={18} color={colors.textTertiary} />
@@ -88,13 +97,13 @@ export function ProfileSwitcherSheet({ visible, onClose }: ProfileSwitcherSheetP
           })}
 
           <Button
-            label="Add person"
+            label={t('profileSwitcher.addPerson')}
             variant="ghost"
             fullWidth
             leftIcon="person-add-outline"
             onPress={() => setFormTarget('new')}
             style={{ marginTop: spacing[2] }}
-            accessibilityLabel="Add a new profile"
+            accessibilityLabel={t('profileSwitcher.addPerson')}
           />
         </ScrollView>
       </BottomSheet>

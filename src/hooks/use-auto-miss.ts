@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Alert, AppState } from 'react-native';
+import i18next from '@/lib/i18n';
 import { useDoseStore } from '@/store/dose-store';
 import { getProfileById } from '@/db/queries/profiles';
 import { canSendCaregiverAlert, sendCaregiverAlert } from '@/services/caregiver-alert-service';
@@ -21,17 +22,21 @@ async function handleCaregiverAlerts(missed: OverduePendingDoseWithProfile[]): P
     const profile = getProfileById(profileId);
     if (!profile || !canSendCaregiverAlert(profile)) continue;
 
-    const caregiverName = profile.caregiverName ?? 'caregiver';
+    const caregiverName = profile.caregiverName ?? i18next.t('caregiverAlert.skip');
     const meds = medicineNames.join(', ');
 
     await new Promise<void>((resolve) => {
       Alert.alert(
-        'Missed dose alert',
-        `${profile.name} missed: ${meds}.\nNotify ${caregiverName}?`,
+        i18next.t('caregiverAlert.title'),
+        i18next.t('caregiverAlert.body', {
+          profileName: profile.name,
+          medicines: meds,
+          caregiverName: profile.caregiverName ?? 'caregiver',
+        }),
         [
-          { text: 'Skip', style: 'cancel', onPress: () => resolve() },
+          { text: i18next.t('caregiverAlert.skip'), style: 'cancel', onPress: () => resolve() },
           {
-            text: 'Notify',
+            text: i18next.t('caregiverAlert.notify'),
             onPress: () => {
               void sendCaregiverAlert(profile, meds).finally(() => resolve());
             },
@@ -39,6 +44,8 @@ async function handleCaregiverAlerts(missed: OverduePendingDoseWithProfile[]): P
         ],
       );
     });
+
+    void caregiverName;
   }
 }
 

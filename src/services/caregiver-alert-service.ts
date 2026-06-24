@@ -1,4 +1,5 @@
 import { Alert, Linking, Platform } from 'react-native';
+import i18next from '@/lib/i18n';
 import type { Profile } from '@/db/schema';
 
 export function canSendCaregiverAlert(profile: Profile): boolean {
@@ -31,8 +32,8 @@ export async function sendCaregiverAlert(profile: Profile, medicineNames: string
     await Linking.openURL(url);
   } else {
     Alert.alert(
-      'Cannot send alert',
-      'Unable to open a messaging app. Please verify the caregiver contact in profile settings.',
+      i18next.t('caregiverAlert.cannotSendTitle'),
+      i18next.t('caregiverAlert.cannotSendBody'),
     );
   }
 }

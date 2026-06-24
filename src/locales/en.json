@@ -1,0 +1,42 @@
+{
+  "profileForm": {
+    "addTitle": "Add person",
+    "editTitle": "Edit profile",
+    "namePlaceholder": "e.g. Dad, Sarah",
+    "colourLabel": "Colour",
+    "caregiverAlertsTitle": "Caregiver alerts",
+    "caregiverAlertsSubtitle": "Send an SMS or email when a dose is missed.",
+    "caregiverNameLabel": "Caregiver name",
+    "caregiverNamePlaceholder": "e.g. Dr. Smith",
+    "contactLabel": "Contact (phone or email)",
+    "contactPlaceholder": "e.g. +1 555 0100 or care@example.com",
+    "save": "Save",
+    "deleteProfile": "Delete profile",
+    "deleteConfirmTitle": "Delete profile?",
+    "deleteConfirmMessage": "This permanently deletes \"{{name}}\" and all their medications and history.",
+    "deleteConfirmCancel": "Cancel",
+    "deleteConfirmButton": "Delete",
+    "nameInputA11y": "Profile name",
+    "colourA11y": "Select colour {{colour}}",
+    "caregiverSwitchA11y": "Enable caregiver alerts",
+    "caregiverNameA11y": "Caregiver name",
+    "caregiverContactA11y": "Caregiver contact",
+    "saveA11y": "Save profile",
+    "deleteA11y": "Delete this profile"
+  },
+  "profileSwitcher": {
+    "title": "Profiles",
+    "caregiverPrefix": "Caregiver: {{contact}}",
+    "addPerson": "Add person",
+    "switchToA11y": "Switch to {{name}}",
+    "editA11y": "Edit {{name}}"
+  },
+  "caregiverAlert": {
+    "title": "Missed dose alert",
+    "body": "{{profileName}} missed: {{medicines}}.\nNotify {{caregiverName}}?",
+    "skip": "Skip",
+    "notify": "Notify",
+    "cannotSendTitle": "Cannot send alert",
+    "cannotSendBody": "Unable to open a messaging app. Please verify the caregiver contact in profile settings."
+  }
+}
