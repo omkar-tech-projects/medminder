@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { OnboardingStep } from '@/components';
 import { requestNotificationPermission } from '@/lib/permissions';
 
 export default function OnboardingNotificationsScreen() {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
   const allow = async () => {
@@ -15,14 +17,14 @@ export default function OnboardingNotificationsScreen() {
 
   return (
     <OnboardingStep
-      step={3}
+      step={4}
       icon="notifications-outline"
-      title="Reminders that actually help"
-      body="MedMinder nudges you before each dose and checks in if you haven't marked it taken — so you never lose track, even on busy days."
-      primaryLabel="Allow notifications"
+      title={t('onboarding.notifications.title')}
+      body={t('onboarding.notifications.body')}
+      primaryLabel={t('onboarding.notifications.allow')}
       onPrimary={allow}
       primaryLoading={loading}
-      secondaryLabel="Not now"
+      secondaryLabel={t('onboarding.notifications.notNow')}
       onSecondary={() => router.push('/onboarding/camera')}
       skipToEnd={() => router.push('/onboarding/disclaimer')}
     />

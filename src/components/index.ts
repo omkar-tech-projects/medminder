@@ -21,6 +21,7 @@ export { TimeChipsField } from './TimeChipsField';
 export { TimingSelector } from './TimingSelector';
 export { CalendarSyncSection } from './CalendarSyncSection';
 export { ViewingAsBanner } from './ViewingAsBanner';
+export { AppLockScreen } from './AppLockScreen';
 export { CountryCodePicker } from './CountryCodePicker';
 export { FamilyMemberCard } from './FamilyMemberCard';
 export { FamilyDashboard } from './FamilyDashboard';

@@ -5,9 +5,12 @@ import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import { ToastContainer } from '@/components';
+import { AppLockScreen } from '@/components/AppLockScreen';
 import { useOnboardingStore } from '@/store/onboarding-store';
+import { useAppLockStore } from '@/store/app-lock-store';
 import { useNotificationHandler } from '@/hooks/use-notification-handler';
 import { useAutoMiss } from '@/hooks/use-auto-miss';
+import { useAppLock } from '@/hooks/use-app-lock';
 import { runRefillCheck } from '@/services/refill-service';
 import { useSettingsStore } from '@/store/settings-store';
 
@@ -20,19 +23,27 @@ export default function RootLayout() {
 
   useNotificationHandler();
   useAutoMiss();
+  useAppLock();
 
   useEffect(() => {
     const refillWarningDays = useSettingsStore.getState().refillWarningDays;
     void runRefillCheck(refillWarningDays).catch(() => undefined);
   }, []);
 
-  const isLoaded = useOnboardingStore((s) => s.isLoaded);
+  const isOnboardingLoaded = useOnboardingStore((s) => s.isLoaded);
   const hasOnboarded = useOnboardingStore((s) => s.hasOnboarded);
   const loadOnboarding = useOnboardingStore((s) => s.load);
 
+  const isLockLoaded = useAppLockStore((s) => s.isLoaded);
+  const isLocked = useAppLockStore((s) => s.isLocked);
+  const loadAppLock = useAppLockStore((s) => s.load);
+
+  const isLoaded = isOnboardingLoaded && isLockLoaded;
+
   useEffect(() => {
     void loadOnboarding();
-  }, [loadOnboarding]);
+    void loadAppLock();
+  }, [loadOnboarding, loadAppLock]);
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -89,6 +100,10 @@ export default function RootLayout() {
           options={{ headerShown: false, animation: 'slide_from_right' }}
         />
         <Stack.Screen
+          name="privacy"
+          options={{ headerShown: false, animation: 'slide_from_right' }}
+        />
+        <Stack.Screen
           name="gallery"
           options={{ headerShown: true, title: 'Component Gallery', presentation: 'modal' }}
         />
@@ -103,6 +118,7 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
       <ToastContainer />
+      <AppLockScreen visible={isLocked} />
     </View>
   );
 }

@@ -10,6 +10,7 @@ type SettingsState = {
   quietHoursStart: string;
   quietHoursEnd: string;
   notificationSoundEnabled: boolean;
+  voiceAnnounceDoses: boolean;
   refillWarningDays: number;
   lowStockWarningDays: number;
   theme: 'light' | 'dark' | 'system';
@@ -30,6 +31,7 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
   quietHoursStart: '22:00',
   quietHoursEnd: '07:00',
   notificationSoundEnabled: true,
+  voiceAnnounceDoses: false,
   refillWarningDays: 3,
   lowStockWarningDays: 3,
   theme: 'system',
@@ -47,6 +49,7 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
       quietHoursStart: getSetting('quiet_hours_start'),
       quietHoursEnd: getSetting('quiet_hours_end'),
       notificationSoundEnabled: getSetting('notification_sound_enabled') !== 'false',
+      voiceAnnounceDoses: getSetting('voice_announce_doses') === 'true',
       refillWarningDays: Number(getSetting('refill_warning_days')),
       lowStockWarningDays: Number(getSetting('low_stock_warning_days')),
       theme: getSetting('theme') as 'light' | 'dark' | 'system',

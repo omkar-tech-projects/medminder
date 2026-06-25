@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { View, Alert, StyleSheet, Share, Platform } from 'react-native';
+import { View, Alert, Switch, StyleSheet, Share, Platform } from 'react-native';
 import { router } from 'expo-router';
 import { File, Paths } from 'expo-file-system';
 import { format } from 'date-fns';
+import * as LocalAuthentication from 'expo-local-authentication';
+import { useTranslation } from 'react-i18next';
 import {
   Screen,
   AppHeader,
@@ -17,16 +19,20 @@ import {
 import { useTheme } from '@/theme';
 import { useSettingsStore } from '@/store/settings-store';
 import { useProfileStore } from '@/store/profile-store';
+import { useAppLockStore } from '@/store/app-lock-store';
 import { rescheduleAllFutureNotifications } from '@/services/reschedule-service';
 import { getAllMedicines, deleteMedicine } from '@/db/queries/medicines';
 import { getAllDoseLogsForProfile } from '@/db/queries/dose-logs';
 
 export default function SettingsScreen() {
   const { colors, spacing } = useTheme();
+  const { t } = useTranslation();
   const s = useSettingsStore();
   const profiles = useProfileStore((st) => st.profiles);
   const activeProfileId = useProfileStore((st) => st.activeProfileId);
   const activeName = useProfileStore((st) => st.name);
+
+  const { biometricEnabled, setBiometricEnabled } = useAppLockStore();
 
   const [notifSheetOpen, setNotifSheetOpen] = useState(false);
   const [refillSheetOpen, setRefillSheetOpen] = useState(false);
@@ -34,25 +40,27 @@ export default function SettingsScreen() {
   const [profileSheetOpen, setProfileSheetOpen] = useState(false);
   const [exporting, setExporting] = useState(false);
 
-  const themeLabel = s.theme === 'light' ? 'Light' : s.theme === 'dark' ? 'Dark' : 'System';
+  const themeLabel =
+    s.theme === 'light'
+      ? t('settings.themeLight')
+      : s.theme === 'dark'
+        ? t('settings.themeDark')
+        : t('settings.themeSystem');
+
   const nameLabel = activeName.trim().length > 0 ? activeName : 'Not set';
 
   function handleResetAll(): void {
-    Alert.alert(
-      'Reset all settings?',
-      'This restores every setting to its default value. Your medication data is not affected.',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Reset',
-          style: 'destructive',
-          onPress: () => {
-            s.resetToDefaults();
-            void rescheduleAllFutureNotifications().catch(() => undefined);
-          },
+    Alert.alert(t('settings.resetConfirmTitle'), t('settings.resetConfirmBody'), [
+      { text: t('settings.resetConfirmCancel'), style: 'cancel' },
+      {
+        text: t('settings.resetConfirmButton'),
+        style: 'destructive',
+        onPress: () => {
+          s.resetToDefaults();
+          void rescheduleAllFutureNotifications().catch(() => undefined);
         },
-      ],
-    );
+      },
+    ]);
   }
 
   async function handleExportJson(): Promise<void> {
@@ -75,74 +83,114 @@ export default function SettingsScreen() {
         await Share.share({ message: payload, title: filename });
       }
     } catch {
-      Alert.alert('Export failed', 'Could not export your data. Please try again.');
+      Alert.alert(t('settings.exportFailed'), t('settings.exportFailedBody'));
     } finally {
       setExporting(false);
     }
   }
 
   function handleClearData(): void {
-    Alert.alert(
-      'Clear all data?',
-      'This permanently deletes all medications and history for the active profile. This cannot be undone.',
-      [
-        { text: 'Cancel', style: 'cancel' },
+    Alert.alert(t('settings.clearConfirmTitle'), t('settings.clearConfirmBody'), [
+      { text: t('settings.clearConfirmCancel'), style: 'cancel' },
+      {
+        text: t('settings.clearConfirmButton'),
+        style: 'destructive',
+        onPress: () => {
+          const meds = getAllMedicines(activeProfileId);
+          for (const m of meds) {
+            deleteMedicine(m.id);
+          }
+          router.replace('/(tabs)');
+        },
+      },
+    ]);
+  }
+
+  async function handleToggleAppLock(enable: boolean): Promise<void> {
+    if (enable) {
+      const hasHardware = await LocalAuthentication.hasHardwareAsync();
+      const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+      if (!hasHardware || !isEnrolled) {
+        Alert.alert(t('appLock.promptMessage'), t('appLock.biometricNotAvailable'));
+        return;
+      }
+      Alert.alert(t('appLock.enableConfirmTitle'), t('appLock.enableConfirmBody'), [
+        { text: t('appLock.enableConfirmCancel'), style: 'cancel' },
         {
-          text: 'Delete everything',
-          style: 'destructive',
-          onPress: () => {
-            const meds = getAllMedicines(activeProfileId);
-            for (const m of meds) {
-              deleteMedicine(m.id);
+          text: t('appLock.enableConfirmButton'),
+          onPress: async () => {
+            const result = await LocalAuthentication.authenticateAsync({
+              promptMessage: t('appLock.promptMessage'),
+              fallbackLabel: t('appLock.fallbackLabel'),
+              disableDeviceFallback: false,
+            });
+            if (result.success) {
+              await setBiometricEnabled(true);
             }
-            router.replace('/(tabs)');
           },
         },
-      ],
-    );
+      ]);
+    } else {
+      await setBiometricEnabled(false);
+    }
   }
+
+  const profilesSubtitle =
+    profiles.length > 1
+      ? t('settings.manageProfilesSubtitle_other', { count: profiles.length, name: activeName })
+      : nameLabel;
 
   return (
     <Screen scroll edges={['top']}>
-      <AppHeader title="Settings" />
+      <AppHeader title={t('settings.title')} />
 
       {/* Profiles & Caregivers */}
       <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
         <Text variant="overline" color={colors.textTertiary} style={styles.sectionLabel}>
-          Profiles & Caregivers
+          {t('settings.profilesSection')}
         </Text>
         <ListItem
-          title="Manage profiles"
-          subtitle={
-            profiles.length > 1
-              ? `${profiles.length} people · active: ${profiles.find((p) => p.id === activeProfileId)?.name ?? ''}`
-              : nameLabel
-          }
+          title={t('settings.manageProfiles')}
+          subtitle={profilesSubtitle}
           leftIcon="people-outline"
           showChevron
           onPress={() => setProfileSheetOpen(true)}
+          accessibilityLabel={t('settings.manageProfiles')}
         />
       </View>
 
       {/* Notifications */}
       <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
         <Text variant="overline" color={colors.textTertiary} style={styles.sectionLabel}>
-          Notifications
+          {t('settings.notificationsSection')}
         </Text>
         <View style={{ gap: 8 }}>
           <ListItem
-            title="Reminders"
-            subtitle={`Lead ${s.notificationLeadMin}m · Re-remind ${s.reRemindIntervalMin}m · Max ${s.maxNags} · Snooze ${s.snoozeDurationMin}m · Quiet ${s.quietHoursEnabled ? `${s.quietHoursStart}–${s.quietHoursEnd}` : 'off'}`}
+            title={t('settings.remindersItem')}
+            subtitle={t('settings.remindersSubtitle', {
+              lead: s.notificationLeadMin,
+              nag: s.reRemindIntervalMin,
+              max: s.maxNags,
+              snooze: s.snoozeDurationMin,
+              quiet: s.quietHoursEnabled
+                ? `${s.quietHoursStart}–${s.quietHoursEnd}`
+                : t('settings.quietOff'),
+            })}
             leftIcon="notifications-outline"
             showChevron
             onPress={() => setNotifSheetOpen(true)}
+            accessibilityLabel={t('settings.remindersItem')}
           />
           <ListItem
-            title="Refill alerts"
-            subtitle={`Course: ${s.refillWarningDays}d before end · Stock: ${s.lowStockWarningDays}d remaining`}
+            title={t('settings.refillAlertsItem')}
+            subtitle={t('settings.refillSubtitle', {
+              course: s.refillWarningDays,
+              stock: s.lowStockWarningDays,
+            })}
             leftIcon="alarm-outline"
             showChevron
             onPress={() => setRefillSheetOpen(true)}
+            accessibilityLabel={t('settings.refillAlertsItem')}
           />
         </View>
       </View>
@@ -150,52 +198,97 @@ export default function SettingsScreen() {
       {/* Appearance */}
       <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
         <Text variant="overline" color={colors.textTertiary} style={styles.sectionLabel}>
-          Appearance
+          {t('settings.appearanceSection')}
         </Text>
         <ListItem
-          title="Theme"
+          title={t('settings.themeItem')}
           subtitle={themeLabel}
           leftIcon="contrast-outline"
           showChevron
           onPress={() => setThemeSheetOpen(true)}
+          accessibilityLabel={t('settings.themeItem')}
         />
       </View>
 
       {/* Calendar */}
       <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
         <Text variant="overline" color={colors.textTertiary} style={styles.sectionLabel}>
-          Calendar
+          {t('settings.calendarSection')}
         </Text>
         <CalendarSyncSection />
+      </View>
+
+      {/* Security */}
+      <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
+        <Text variant="overline" color={colors.textTertiary} style={styles.sectionLabel}>
+          {t('settings.securitySection')}
+        </Text>
+        <View
+          style={[
+            styles.toggleRow,
+            {
+              backgroundColor: colors.surface,
+              borderRadius: 12,
+              padding: spacing[4],
+              borderWidth: StyleSheet.hairlineWidth,
+              borderColor: colors.border,
+            },
+          ]}
+        >
+          <View style={styles.toggleLabel}>
+            <Text variant="bodyMedium">{t('settings.appLockItem')}</Text>
+            <Text variant="caption" color={colors.textTertiary} style={{ marginTop: 2 }}>
+              {t('settings.appLockSubtitle')}
+            </Text>
+          </View>
+          <Switch
+            value={biometricEnabled}
+            onValueChange={(v) => void handleToggleAppLock(v)}
+            accessibilityLabel={t('settings.appLockItem')}
+            accessibilityHint={t('settings.appLockSubtitle')}
+            accessibilityState={{ checked: biometricEnabled }}
+          />
+        </View>
       </View>
 
       {/* Data & Privacy */}
       <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
         <Text variant="overline" color={colors.textTertiary} style={styles.sectionLabel}>
-          Data & Privacy
+          {t('settings.dataPrivacySection')}
         </Text>
         <View style={{ gap: 8 }}>
           <ListItem
-            title={exporting ? 'Exporting…' : 'Export data'}
-            subtitle="Download your full history as JSON"
+            title={exporting ? t('settings.exporting') : t('settings.exportData')}
+            subtitle={t('settings.exportDataSubtitle')}
             leftIcon="download-outline"
             showChevron
             onPress={() => void handleExportJson()}
+            accessibilityLabel={t('settings.exportData')}
           />
           <ListItem
-            title="Reset all settings"
-            subtitle="Restore every setting to its default value"
+            title={t('settings.privacyPolicy')}
+            subtitle={t('settings.privacyPolicySubtitle')}
+            leftIcon="shield-checkmark-outline"
+            showChevron
+            onPress={() => router.push('/privacy')}
+            accessibilityLabel={t('settings.privacyPolicy')}
+          />
+          <ListItem
+            title={t('settings.resetSettings')}
+            subtitle={t('settings.resetSettingsSubtitle')}
             leftIcon="refresh-outline"
             showChevron
             onPress={handleResetAll}
+            accessibilityLabel={t('settings.resetSettings')}
           />
           <ListItem
-            title="Clear all data"
-            subtitle="Permanently delete all medications and history for this profile"
+            title={t('settings.clearData')}
+            subtitle={t('settings.clearDataSubtitle')}
             leftIcon="trash-outline"
             showChevron
             onPress={handleClearData}
             destructive
+            accessibilityLabel={t('settings.clearData')}
           />
         </View>
       </View>
@@ -203,22 +296,24 @@ export default function SettingsScreen() {
       {__DEV__ && (
         <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
           <Text variant="overline" color={colors.textTertiary} style={styles.sectionLabel}>
-            Developer
+            {t('settings.developerSection')}
           </Text>
           <View style={{ gap: 8 }}>
             <ListItem
-              title="Test notifications"
-              subtitle="Fire a test dose reminder, inspect scheduled queue"
+              title={t('settings.testNotifications')}
+              subtitle={t('settings.testNotificationsSubtitle')}
               leftIcon="notifications-outline"
               showChevron
               onPress={() => router.push('/debug' as never)}
+              accessibilityLabel={t('settings.testNotifications')}
             />
             <ListItem
-              title="Component Gallery"
-              subtitle="Preview all UI components"
+              title={t('settings.componentGallery')}
+              subtitle={t('settings.componentGallerySubtitle')}
               leftIcon="flask-outline"
               showChevron
               onPress={() => router.push('/gallery')}
+              accessibilityLabel={t('settings.componentGallery')}
             />
           </View>
         </View>
@@ -240,4 +335,6 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   section: { marginBottom: 28 },
   sectionLabel: { marginBottom: 10 },
+  toggleRow: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' },
+  toggleLabel: { flex: 1, marginRight: 12 },
 });

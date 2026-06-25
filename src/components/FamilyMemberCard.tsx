@@ -84,7 +84,7 @@ export function FamilyMemberCard({
             {isActive && (
               <View style={[styles.activePill, { backgroundColor: colors.brandPrimaryLight }]}>
                 <Text variant="caption" color={colors.brandPrimary}>
-                  Viewing
+                  {t('family.viewing')}
                 </Text>
               </View>
             )}

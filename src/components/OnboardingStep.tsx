@@ -1,11 +1,12 @@
 import { View, ScrollView, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import { Text } from './Text';
 import { Button } from './Button';
 import { useTheme } from '@/theme';
 
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 6;
 
 interface OnboardingStepProps {
   step: number;
@@ -39,6 +40,7 @@ export function OnboardingStep({
   children,
 }: OnboardingStepProps) {
   const { colors, spacing, radii } = useTheme();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const accent = iconColor ?? colors.brandPrimary;
 
@@ -65,11 +67,11 @@ export function OnboardingStep({
         </View>
         {skipToEnd != null && (
           <Button
-            label="Skip intro"
+            label={t('onboarding.skipIntro')}
             variant="ghost"
             size="sm"
             onPress={skipToEnd}
-            accessibilityLabel="Skip to the required disclaimer"
+            accessibilityLabel={t('onboarding.skipIntroA11y')}
           />
         )}
       </View>

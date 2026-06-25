@@ -11,6 +11,7 @@ export const DEFAULT_SETTINGS = {
   quiet_hours_start: '22:00',
   quiet_hours_end: '07:00',
   notification_sound_enabled: 'true',
+  voice_announce_doses: 'false',
   refill_warning_days: '3',
   low_stock_warning_days: '3',
   theme: 'system',

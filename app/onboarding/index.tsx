@@ -1,16 +1,18 @@
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { OnboardingStep } from '@/components';
 
 export default function OnboardingIntroScreen() {
+  const { t } = useTranslation();
   return (
     <OnboardingStep
       step={1}
       icon="medical-outline"
-      title="Never miss a dose"
-      body="Photograph your prescription and MedMinder sets up reminders automatically — tracking every dose and alerting you when it's time to refill."
-      primaryLabel="Get started"
+      title={t('onboarding.welcome.title')}
+      body={t('onboarding.welcome.body')}
+      primaryLabel={t('onboarding.welcome.primary')}
       onPrimary={() => router.push('/onboarding/name')}
-      secondaryLabel="Skip intro"
+      secondaryLabel={t('onboarding.welcome.skip')}
       onSecondary={() => router.push('/onboarding/disclaimer')}
     />
   );

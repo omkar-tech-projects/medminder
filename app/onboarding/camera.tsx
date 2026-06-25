@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { OnboardingStep } from '@/components';
 import { requestCameraPermission } from '@/lib/permissions';
 
 export default function OnboardingCameraScreen() {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
   const allow = async () => {
@@ -15,14 +17,14 @@ export default function OnboardingCameraScreen() {
 
   return (
     <OnboardingStep
-      step={4}
+      step={5}
       icon="camera-outline"
-      title="Scan your prescriptions"
-      body="The fastest way to add medicines is to photograph your prescription. Your images are processed on-device and are never stored or shared."
-      primaryLabel="Allow camera access"
+      title={t('onboarding.camera.title')}
+      body={t('onboarding.camera.body')}
+      primaryLabel={t('onboarding.camera.allow')}
       onPrimary={allow}
       primaryLoading={loading}
-      secondaryLabel="Not now"
+      secondaryLabel={t('onboarding.camera.notNow')}
       onSecondary={() => router.push('/onboarding/disclaimer')}
     />
   );

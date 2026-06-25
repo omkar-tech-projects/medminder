@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { OnboardingStep, Input } from '@/components';
 import { useProfileStore } from '@/store/profile-store';
 
 export default function OnboardingNameScreen() {
+  const { t } = useTranslation();
   const [name, setName] = useState('');
   const setProfileName = useProfileStore((s) => s.setName);
 
@@ -18,18 +20,18 @@ export default function OnboardingNameScreen() {
     <OnboardingStep
       step={2}
       icon="person-outline"
-      title="What should we call you?"
-      body="We'll use your name in daily greetings. It stays on your device and is never shared."
-      primaryLabel="Continue"
+      title={t('onboarding.name.title')}
+      body={t('onboarding.name.body')}
+      primaryLabel={t('onboarding.name.primary')}
       onPrimary={() => proceed(name)}
-      secondaryLabel="Skip"
+      secondaryLabel={t('onboarding.name.skip')}
       onSecondary={() => router.push('/onboarding/phone')}
       skipToEnd={() => router.push('/onboarding/disclaimer')}
       keyboardAware
     >
       <Input
-        label="Your name"
-        placeholder="e.g. Alex"
+        label={t('onboarding.name.inputLabel')}
+        placeholder={t('onboarding.name.inputPlaceholder')}
         value={name}
         onChangeText={setName}
         autoFocus
@@ -38,7 +40,7 @@ export default function OnboardingNameScreen() {
         leftIcon="person-outline"
         autoCapitalize="words"
         autoCorrect={false}
-        accessibilityLabel="Enter your name"
+        accessibilityLabel={t('onboarding.name.inputA11y')}
       />
     </OnboardingStep>
   );

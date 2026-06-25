@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View, Switch, ScrollView, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { BottomSheet } from './BottomSheet';
 import { Input } from './Input';
 import { Button } from './Button';
@@ -24,6 +25,7 @@ function FieldHint({ text }: { text: string }) {
 
 export function NotificationSettingsSheet({ visible, onClose }: NotificationSettingsSheetProps) {
   const { spacing } = useTheme();
+  const { t } = useTranslation();
   const s = useSettingsStore();
 
   const [leadText, setLeadText] = useState(String(s.notificationLeadMin));
@@ -34,6 +36,7 @@ export function NotificationSettingsSheet({ visible, onClose }: NotificationSett
   const [quietStart, setQuietStart] = useState(s.quietHoursStart);
   const [quietEnd, setQuietEnd] = useState(s.quietHoursEnd);
   const [soundEnabled, setSoundEnabled] = useState(s.notificationSoundEnabled);
+  const [voiceAnnounce, setVoiceAnnounce] = useState(s.voiceAnnounceDoses);
 
   useEffect(() => {
     if (visible) {
@@ -45,6 +48,7 @@ export function NotificationSettingsSheet({ visible, onClose }: NotificationSett
       setQuietStart(s.quietHoursStart);
       setQuietEnd(s.quietHoursEnd);
       setSoundEnabled(s.notificationSoundEnabled);
+      setVoiceAnnounce(s.voiceAnnounceDoses);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
@@ -70,6 +74,7 @@ export function NotificationSettingsSheet({ visible, onClose }: NotificationSett
     if (HH_MM.test(quietStart)) s.update('quiet_hours_start', quietStart);
     if (HH_MM.test(quietEnd)) s.update('quiet_hours_end', quietEnd);
     s.update('notification_sound_enabled', String(soundEnabled));
+    s.update('voice_announce_doses', String(voiceAnnounce));
     void rescheduleAllFutureNotifications().catch(() => undefined);
     onClose();
   }
@@ -81,115 +86,133 @@ export function NotificationSettingsSheet({ visible, onClose }: NotificationSett
   }
 
   return (
-    <BottomSheet visible={visible} onClose={onClose} title="Reminders" height={640}>
+    <BottomSheet
+      visible={visible}
+      onClose={onClose}
+      title={t('notificationSettings.title')}
+      height={720}
+    >
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
         <Input
-          label="Lead time (minutes before dose)"
+          label={t('notificationSettings.leadTimeLabel')}
           value={leadText}
           onChangeText={setLeadText}
           keyboardType="number-pad"
           maxLength={3}
-          accessibilityLabel="Minutes before dose to fire the lead reminder"
+          accessibilityLabel={t('notificationSettings.leadTimeA11y')}
         />
-        <FieldHint text="A heads-up fires this many minutes before the scheduled dose time." />
+        <FieldHint text={t('notificationSettings.leadTimeHint')} />
 
         <Input
-          label="Re-remind interval (minutes)"
+          label={t('notificationSettings.reRemindLabel')}
           value={nagText}
           onChangeText={setNagText}
           keyboardType="number-pad"
           maxLength={3}
           containerStyle={styles.field}
-          accessibilityLabel="Minutes between repeat reminders"
+          accessibilityLabel={t('notificationSettings.reRemindA11y')}
         />
-        <FieldHint text="If you don't respond, another reminder fires every N minutes." />
+        <FieldHint text={t('notificationSettings.reRemindHint')} />
 
         <Input
-          label="Max reminders per dose"
+          label={t('notificationSettings.maxRemindersLabel')}
           value={maxNagsText}
           onChangeText={setMaxNagsText}
           keyboardType="number-pad"
           maxLength={3}
           containerStyle={styles.field}
-          accessibilityLabel="Maximum number of reminders before dose is auto-marked missed"
+          accessibilityLabel={t('notificationSettings.maxRemindersA11y')}
         />
-        <FieldHint
-          text={`After this many reminders the dose is auto-marked missed (e.g. 24 = 2 h at 5-min intervals).`}
-        />
+        <FieldHint text={t('notificationSettings.maxRemindersHint')} />
 
         <Input
-          label="Snooze duration (minutes)"
+          label={t('notificationSettings.snoozeDurationLabel')}
           value={snoozeText}
           onChangeText={setSnoozeText}
           keyboardType="number-pad"
           maxLength={3}
           containerStyle={styles.field}
-          accessibilityLabel="Minutes a snoozed reminder is delayed"
+          accessibilityLabel={t('notificationSettings.snoozeDurationA11y')}
         />
-        <FieldHint text="How long 'Snooze' delays a reminder." />
+        <FieldHint text={t('notificationSettings.snoozeDurationHint')} />
 
         <View style={[styles.toggleRow, { marginTop: spacing[4] }]}>
           <View style={styles.toggleLabel}>
-            <Text variant="bodyMedium">Quiet hours</Text>
-            <FieldHint text="Reminders during this window are shifted to the end time." />
+            <Text variant="bodyMedium">{t('notificationSettings.quietHoursLabel')}</Text>
+            <FieldHint text={t('notificationSettings.quietHoursHint')} />
           </View>
           <Switch
             value={quietEnabled}
             onValueChange={setQuietEnabled}
-            accessibilityLabel="Enable quiet hours"
+            accessibilityLabel={t('notificationSettings.quietHoursA11y')}
+            accessibilityState={{ checked: quietEnabled }}
           />
         </View>
 
         {quietEnabled && (
           <View style={[styles.row, { marginTop: spacing[2] }]}>
             <Input
-              label="From (HH:MM)"
+              label={t('notificationSettings.quietFromLabel')}
               value={quietStart}
               onChangeText={setQuietStart}
               placeholder="22:00"
               maxLength={5}
               containerStyle={styles.half}
-              accessibilityLabel="Quiet hours start time"
+              accessibilityLabel={t('notificationSettings.quietFromLabel')}
             />
             <Input
-              label="Until (HH:MM)"
+              label={t('notificationSettings.quietUntilLabel')}
               value={quietEnd}
               onChangeText={setQuietEnd}
               placeholder="07:00"
               maxLength={5}
               containerStyle={styles.half}
-              accessibilityLabel="Quiet hours end time"
+              accessibilityLabel={t('notificationSettings.quietUntilLabel')}
             />
           </View>
         )}
 
         <View style={[styles.toggleRow, { marginTop: spacing[4] }]}>
           <View style={styles.toggleLabel}>
-            <Text variant="bodyMedium">Sound</Text>
-            <FieldHint text="Play a sound with each reminder." />
+            <Text variant="bodyMedium">{t('notificationSettings.soundLabel')}</Text>
+            <FieldHint text={t('notificationSettings.soundHint')} />
           </View>
           <Switch
             value={soundEnabled}
             onValueChange={setSoundEnabled}
-            accessibilityLabel="Enable notification sound"
+            accessibilityLabel={t('notificationSettings.soundA11y')}
+            accessibilityState={{ checked: soundEnabled }}
+          />
+        </View>
+
+        <View style={[styles.toggleRow, { marginTop: spacing[4] }]}>
+          <View style={styles.toggleLabel}>
+            <Text variant="bodyMedium">{t('notificationSettings.voiceAnnounceLabel')}</Text>
+            <FieldHint text={t('notificationSettings.voiceAnnounceHint')} />
+          </View>
+          <Switch
+            value={voiceAnnounce}
+            onValueChange={setVoiceAnnounce}
+            accessibilityLabel={t('notificationSettings.voiceAnnounceA11y')}
+            accessibilityState={{ checked: voiceAnnounce }}
           />
         </View>
 
         <Button
-          label="Save"
+          label={t('notificationSettings.save')}
           variant="primary"
           fullWidth
           onPress={handleSave}
           style={{ marginTop: spacing[5] }}
-          accessibilityLabel="Save notification settings"
+          accessibilityLabel={t('notificationSettings.saveA11y')}
         />
         <Button
-          label="Reset to defaults"
+          label={t('notificationSettings.resetDefaults')}
           variant="ghost"
           fullWidth
           onPress={handleReset}
           style={{ marginTop: spacing[2] }}
-          accessibilityLabel="Reset all notification settings to defaults"
+          accessibilityLabel={t('notificationSettings.resetDefaultsA11y')}
         />
       </ScrollView>
     </BottomSheet>
