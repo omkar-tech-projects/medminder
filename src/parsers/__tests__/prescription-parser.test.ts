@@ -111,7 +111,9 @@ describe('parsePrescription — noisy OCR', () => {
     const result = parsePrescription('  AUGMENTIN   625mg   BD   After  Food  ');
     const m = result.medicines[0];
     if (m) {
-      expect(['Amoxicillin', 'Amoxicillin Clavulanate']).toContain(m.name);
+      expect(['Amoxicillin', 'Amoxicillin Clavulanate', 'Amoxicillin + Clavulanate']).toContain(
+        m.name,
+      );
       expect(m.frequencyPerDay).toBe(2);
     }
   });

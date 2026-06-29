@@ -21,5 +21,9 @@ export async function analyseImages(uris: string[]): Promise<AnalysisResponse> {
     return { medicines: [], overallConfidence: 0, needsReview: true };
   }
 
+  if (fullText.length < 20) {
+    throw new Error('Could not read the prescription clearly — please retake in good lighting.');
+  }
+
   return parsePrescription(fullText);
 }

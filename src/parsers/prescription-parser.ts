@@ -1,57 +1,5 @@
 import type { AnalysisResponse, MedicineExtraction } from '@/schemas/analysis-schema';
-import DRUG_DICT_RAW from '../../assets/drug-dictionary.json';
-
-interface DrugEntry {
-  name: string;
-  aliases: string[];
-}
-const DRUG_DICT = DRUG_DICT_RAW as DrugEntry[];
-
-// ---------------------------------------------------------------------------
-// Fuzzy string matching — Dice coefficient on character bigrams.
-// ---------------------------------------------------------------------------
-function dice(a: string, b: string): number {
-  if (a === b) return 1;
-  if (a.length < 2 || b.length < 2) return 0;
-  const bg = new Map<string, number>();
-  for (let i = 0; i < a.length - 1; i++) {
-    const k = a.slice(i, i + 2);
-    bg.set(k, (bg.get(k) ?? 0) + 1);
-  }
-  let hits = 0;
-  for (let i = 0; i < b.length - 1; i++) {
-    const k = b.slice(i, i + 2);
-    const n = bg.get(k) ?? 0;
-    if (n > 0) {
-      bg.set(k, n - 1);
-      hits++;
-    }
-  }
-  return (2 * hits) / (a.length + b.length - 2);
-}
-
-function normalize(s: string): string {
-  return s.toLowerCase().replace(/[^a-z0-9]/g, '');
-}
-
-const MATCH_THRESHOLD = 0.5;
-
-function matchDrug(token: string): { name: string; score: number } | null {
-  const n = normalize(token);
-  if (n.length < 3) return null;
-  let best = 0;
-  let bestName = '';
-  for (const entry of DRUG_DICT) {
-    for (const candidate of [entry.name, ...entry.aliases]) {
-      const score = dice(n, normalize(candidate));
-      if (score > best) {
-        best = score;
-        bestName = entry.name;
-      }
-    }
-  }
-  return best >= MATCH_THRESHOLD ? { name: bestName, score: best } : null;
-}
+import { lookupDrug } from './drug-db';
 
 // ---------------------------------------------------------------------------
 // Field extractors
@@ -61,7 +9,9 @@ interface FreqResult {
   specificTimes: string[];
 }
 
+// N-N-N Indian dose pattern e.g. "0-0-1", "1-1-1", "1-0-1"
 const DASH_RE = /\b([01])-([01])-([01])\b/;
+
 const FREQ_TABLE: { re: RegExp; result: FreqResult }[] = [
   {
     re: /\bqid\b|four\s+times/i,
@@ -115,7 +65,7 @@ function parseStrength(text: string): string | null {
 
 function parseForm(text: string): string | null {
   const m =
-    /\b(tab(?:let)?s?|cap(?:sule)?s?|syrup|drops?|gel|cream|inj(?:ection)?|ointment|susp(?:ension)?|liquid)\b/i.exec(
+    /\b(tab(?:let)?s?|cap(?:sule)?s?|syrup|drops?|gel|cream|inj(?:ection)?|ointment|susp(?:ension)?|liquid|solution|lotion|foam)\b/i.exec(
       text,
     );
   if (!m) return null;
@@ -127,16 +77,24 @@ function parseForm(text: string): string | null {
   return raw.replace(/s$/, '');
 }
 
-function parseTiming(text: string): MedicineExtraction['timing'] | null {
-  if (/\ba\/c\b|before\s+food|before\s+meal|empty\s+stomach/i.test(text)) return 'before_food';
-  if (/\bp\/c\b|after\s+food|after\s+meal|after\s+eating/i.test(text)) return 'after_food';
-  if (/with\s+food|with\s+meal/i.test(text)) return 'with_food';
-  return null;
+interface TimingResult {
+  timing: MedicineExtraction['timing'] | null;
+  instructions: string | null;
+}
+
+function parseTiming(text: string): TimingResult {
+  if (/\ba\/c\b|before\s+food|before\s+meal|empty\s+stomach/i.test(text))
+    return { timing: 'before_food', instructions: null };
+  if (/\bp\/c\b|after\s+food|after\s+meal|after\s+eating/i.test(text))
+    return { timing: 'after_food', instructions: null };
+  if (/with\s+food|with\s+meal/i.test(text)) return { timing: 'with_food', instructions: null };
+  if (/\bh\/s\b|bedtime|hs\b|at\s+night|h\.s\b/i.test(text))
+    return { timing: null, instructions: 'Take at bedtime' };
+  return { timing: null, instructions: null };
 }
 
 function parseDuration(text: string): number | null {
-  // "x 30 days" / "× 30 days" / "for 30 days" / "30 days"
-  const day = /(?:x|×|for)?\s*(\d+)\s*day/i.exec(text);
+  const day = /(?:x|×|for)?\s*(\d+)\s*(?:\/7\b|day)/i.exec(text);
   if (day) return parseInt(day[1]!, 10);
   const week = /(?:x|×|for)?\s*(\d+)\s*week/i.exec(text);
   if (week) return parseInt(week[1]!, 10) * 7;
@@ -146,7 +104,20 @@ function parseDuration(text: string): number | null {
 }
 
 // ---------------------------------------------------------------------------
-// Main parser — segments OCR text into per-medicine blocks by drug-name hits.
+// Pre-processing helpers
+// ---------------------------------------------------------------------------
+
+// Rx / Advice section header patterns
+const RX_SECTION_RE = /^(?:advice|rx\b|prescription|medications?|drugs?|treatment)[\s:]/i;
+
+// Strip Indian prescription form prefixes: "Tab.", "Cap.", "Syr.", "T.", "Inj."
+const FORM_PREFIX_RE = /^(?:tab\.?|cap\.?|syr\.?|t\.|inj\.?|oint\.?)\s*/i;
+
+// Indian OPD numbered advice pattern: "1. DrugName ..." or "1) DrugName ..."
+const NUMBERED_LINE_RE = /^\d+[\.\)]\s+/;
+
+// ---------------------------------------------------------------------------
+// Accumulator
 // ---------------------------------------------------------------------------
 interface MedAccum {
   name: string;
@@ -157,6 +128,7 @@ interface MedAccum {
   frequencyPerDay: number | null;
   specificTimes: string[] | null;
   timing: MedicineExtraction['timing'] | null;
+  instructions: string | null;
   durationDays: number | null;
   fieldScores: number[];
 }
@@ -171,6 +143,7 @@ function accum(name: string, score: number): MedAccum {
     frequencyPerDay: null,
     specificTimes: null,
     timing: null,
+    instructions: null,
     durationDays: null,
     fieldScores: [score],
   };
@@ -187,25 +160,41 @@ function finalise(a: MedAccum): MedicineExtraction {
     specificTimes: a.specificTimes,
     timing: a.timing,
     durationDays: a.durationDays,
-    instructions: null,
+    instructions: a.instructions,
     confidence: Math.round(avg * 100) / 100,
   };
 }
 
-// Indian OPD numbered advice pattern: "1. DrugName ..." or "1) DrugName ..."
-const NUMBERED_LINE_RE = /^\d+[\.\)]\s+/;
-
+// ---------------------------------------------------------------------------
+// Main parser
+// ---------------------------------------------------------------------------
 export function parsePrescription(ocrText: string): AnalysisResponse {
   if (__DEV__) {
     console.warn('[PrescriptionParser] OCR input:\n', ocrText);
   }
 
-  const lines = ocrText
-    .split(/\r?\n/)
+  const rawLines = ocrText.split(/\r?\n/);
+
+  // Find the Rx / Advice section — only parse lines within it.
+  // If no section header is found, parse the whole text.
+  let parseFrom = 0;
+  for (let i = 0; i < rawLines.length; i++) {
+    if (RX_SECTION_RE.test(rawLines[i]!.trim())) {
+      parseFrom = i + 1;
+      if (__DEV__) {
+        console.warn(`[PrescriptionParser] Rx section starts at line ${i}: "${rawLines[i]}"`);
+      }
+      break;
+    }
+  }
+
+  const lines = rawLines
+    .slice(parseFrom)
     .map((l) => {
-      // Strip leading list numbers from Indian OPD advice format
-      const stripped = l.trim().replace(NUMBERED_LINE_RE, '');
-      return stripped;
+      let s = l.trim();
+      s = s.replace(NUMBERED_LINE_RE, ''); // strip "1. " / "1) "
+      s = s.replace(FORM_PREFIX_RE, ''); // strip "Tab." / "Cap." etc.
+      return s;
     })
     .filter(Boolean);
 
@@ -217,24 +206,35 @@ export function parsePrescription(ocrText: string): AnalysisResponse {
   let current: MedAccum | null = null;
 
   for (const line of lines) {
-    // Check every word token for a drug-name match.
-    let foundMatch: ReturnType<typeof matchDrug> = null;
-    for (const token of line.split(/[\s,./]+/)) {
-      const hit = matchDrug(token);
-      if (__DEV__ && hit) {
-        console.warn(
-          `[PrescriptionParser] Drug match: "${token}" → "${hit.name}" (score=${hit.score.toFixed(2)})`,
-        );
-      }
-      if (hit) {
+    // Try each whitespace/punctuation-delimited token for a drug-name hit
+    let foundMatch: ReturnType<typeof lookupDrug> = null;
+    const tokens = line.split(/[\s,./]+/);
+
+    for (const token of tokens) {
+      const hit = lookupDrug(token);
+      if (!hit) continue;
+
+      if (!hit.isUnrecognised) {
+        if (__DEV__) {
+          console.warn(
+            `[PrescriptionParser] Drug match: "${token}" → "${hit.genericName}" (score=${hit.score.toFixed(2)})`,
+          );
+        }
         foundMatch = hit;
         break;
       }
     }
+
     if (foundMatch) {
       if (current) medicines.push(finalise(current));
-      current = accum(foundMatch.name, foundMatch.score);
+      const med = accum(foundMatch.genericName, foundMatch.score);
+      // Seed form from drug-db when not yet parsed from OCR
+      if (foundMatch.forms.length > 0) {
+        med.form = foundMatch.forms[0]!;
+      }
+      current = med;
     }
+
     if (!current) continue;
 
     const str = parseStrength(line);
@@ -256,10 +256,13 @@ export function parsePrescription(ocrText: string): AnalysisResponse {
       current.fieldScores.push(freq.confidence);
     }
 
-    const timing = parseTiming(line);
+    const { timing, instructions } = parseTiming(line);
     if (timing && !current.timing) {
       current.timing = timing;
       current.fieldScores.push(1.0);
+    }
+    if (instructions && !current.instructions) {
+      current.instructions = instructions;
     }
 
     const dur = parseDuration(line);
@@ -278,7 +281,7 @@ export function parsePrescription(ocrText: string): AnalysisResponse {
 
   const overallConfidence =
     Math.round((medicines.reduce((s, m) => s + m.confidence, 0) / medicines.length) * 100) / 100;
-  // needsReview when confidence is uncertain OR a medicine is missing fields required to schedule it.
+
   const needsReview =
     overallConfidence < 0.8 ||
     medicines.some((m) => m.confidence < 0.8 || !m.name || m.frequencyPerDay === null);
