@@ -1,59 +1,47 @@
+// MedMinder brand palette
 const palette = {
-  // Brand
-  indigo50: '#EEF2FF',
-  indigo100: '#E0E7FF',
-  indigo200: '#C7D2FE',
-  indigo300: '#A5B4FC',
-  indigo400: '#818CF8',
-  indigo500: '#6366F1',
-  indigo600: '#4F46E5',
-  indigo700: '#4338CA',
-  indigo800: '#3730A3',
-  indigo900: '#312E81',
+  // Brand blues
+  brand50: '#EAF0FD',
+  brand100: '#D5E1FB',
+  brand200: '#AABBF7',
+  brand500: '#2156DA',
+  brand600: '#1A45B5',
+  brand700: '#133290',
+
+  // Neutrals
+  navy900: '#14223A',
+  navy800: '#1E2F47',
+  navy700: '#2A3F5C',
+  navy600: '#364F73',
+  navy400: '#4E617A',
+  navy300: '#7B8FA8',
+  navy200: '#98A6BC',
+  navy100: '#B0BDCB',
+  navy50: '#D9E1EB',
+  cool50: '#EEF2F7',
+  cool25: '#F4F7FB',
 
   // Success
-  green50: '#F0FDF4',
-  green100: '#DCFCE7',
-  green400: '#4ADE80',
-  green500: '#22C55E',
-  green600: '#16A34A',
-  green700: '#15803D',
+  green900: '#0D6648',
+  green700: '#138A5E',
+  green400: '#2DC87A',
+  green50: '#E4F4EC',
 
   // Warning
-  amber50: '#FFFBEB',
-  amber100: '#FEF3C7',
-  amber400: '#FBBF24',
-  amber500: '#F59E0B',
-  amber600: '#D97706',
+  amber900: '#A56000',
+  amber700: '#C77700',
+  amber400: '#E49C30',
+  amber100: '#FBEFD9',
+  amberBorder: '#F2DDB0',
 
   // Danger
-  red50: '#FFF1F2',
-  red100: '#FFE4E6',
-  red400: '#F87171',
-  red500: '#EF4444',
-  red600: '#DC2626',
+  red900: '#B03030',
+  red700: '#D64545',
+  red400: '#F06060',
+  red50: '#FBE9E9',
 
-  // Info
-  sky50: '#F0F9FF',
-  sky300: '#7DD3FC',
-  sky500: '#0EA5E9',
-  sky600: '#0284C7',
-  sky900: '#0C4A6E',
-
-  // Neutral
-  white: '#FFFFFF',
-  black: '#000000',
-  gray50: '#F9FAFB',
-  gray100: '#F3F4F6',
-  gray200: '#E5E7EB',
-  gray300: '#D1D5DB',
-  gray400: '#9CA3AF',
-  gray500: '#6B7280',
-  gray600: '#4B5563',
-  gray700: '#374151',
-  gray800: '#1F2937',
-  gray900: '#111827',
-  gray950: '#030712',
+  // Info (same as brand)
+  info700: '#1640B0',
 
   // Medication colour chips
   chip: {
@@ -66,162 +54,178 @@ const palette = {
     lime: '#84CC16',
     cyan: '#06B6D4',
   },
+
+  white: '#FFFFFF',
+  black: '#000000',
 } as const;
 
-// Widen string literal types so darkColors can satisfy the same shape
 type Widened<T> = { [K in keyof T]: T[K] extends string ? string : T[K] };
 export type ColorScheme = Widened<typeof lightColors>;
 
 export const lightColors = {
-  // Backgrounds
-  background: palette.white,
-  backgroundSecondary: palette.gray50,
-  backgroundTertiary: palette.gray100,
-  backgroundInverse: palette.gray900,
+  // App backgrounds
+  background: palette.cool25,
+  backgroundScreen: palette.white,
+  backgroundSecondary: palette.cool50,
+  backgroundTertiary: '#E8EDF3',
+  backgroundInverse: palette.navy900,
 
-  // Surfaces (cards, modals)
+  // Surfaces
   surface: palette.white,
-  surfaceSecondary: palette.gray50,
+  surfaceSecondary: palette.cool25,
   surfaceRaised: palette.white,
+  surfaceElevated: palette.white,
 
   // Text
-  textPrimary: palette.gray900,
-  textSecondary: palette.gray600,
-  textTertiary: palette.gray400,
-  textDisabled: palette.gray300,
+  textPrimary: palette.navy900,
+  textSecondary: palette.navy400,
+  textTertiary: palette.navy300,
+  textDisabled: palette.navy100,
   textInverse: palette.white,
-  textPlaceholder: palette.gray400,
+  textOnBrand: palette.white,
+  textPlaceholder: palette.navy200,
 
   // Brand
-  brandPrimary: palette.indigo600,
-  brandPrimaryLight: palette.indigo50,
-  brandPrimaryDark: palette.indigo700,
-  brandSecondary: palette.indigo500,
+  brandPrimary: palette.brand500,
+  brandPrimaryLight: palette.brand50,
+  brandPrimarySubtle: '#E5EDFC',
+  brandPrimaryDark: palette.brand600,
+  brandSecondary: palette.brand600,
 
   // Borders
-  border: palette.gray200,
-  borderStrong: palette.gray300,
-  borderFocus: palette.indigo500,
+  border: palette.cool50,
+  borderStrong: palette.navy50,
+  borderFocus: palette.brand500,
+
+  // Input
+  inputBackground: palette.white,
+  inputBorder: '#E7ECF3',
+  inputBorderFocus: palette.brand500,
+  inputFocusRing: 'rgba(33,86,218,0.12)',
+  inputText: palette.navy900,
 
   // Semantic states
-  success: palette.green500,
+  success: palette.green700,
   successLight: palette.green50,
-  successDark: palette.green700,
+  successDark: palette.green900,
 
-  warning: palette.amber500,
-  warningLight: palette.amber50,
-  warningDark: palette.amber600,
+  warning: palette.amber700,
+  warningLight: palette.amber100,
+  warningBorder: palette.amberBorder,
+  warningDark: palette.amber900,
 
-  danger: palette.red500,
+  danger: palette.red700,
   dangerLight: palette.red50,
-  dangerDark: palette.red600,
+  dangerDark: palette.red900,
 
-  info: palette.sky600,
-  infoLight: palette.sky50,
-  infoDark: palette.sky600,
+  info: palette.brand500,
+  infoLight: palette.brand50,
+  infoDark: palette.info700,
 
   // Dose status
-  doseTaken: palette.green500,
+  doseTaken: palette.green700,
   doseTakenBg: palette.green50,
-  doseMissed: palette.red500,
+  doseMissed: palette.red700,
   doseMissedBg: palette.red50,
-  dosePending: palette.gray400,
-  dosePendingBg: palette.gray100,
-  doseSnoozed: palette.amber500,
-  doseSnoozedBg: palette.amber50,
+  dosePending: palette.brand500,
+  dosePendingBg: palette.brand50,
+  doseSnoozed: palette.amber700,
+  doseSnoozedBg: palette.amber100,
 
   // Tab bar
   tabBarBackground: palette.white,
-  tabBarActive: palette.indigo600,
-  tabBarInactive: palette.gray400,
-  tabBarBorder: palette.gray200,
-
-  // Input
-  inputBackground: palette.gray50,
-  inputBorder: palette.gray300,
-  inputBorderFocus: palette.indigo500,
-  inputText: palette.gray900,
+  tabBarActive: palette.brand500,
+  tabBarInactive: palette.navy200,
+  tabBarBorder: palette.cool50,
+  tabBarPill: palette.brand50,
 
   // Misc
-  shadow: palette.black,
-  overlay: 'rgba(0,0,0,0.5)',
-  skeleton: palette.gray200,
+  shadow: 'rgba(15,27,45,0.10)',
+  overlay: 'rgba(14,22,38,0.52)',
+  skeleton: palette.cool50,
   chip: palette.chip,
 } as const;
 
 export const darkColors: ColorScheme = {
-  // Backgrounds
-  background: palette.gray950,
-  backgroundSecondary: palette.gray900,
-  backgroundTertiary: palette.gray800,
-  backgroundInverse: palette.gray50,
+  // App backgrounds
+  background: '#0C1525',
+  backgroundScreen: '#131F35',
+  backgroundSecondary: '#0F1A2E',
+  backgroundTertiary: '#182337',
+  backgroundInverse: '#E2ECF9',
 
   // Surfaces
-  surface: palette.gray900,
-  surfaceSecondary: palette.gray800,
-  surfaceRaised: palette.gray800,
+  surface: '#1A2840',
+  surfaceSecondary: '#142034',
+  surfaceRaised: '#1F3050',
+  surfaceElevated: '#213458',
 
   // Text
-  textPrimary: palette.gray50,
-  textSecondary: palette.gray400,
-  textTertiary: palette.gray600,
-  textDisabled: palette.gray700,
-  textInverse: palette.gray900,
-  textPlaceholder: palette.gray600,
+  textPrimary: '#E2ECF9',
+  textSecondary: '#8CA0BA',
+  textTertiary: '#5A7290',
+  textDisabled: '#3D5270',
+  textInverse: palette.navy900,
+  textOnBrand: palette.white,
+  textPlaceholder: '#7A90AB',
 
   // Brand
-  brandPrimary: palette.indigo400,
-  brandPrimaryLight: palette.indigo900,
-  brandPrimaryDark: palette.indigo300,
-  brandSecondary: palette.indigo300,
+  brandPrimary: '#4A7EFF',
+  brandPrimaryLight: 'rgba(74,126,255,0.15)',
+  brandPrimarySubtle: 'rgba(74,126,255,0.10)',
+  brandPrimaryDark: '#3366DD',
+  brandSecondary: '#6699FF',
 
   // Borders
-  border: palette.gray800,
-  borderStrong: palette.gray700,
-  borderFocus: palette.indigo400,
-
-  // Semantic states
-  success: palette.green400,
-  successLight: palette.green700,
-  successDark: palette.green500,
-
-  warning: palette.amber400,
-  warningLight: palette.amber600,
-  warningDark: palette.amber500,
-
-  danger: palette.red400,
-  dangerLight: palette.red600,
-  dangerDark: palette.red500,
-
-  info: palette.sky300,
-  infoLight: palette.sky900,
-  infoDark: palette.sky500,
-
-  // Dose status
-  doseTaken: palette.green400,
-  doseTakenBg: palette.green700,
-  doseMissed: palette.red400,
-  doseMissedBg: palette.red600,
-  dosePending: palette.gray500,
-  dosePendingBg: palette.gray800,
-  doseSnoozed: palette.amber400,
-  doseSnoozedBg: palette.amber600,
-
-  // Tab bar
-  tabBarBackground: palette.gray900,
-  tabBarActive: palette.indigo400,
-  tabBarInactive: palette.gray600,
-  tabBarBorder: palette.gray800,
+  border: '#1E2F47',
+  borderStrong: '#2A3F5C',
+  borderFocus: '#4A7EFF',
 
   // Input
-  inputBackground: palette.gray800,
-  inputBorder: palette.gray700,
-  inputBorderFocus: palette.indigo400,
-  inputText: palette.gray50,
+  inputBackground: '#1A2840',
+  inputBorder: '#2A3F5C',
+  inputBorderFocus: '#4A7EFF',
+  inputFocusRing: 'rgba(74,126,255,0.15)',
+  inputText: '#E2ECF9',
+
+  // Semantic states
+  success: '#2DC87A',
+  successLight: 'rgba(45,200,122,0.15)',
+  successDark: '#1EA05E',
+
+  warning: '#E49C30',
+  warningLight: 'rgba(228,156,48,0.15)',
+  warningBorder: 'rgba(228,156,48,0.30)',
+  warningDark: '#C07B10',
+
+  danger: '#F06060',
+  dangerLight: 'rgba(240,96,96,0.15)',
+  dangerDark: '#D04040',
+
+  info: '#4A7EFF',
+  infoLight: 'rgba(74,126,255,0.15)',
+  infoDark: '#3366DD',
+
+  // Dose status
+  doseTaken: '#2DC87A',
+  doseTakenBg: 'rgba(45,200,122,0.15)',
+  doseMissed: '#F06060',
+  doseMissedBg: 'rgba(240,96,96,0.15)',
+  dosePending: '#4A7EFF',
+  dosePendingBg: 'rgba(74,126,255,0.15)',
+  doseSnoozed: '#E49C30',
+  doseSnoozedBg: 'rgba(228,156,48,0.15)',
+
+  // Tab bar
+  tabBarBackground: '#131F35',
+  tabBarActive: '#4A7EFF',
+  tabBarInactive: '#5A7290',
+  tabBarBorder: '#1E2F47',
+  tabBarPill: 'rgba(74,126,255,0.15)',
 
   // Misc
-  shadow: palette.black,
-  overlay: 'rgba(0,0,0,0.7)',
-  skeleton: palette.gray800,
+  shadow: 'rgba(0,0,0,0.45)',
+  overlay: 'rgba(0,0,0,0.65)',
+  skeleton: '#1E2F47',
   chip: palette.chip,
 } as const;

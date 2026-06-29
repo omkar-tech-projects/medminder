@@ -2,8 +2,10 @@ import { useState, useRef } from 'react';
 import {
   TextInput,
   View,
+  Pressable,
   TouchableOpacity,
   StyleSheet,
+  Platform,
   type TextInputProps,
   type ViewStyle,
   type StyleProp,
@@ -35,37 +37,46 @@ export function Input({
   style,
   ...rest
 }: InputProps) {
-  const { colors, radii, spacing } = useTheme();
+  const { colors, spacing } = useTheme();
   const [focused, setFocused] = useState(false);
   const inputRef = useRef<TextInput>(null);
 
   const hasError = error != null && error.length > 0;
+
   const borderColor = hasError
     ? colors.danger
     : focused
       ? colors.inputBorderFocus
       : colors.inputBorder;
+  const borderWidth = focused && !hasError ? 2 : 1.5;
 
   return (
     <View style={[styles.container, containerStyle]}>
       {label != null && (
-        <Text variant="labelLarge" style={{ marginBottom: spacing[1], color: colors.textPrimary }}>
+        <Text variant="labelSmall" style={{ marginBottom: 7, color: colors.textTertiary }}>
           {label}
         </Text>
       )}
 
-      <TouchableOpacity
-        activeOpacity={1}
+      <Pressable
         onPress={() => inputRef.current?.focus()}
-        accessibilityRole="none"
+        importantForAccessibility="no"
         style={[
           styles.inputRow,
           {
             backgroundColor: colors.inputBackground,
             borderColor,
-            borderRadius: radii.lg,
-            paddingHorizontal: spacing[3],
-            minHeight: 48,
+            borderWidth,
+            borderRadius: 16,
+            paddingHorizontal: 16,
+            minHeight: 52,
+            ...(focused &&
+              !hasError && {
+                shadowColor: colors.brandPrimary,
+                shadowOffset: { width: 0, height: 0 },
+                shadowOpacity: 0.18,
+                shadowRadius: 6,
+              }),
           },
         ]}
       >
@@ -83,8 +94,21 @@ export function Input({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           placeholderTextColor={colors.textPlaceholder}
-          style={[styles.input, { color: colors.inputText }, style]}
-          accessibilityLabel={label}
+          selectionColor={colors.brandPrimary}
+          underlineColorAndroid="transparent"
+          allowFontScaling={false}
+          autoComplete="off"
+          importantForAutofill="no"
+          style={[
+            styles.input,
+            {
+              color: colors.inputText,
+              fontFamily: Platform.OS === 'android' ? 'Nunito_400Regular' : undefined,
+              includeFontPadding: false,
+            },
+            style,
+          ]}
+          accessibilityLabel={label ?? undefined}
           {...rest}
         />
 
@@ -99,16 +123,26 @@ export function Input({
             <Ionicons name={rightIcon} size={18} color={colors.textTertiary} />
           </TouchableOpacity>
         )}
-      </TouchableOpacity>
+      </Pressable>
 
       {(hint != null || hasError) && (
-        <Text
-          variant="caption"
-          color={hasError ? colors.danger : colors.textSecondary}
-          style={{ marginTop: spacing[1] }}
-        >
-          {hasError ? error : hint}
-        </Text>
+        <View style={styles.hintRow}>
+          {!hasError && (
+            <Ionicons
+              name="information-circle-outline"
+              size={13}
+              color={colors.textTertiary}
+              style={{ marginRight: 4, marginTop: 1 }}
+            />
+          )}
+          <Text
+            variant="caption"
+            color={hasError ? colors.danger : colors.textTertiary}
+            style={{ marginTop: spacing[1], flex: 1 }}
+          >
+            {hasError ? error : hint}
+          </Text>
+        </View>
       )}
     </View>
   );
@@ -119,11 +153,15 @@ const styles = StyleSheet.create({
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1.5,
   },
   input: {
     flex: 1,
-    fontSize: 15,
-    paddingVertical: 10,
+    fontSize: 16,
+    paddingVertical: 12,
+  },
+  hintRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 5,
   },
 });

@@ -39,6 +39,7 @@ export default function OnboardingPhoneScreen() {
             value={nationalNumber}
             onChangeText={setNationalNumber}
             keyboardType="phone-pad"
+            textContentType="telephoneNumber"
             autoFocus
             returnKeyType="done"
             onSubmitEditing={() => proceed(true)}

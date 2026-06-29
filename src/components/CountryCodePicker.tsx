@@ -108,13 +108,22 @@ export function CountryCodePicker({ value, onChange }: CountryCodePickerProps) {
               style={{ marginRight: spacing[2] }}
             />
             <TextInput
-              style={[styles.searchInput, { color: colors.textPrimary, flex: 1 }]}
+              style={[
+                styles.searchInput,
+                {
+                  color: colors.textPrimary,
+                  flex: 1,
+                  includeFontPadding: false,
+                },
+              ]}
               placeholder={t('onboardingPhone.countrySearchPlaceholder')}
               placeholderTextColor={colors.textTertiary}
               value={query}
               onChangeText={setQuery}
               autoFocus
               autoCorrect={false}
+              underlineColorAndroid="transparent"
+              allowFontScaling={false}
               accessibilityLabel={t('onboardingPhone.countrySearchPlaceholder')}
             />
           </View>
