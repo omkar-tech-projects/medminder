@@ -118,5 +118,109 @@
   {
     "name": "Pregabalin",
     "aliases": ["Lyrica", "Pregastar", "Nervigesic", "Pregalin", "Pregabid"]
+  },
+  {
+    "name": "Dutasteride",
+    "aliases": ["Densita", "Densita M", "Dutas", "Duprost", "Dutagen", "Duodart", "Avodart"]
+  },
+  {
+    "name": "Finasteride",
+    "aliases": ["Finast", "Finpecia", "Propecia", "Fincar", "Finol", "Finastir", "Proscar"]
+  },
+  {
+    "name": "Minoxidil",
+    "aliases": ["Tugain", "Mintop", "Morr-F", "Morr", "Regaine", "Rogaine", "Minokem", "Hair4U"]
+  },
+  {
+    "name": "Ketoconazole",
+    "aliases": ["Nizoral", "Ketocip", "Ket", "Ketorest", "Fungotek", "Sebifin"]
+  },
+  {
+    "name": "Terbinafine",
+    "aliases": ["Terbicip", "Lamisil", "Terbiforce", "Fungiterbine", "Sebifin"]
+  },
+  {
+    "name": "Fluconazole",
+    "aliases": ["Diflucan", "Zocon", "Fluka", "Forcan", "Syscan", "Funzela"]
+  },
+  {
+    "name": "Betamethasone",
+    "aliases": ["Betnovate", "Betnol", "Diprosone", "Betasone", "Locoid"]
+  },
+  {
+    "name": "Clobetasol",
+    "aliases": ["Tenovate", "Dermovate", "Clobestol", "Lobate", "Clobitasol"]
+  },
+  {
+    "name": "Tretinoin",
+    "aliases": ["Retin-A", "Retino-A", "Stieva-A", "Tretin", "A-Ret"]
+  },
+  {
+    "name": "Adapalene",
+    "aliases": ["Deriva", "Acnestar", "Differin", "Adapin", "Pimecrolimus"]
+  },
+  {
+    "name": "Clindamycin",
+    "aliases": ["Clincin", "Dalacin", "Clindac", "Cleocin", "Clindamycin-T"]
+  },
+  {
+    "name": "Doxycycline",
+    "aliases": ["Doxt", "Vibramycin", "Doxicip", "Biodoxi", "Doxinate", "Doxy-1"]
+  },
+  {
+    "name": "Spironolactone",
+    "aliases": ["Aldactone", "Spiromide", "Lasilactone", "Spironol"]
+  },
+  {
+    "name": "Methotrexate",
+    "aliases": ["Folitrax", "Methofar", "Biotrexate", "Imutrex", "Remtrex"]
+  },
+  {
+    "name": "Hydroxychloroquine",
+    "aliases": ["Plaquenil", "HCQ", "HCQS", "Hydroxychloroquin", "Quineprox"]
+  },
+  {
+    "name": "Acitretin",
+    "aliases": ["Acitret", "Soriatane", "Neotigason", "Acretin"]
+  },
+  {
+    "name": "Tacrolimus",
+    "aliases": ["Protopic", "Tacroz", "Pimecrolimus", "Tacrophar", "Tacrobell"]
+  },
+  {
+    "name": "Ivermectin",
+    "aliases": ["Ivermec", "Scavista", "Ivecop", "Ivermectol", "Iverscab"]
+  },
+  {
+    "name": "Albendazole",
+    "aliases": ["Albenza", "Bendex", "Zentel", "Noworm", "Bandy"]
+  },
+  {
+    "name": "Levofloxacin",
+    "aliases": ["Levoflox", "Levomac", "Loxof", "Leof", "Levoquin", "Tavanic"]
+  },
+  {
+    "name": "Cefpodoxime",
+    "aliases": ["Cepodem", "Cefpod", "Cefdiel", "Cepodem XP", "Olcef"]
+  },
+  {
+    "name": "Cefixime",
+    "aliases": ["Cefi", "Taxim-O", "Zifi", "Topcef", "Ceftum", "Ceftas"]
+  },
+  {
+    "name": "Pantoprazole Domperidone",
+    "aliases": ["Pantocid D", "Pan D", "Pantop D", "Pantodom", "Nexpro D"]
+  },
+  {
+    "name": "Vitamin D3",
+    "aliases": ["Calcirol", "D-Rise", "Arachitol", "Cholecalciferol", "Uprise D3", "Ossopan"]
+  },
+  {
+    "name": "Vitamin B12",
+    "aliases": ["Methylcobalamin", "Mecobalamin", "Mecobion", "Cobal", "Nervijen"]
+  },
+  {
+    "name": "Iron Folic Acid",
+    "aliases": ["Autrin", "Fefol", "Dexorange", "Feronia-XT", "Orofer", "Iberet"]
   }
 ]

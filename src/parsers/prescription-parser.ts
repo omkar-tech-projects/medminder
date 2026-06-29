@@ -34,7 +34,7 @@ function normalize(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
-const MATCH_THRESHOLD = 0.7;
+const MATCH_THRESHOLD = 0.5;
 
 function matchDrug(token: string): { name: string; score: number } | null {
   const n = normalize(token);
@@ -135,11 +135,12 @@ function parseTiming(text: string): MedicineExtraction['timing'] | null {
 }
 
 function parseDuration(text: string): number | null {
-  const day = /(\d+)\s*day/i.exec(text);
+  // "x 30 days" / "× 30 days" / "for 30 days" / "30 days"
+  const day = /(?:x|×|for)?\s*(\d+)\s*day/i.exec(text);
   if (day) return parseInt(day[1]!, 10);
-  const week = /(\d+)\s*week/i.exec(text);
+  const week = /(?:x|×|for)?\s*(\d+)\s*week/i.exec(text);
   if (week) return parseInt(week[1]!, 10) * 7;
-  const month = /(\d+)\s*month/i.exec(text);
+  const month = /(?:x|×|for)?\s*(\d+)\s*month/i.exec(text);
   if (month) return parseInt(month[1]!, 10) * 30;
   return null;
 }
@@ -191,11 +192,27 @@ function finalise(a: MedAccum): MedicineExtraction {
   };
 }
 
+// Indian OPD numbered advice pattern: "1. DrugName ..." or "1) DrugName ..."
+const NUMBERED_LINE_RE = /^\d+[\.\)]\s+/;
+
 export function parsePrescription(ocrText: string): AnalysisResponse {
+  if (__DEV__) {
+    console.warn('[PrescriptionParser] OCR input:\n', ocrText);
+  }
+
   const lines = ocrText
     .split(/\r?\n/)
-    .map((l) => l.trim())
+    .map((l) => {
+      // Strip leading list numbers from Indian OPD advice format
+      const stripped = l.trim().replace(NUMBERED_LINE_RE, '');
+      return stripped;
+    })
     .filter(Boolean);
+
+  if (__DEV__) {
+    console.warn('[PrescriptionParser] Processed lines:', lines);
+  }
+
   const medicines: MedicineExtraction[] = [];
   let current: MedAccum | null = null;
 
@@ -204,6 +221,11 @@ export function parsePrescription(ocrText: string): AnalysisResponse {
     let foundMatch: ReturnType<typeof matchDrug> = null;
     for (const token of line.split(/[\s,./]+/)) {
       const hit = matchDrug(token);
+      if (__DEV__ && hit) {
+        console.warn(
+          `[PrescriptionParser] Drug match: "${token}" → "${hit.name}" (score=${hit.score.toFixed(2)})`,
+        );
+      }
       if (hit) {
         foundMatch = hit;
         break;
@@ -250,6 +272,7 @@ export function parsePrescription(ocrText: string): AnalysisResponse {
   if (current) medicines.push(finalise(current));
 
   if (medicines.length === 0) {
+    if (__DEV__) console.warn('[PrescriptionParser] No medicines detected.');
     return { medicines: [], overallConfidence: 0, needsReview: true };
   }
 
@@ -259,6 +282,13 @@ export function parsePrescription(ocrText: string): AnalysisResponse {
   const needsReview =
     overallConfidence < 0.8 ||
     medicines.some((m) => m.confidence < 0.8 || !m.name || m.frequencyPerDay === null);
+
+  if (__DEV__) {
+    console.warn(
+      '[PrescriptionParser] Result:',
+      JSON.stringify({ medicines, overallConfidence, needsReview }, null, 2),
+    );
+  }
 
   return { medicines, overallConfidence, needsReview };
 }
