@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useFocusEffect } from 'expo-router';
 import { View, SectionList, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -58,6 +59,12 @@ export default function HistoryScreen() {
   const { colors, spacing } = useTheme();
   const { sections, stats, trend7, trend30, medicines, loading, filters, updateFilter, refresh } =
     useHistoryScreen();
+
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [refresh]),
+  );
 
   const { exportReport, exporting } = useExport();
   const handleExport = useCallback(() => void exportReport(filters), [exportReport, filters]);
