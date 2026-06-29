@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { View, Switch, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Switch, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Text } from './Text';
 import { ListItem } from './ListItem';
@@ -14,6 +14,7 @@ import {
   signOutGoogle,
   isGoogleConnected,
   getGoogleConnectedEmail,
+  GOOGLE_CALENDAR_CONFIGURED,
 } from '@/services/google-calendar-service';
 
 export function CalendarSyncSection() {
@@ -53,6 +54,14 @@ export function CalendarSyncSection() {
     },
     [update, syncAll, desyncAll],
   );
+
+  const handleGoogleSetupInfo = useCallback((): void => {
+    Alert.alert(
+      'Google Calendar Setup',
+      'Enable "Sync to device calendar" above — your doses will appear in the Google Calendar app automatically via your linked Google account.\n\nFor direct OAuth sync, a Google Cloud project with Calendar API access is required.',
+      [{ text: 'Got it' }],
+    );
+  }, []);
 
   const handleGoogleConnect = useCallback(async (): Promise<void> => {
     setGoogleBusy(true);
@@ -145,9 +154,18 @@ export function CalendarSyncSection() {
         <ListItem
           title="Google Calendar"
           subtitle={
-            connectedEmail
-              ? `Connected as ${connectedEmail}`
-              : 'Sign in to sync directly to a Google account'
+            !GOOGLE_CALENDAR_CONFIGURED
+              ? 'Sync doses to your Google Calendar. Tap to set up.'
+              : connectedEmail
+                ? `Connected as ${connectedEmail}`
+                : 'Sign in to sync directly to a Google account'
+          }
+          onPress={
+            !GOOGLE_CALENDAR_CONFIGURED
+              ? handleGoogleSetupInfo
+              : !connectedEmail
+                ? () => void handleGoogleConnect()
+                : undefined
           }
           leftContent={
             <View style={[styles.iconCircle, { backgroundColor: colors.brandPrimaryLight }]}>
@@ -155,7 +173,9 @@ export function CalendarSyncSection() {
             </View>
           }
           right={
-            googleBusy ? (
+            !GOOGLE_CALENDAR_CONFIGURED ? (
+              <Ionicons name="chevron-forward" size={16} color={colors.textTertiary} />
+            ) : googleBusy ? (
               <ActivityIndicator size="small" color={colors.brandPrimary} />
             ) : connectedEmail ? (
               <Text

@@ -3,8 +3,8 @@ import { Platform } from 'react-native';
 import { addMinutes, parseISO } from 'date-fns';
 
 const CALENDAR_TITLE = 'MedMinder';
-const CALENDAR_COLOR = '#6366F1';
-const EVENT_DURATION_MIN = 15;
+const CALENDAR_COLOR = '#2A9D8F';
+const EVENT_DURATION_MIN = 30;
 
 export interface DoseEventParams {
   medicineName: string;
@@ -57,11 +57,11 @@ function buildEventDetails(params: DoseEventParams, calendarId: string) {
   const end = addMinutes(start, EVENT_DURATION_MIN);
   return {
     calendarId,
-    title: `${params.medicineName} — ${params.dosage}`,
+    title: `💊 ${params.medicineName} — ${params.dosage}`,
     startDate: start,
     endDate: end,
     notes: params.instructions ?? undefined,
-    alarms: [] as never[],
+    alarms: [{ relativeOffset: -5 }],
   };
 }
 
@@ -86,7 +86,7 @@ export async function updateDoseCalendarEvent(
   try {
     const start = parseISO(params.scheduledAt);
     await Calendar.updateEventAsync(eventId, {
-      title: `${params.medicineName} — ${params.dosage}`,
+      title: `💊 ${params.medicineName} — ${params.dosage}`,
       startDate: start,
       endDate: addMinutes(start, EVENT_DURATION_MIN),
       notes: params.instructions ?? undefined,
