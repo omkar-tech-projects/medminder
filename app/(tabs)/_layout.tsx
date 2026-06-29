@@ -1,12 +1,12 @@
+import { Platform, useColorScheme, type ColorValue } from 'react-native';
 import { Tabs } from 'expo-router';
-import { useColorScheme, Platform, type ColorValue } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { lightColors, darkColors } from '@/theme/colors';
 
-type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
+type MCIName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
-function tabIcon(inactiveIcon: IoniconName, activeIcon: IoniconName) {
-  return function TabIcon({
+function makeIcon(inactive: MCIName, active: MCIName) {
+  return function Icon({
     focused,
     color,
     size,
@@ -15,7 +15,7 @@ function tabIcon(inactiveIcon: IoniconName, activeIcon: IoniconName) {
     color: ColorValue;
     size: number;
   }) {
-    return <Ionicons name={focused ? activeIcon : inactiveIcon} size={size} color={color} />;
+    return <MaterialCommunityIcons name={focused ? active : inactive} size={size} color={color} />;
   };
 }
 
@@ -23,66 +23,83 @@ export default function TabsLayout() {
   const colorScheme = useColorScheme();
   const colors = colorScheme === 'dark' ? darkColors : lightColors;
 
-  const screenOptions = {
-    tabBarActiveTintColor: colors.tabBarActive,
-    tabBarInactiveTintColor: colors.tabBarInactive,
-    tabBarStyle: {
-      backgroundColor: colors.tabBarBackground,
-      borderTopColor: colors.tabBarBorder,
-      borderTopWidth: 1,
-      paddingBottom: Platform.OS === 'ios' ? 20 : 8,
-      paddingTop: 8,
-      height: Platform.OS === 'ios' ? 80 : 64,
-    },
-    tabBarLabelStyle: {
-      fontSize: 11,
-      fontWeight: '500' as const,
-    },
-    headerShown: false,
-  };
-
   return (
-    <Tabs screenOptions={screenOptions}>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: colors.tabBarActive,
+        tabBarInactiveTintColor: colors.tabBarInactive,
+        tabBarStyle: {
+          backgroundColor: colors.tabBarBackground,
+          borderTopColor: colors.tabBarBorder,
+          borderTopWidth: 1,
+          paddingBottom: Platform.OS === 'ios' ? 20 : 6,
+          paddingTop: Platform.OS === 'android' ? 8 : 10,
+          height: Platform.OS === 'ios' ? 82 : 66,
+          shadowColor: 'rgba(15,27,45,1)',
+          shadowOffset: { width: 0, height: -1 },
+          shadowOpacity: 0.06,
+          shadowRadius: 8,
+          elevation: 8,
+        },
+        tabBarLabelStyle: {
+          fontFamily: 'Nunito_600SemiBold',
+          fontSize: Platform.OS === 'android' ? 8 : 10,
+          marginBottom: Platform.OS === 'android' ? 2 : 0,
+          includeFontPadding: false,
+          letterSpacing: 0,
+        },
+        tabBarShowLabel: true,
+        tabBarIconStyle: {
+          marginTop: Platform.OS === 'android' ? 2 : 0,
+        },
+        tabBarItemStyle: {
+          paddingHorizontal: 0,
+          paddingVertical: 0,
+        },
+        tabBarAllowFontScaling: false,
+        headerShown: false,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: tabIcon('home-outline', 'home'),
+          tabBarIcon: makeIcon('home-outline', 'home'),
         }}
       />
       <Tabs.Screen
         name="medications"
         options={{
           title: 'Medicines',
-          tabBarIcon: tabIcon('medkit-outline', 'medkit'),
+          tabBarIcon: makeIcon('pill', 'pill'),
         }}
       />
       <Tabs.Screen
         name="calendar"
         options={{
           title: 'Calendar',
-          tabBarIcon: tabIcon('calendar-outline', 'calendar'),
+          tabBarIcon: makeIcon('calendar-month-outline', 'calendar-month'),
         }}
       />
       <Tabs.Screen
         name="history"
         options={{
           title: 'History',
-          tabBarIcon: tabIcon('time-outline', 'time'),
+          tabBarIcon: makeIcon('chart-timeline-variant', 'chart-timeline-variant'),
         }}
       />
       <Tabs.Screen
         name="family"
         options={{
           title: 'Family',
-          tabBarIcon: tabIcon('people-outline', 'people'),
+          tabBarIcon: makeIcon('account-group-outline', 'account-group'),
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: 'Settings',
-          tabBarIcon: tabIcon('settings-outline', 'settings'),
+          tabBarIcon: makeIcon('cog-outline', 'cog'),
         }}
       />
     </Tabs>
