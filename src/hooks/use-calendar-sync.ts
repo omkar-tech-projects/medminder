@@ -1,21 +1,15 @@
 import { useCallback } from 'react';
 import { useSettingsStore } from '@/store/settings-store';
 import { useMedicationStore } from '@/store/medication-store';
-import type { DoseLog } from '@/db/schema';
-import {
-  setDoseLogCalendarEventId,
-  setDoseLogGoogleCalendarEventId,
-  getDoseLogsForMedicine,
-} from '@/db/queries/dose-logs';
+import type { DoseLog, Medicine } from '@/db/schema';
+import { setDoseLogCalendarEventId, getDoseLogsForMedicine } from '@/db/queries/dose-logs';
 import { setMedicineCalendarSync } from '@/db/queries/medicines';
+import { getSchedulesForMedicine } from '@/db/queries/schedules';
 import {
   createDoseCalendarEvent,
   deleteDoseCalendarEvent,
 } from '@/services/device-calendar-service';
-import {
-  createGoogleCalendarEvent,
-  deleteGoogleCalendarEvent,
-} from '@/services/google-calendar-service';
+import { syncMedicineToGoogle, unsyncMedicineFromGoogle } from '@/services/google-calendar-service';
 import type { DoseEventParams } from '@/services/device-calendar-service';
 
 interface MedicineMeta {
@@ -30,21 +24,29 @@ async function syncLogToDevice(log: DoseLog, meta: DoseEventParams): Promise<voi
   if (eventId) setDoseLogCalendarEventId(log.id, eventId);
 }
 
-async function syncLogToGoogle(log: DoseLog, meta: DoseEventParams): Promise<void> {
-  if (log.googleCalendarEventId) return;
-  const eventId = await createGoogleCalendarEvent(meta);
-  if (eventId) setDoseLogGoogleCalendarEventId(log.id, eventId);
-}
-
-async function desyncLog(log: DoseLog): Promise<void> {
+async function desyncLogFromDevice(log: DoseLog): Promise<void> {
   if (log.calendarEventId) {
     await deleteDoseCalendarEvent(log.calendarEventId);
     setDoseLogCalendarEventId(log.id, null);
   }
-  if (log.googleCalendarEventId) {
-    await deleteGoogleCalendarEvent(log.googleCalendarEventId);
-    setDoseLogGoogleCalendarEventId(log.id, null);
-  }
+}
+
+function buildGoogleSyncParams(med: Medicine) {
+  const schedules = getSchedulesForMedicine(med.id);
+  return {
+    medicine: {
+      id: med.id,
+      name: med.name,
+      dosage: med.dosage,
+      dosageUnit: med.dosageUnit,
+      durationDays: med.durationDays ?? null,
+      startDate: med.startDate,
+    },
+    scheduleTimes: schedules.map((s) => ({
+      timeOfDay: s.timeOfDay,
+      leadMinutes: s.leadMinutes,
+    })),
+  };
 }
 
 export function useCalendarSync() {
@@ -54,6 +56,8 @@ export function useCalendarSync() {
   const syncAfterSave = useCallback(
     async (medId: string, medicine: MedicineMeta, createdLogs: DoseLog[]): Promise<void> => {
       if (!calendarSync) return;
+
+      // Device calendar: one event per dose log
       await Promise.all(
         createdLogs.map(async (log) => {
           const meta: DoseEventParams = {
@@ -63,9 +67,17 @@ export function useCalendarSync() {
             instructions: medicine.instructions,
           };
           await syncLogToDevice(log, meta);
-          if (googleCalendarEnabled) await syncLogToGoogle(log, meta);
         }),
       );
+
+      // Google Calendar: one RRULE recurring event per dose time
+      if (googleCalendarEnabled) {
+        const med = useMedicationStore.getState().medications.find((m) => m.id === medId);
+        if (med) {
+          const { medicine: syncParams, scheduleTimes } = buildGoogleSyncParams(med);
+          await syncMedicineToGoogle(syncParams, scheduleTimes);
+        }
+      }
     },
     [calendarSync, googleCalendarEnabled],
   );
@@ -76,6 +88,7 @@ export function useCalendarSync() {
       meds
         .filter((m) => m.calendarSync === 1)
         .map(async (m) => {
+          // Device calendar
           const logs = getDoseLogsForMedicine(m.id).filter((l) => l.status === 'pending');
           const dosage = `${m.dosage} ${m.dosageUnit}`;
           await Promise.all(
@@ -88,19 +101,28 @@ export function useCalendarSync() {
               }),
             ),
           );
+
+          // Google Calendar
+          if (googleCalendarEnabled) {
+            const { medicine: syncParams, scheduleTimes } = buildGoogleSyncParams(m);
+            await syncMedicineToGoogle(syncParams, scheduleTimes);
+          }
         }),
     );
-  }, []);
+  }, [googleCalendarEnabled]);
 
   const desyncAll = useCallback(async (): Promise<void> => {
     const meds = useMedicationStore.getState().medications;
     await Promise.all(
       meds.map(async (m) => {
         const logs = getDoseLogsForMedicine(m.id);
-        await Promise.all(logs.map(desyncLog));
+        await Promise.all(logs.map(desyncLogFromDevice));
+        if (googleCalendarEnabled) {
+          await unsyncMedicineFromGoogle(m.id);
+        }
       }),
     );
-  }, []);
+  }, [googleCalendarEnabled]);
 
   const syncMedicineToggle = useCallback(
     async (medId: string, enabled: boolean): Promise<void> => {
@@ -108,26 +130,35 @@ export function useCalendarSync() {
       useMedicationStore.getState().load();
       if (!enabled) {
         const logs = getDoseLogsForMedicine(medId);
-        await Promise.all(logs.map(desyncLog));
+        await Promise.all(logs.map(desyncLogFromDevice));
+        if (googleCalendarEnabled) {
+          await unsyncMedicineFromGoogle(medId);
+        }
         return;
       }
       if (!calendarSync) return;
       const med = useMedicationStore.getState().medications.find((m) => m.id === medId);
       if (!med) return;
+
+      // Device calendar
       const logs = getDoseLogsForMedicine(medId).filter((l) => l.status === 'pending');
       const dosage = `${med.dosage} ${med.dosageUnit}`;
       await Promise.all(
         logs.map(async (log) => {
-          const meta: DoseEventParams = {
+          await syncLogToDevice(log, {
             medicineName: med.name,
             dosage,
             scheduledAt: log.scheduledAt,
             instructions: med.instructions ?? null,
-          };
-          await syncLogToDevice(log, meta);
-          if (googleCalendarEnabled) await syncLogToGoogle(log, meta);
+          });
         }),
       );
+
+      // Google Calendar
+      if (googleCalendarEnabled) {
+        const { medicine: syncParams, scheduleTimes } = buildGoogleSyncParams(med);
+        await syncMedicineToGoogle(syncParams, scheduleTimes);
+      }
     },
     [calendarSync, googleCalendarEnabled],
   );

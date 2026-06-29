@@ -255,3 +255,39 @@ A feature is **DONE** when **all** of the following are true:
 - Apple Watch / Wear OS companion apps
 - Barcode scanning of medicine packaging (nice-to-have, post-MVP)
 - Automated E2E test suite (manual testing at MVP; add Detox in v2)
+
+---
+
+## Google Calendar Setup
+
+To enable the Google Calendar direct-sync toggle in Settings:
+
+1. Go to [https://console.cloud.google.com](https://console.cloud.google.com) and create a new project (e.g. "MedMinder").
+2. Under **APIs & Services → Library**, enable **Google Calendar API**.
+3. Under **APIs & Services → OAuth consent screen**, configure the app:
+   - User type: External
+   - App name: MedMinder
+   - Scopes: `../auth/calendar.events`
+4. Under **APIs & Services → Credentials**, create two OAuth 2.0 Client IDs:
+   - **Android**: type = Android, package = `com.medminder.app`, SHA-1 = output of `./gradlew signingReport`
+   - **iOS**: type = iOS, bundle ID = `com.medminder.app`
+5. Paste the Client IDs into `src/services/google-calendar-service.ts`:
+   ```ts
+   const IOS_CLIENT_ID = 'YOUR_IOS_CLIENT_ID.apps.googleusercontent.com';
+   const ANDROID_CLIENT_ID = 'YOUR_ANDROID_CLIENT_ID.apps.googleusercontent.com';
+   ```
+6. Add `medminder://oauth` to the authorised redirect URIs.
+7. Rebuild the app (`npx expo run:android` / `npx expo run:ios`).
+
+Google Calendar sync creates **recurring RRULE events** (one per dose time per medicine) — not individual dose-log events. This avoids calendar clutter. Note: "Mark Taken" and "Snooze" actions are only available in the MedMinder app, not from Google Calendar.
+
+---
+
+## Drug Database (`assets/drug-database.json`)
+
+- Hand-authored list of ~220 generic drug entries covering ~2 000+ recognisable name variants.
+- Schema: `{ brandName, genericName, aliases[], commonStrengths[], forms[] }` — one entry per generic.
+- Weighted toward Indian OPD prescriptions (dermatology, GP, endocrinology, cardiology).
+- Deduplication key for future CSV merge: `genericName` (normalised, case-insensitive).
+- Fuzzy lookup in `src/parsers/drug-db.ts` uses Dice coefficient on character bigrams; threshold 0.55.
+- Data is curated manually; not sourced from any proprietary database.

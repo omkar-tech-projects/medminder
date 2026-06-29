@@ -4,6 +4,14 @@ import { View, useColorScheme } from 'react-native';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
+import {
+  useFonts,
+  Nunito_400Regular,
+  Nunito_600SemiBold,
+  Nunito_700Bold,
+  Nunito_800ExtraBold,
+  Nunito_900Black,
+} from '@expo-google-fonts/nunito';
 import { ToastContainer } from '@/components';
 import { AppLockScreen } from '@/components/AppLockScreen';
 import { useOnboardingStore } from '@/store/onboarding-store';
@@ -12,6 +20,7 @@ import { useNotificationHandler } from '@/hooks/use-notification-handler';
 import { useAutoMiss } from '@/hooks/use-auto-miss';
 import { useAppLock } from '@/hooks/use-app-lock';
 import { runRefillCheck } from '@/services/refill-service';
+import { runGoogleCalendarMigrationIfNeeded } from '@/services/google-calendar-service';
 import { useSettingsStore } from '@/store/settings-store';
 
 void SplashScreen.preventAutoHideAsync();
@@ -21,6 +30,14 @@ export default function RootLayout() {
   const segments = useSegments();
   const router = useRouter();
 
+  const [fontsLoaded] = useFonts({
+    Nunito_400Regular,
+    Nunito_600SemiBold,
+    Nunito_700Bold,
+    Nunito_800ExtraBold,
+    Nunito_900Black,
+  });
+
   useNotificationHandler();
   useAutoMiss();
   useAppLock();
@@ -28,6 +45,7 @@ export default function RootLayout() {
   useEffect(() => {
     const refillWarningDays = useSettingsStore.getState().refillWarningDays;
     void runRefillCheck(refillWarningDays).catch(() => undefined);
+    void runGoogleCalendarMigrationIfNeeded().catch(() => undefined);
   }, []);
 
   const isOnboardingLoaded = useOnboardingStore((s) => s.isLoaded);
@@ -38,7 +56,7 @@ export default function RootLayout() {
   const isLocked = useAppLockStore((s) => s.isLocked);
   const loadAppLock = useAppLockStore((s) => s.load);
 
-  const isLoaded = isOnboardingLoaded && isLockLoaded;
+  const isLoaded = isOnboardingLoaded && isLockLoaded && (fontsLoaded ?? false);
 
   useEffect(() => {
     void loadOnboarding();
