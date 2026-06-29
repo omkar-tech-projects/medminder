@@ -1,0 +1,2025 @@
+[
+  {
+    "brandName": "Dolo",
+    "genericName": "Paracetamol",
+    "aliases": ["Crocin", "Calpol", "Fepanil", "Pacimol", "Pyrigesic", "Dolopar", "Paracip", "Tylenol", "Aceta", "Metacin"],
+    "commonStrengths": ["500mg", "650mg", "1000mg"],
+    "forms": ["tablet", "syrup", "suspension"]
+  },
+  {
+    "brandName": "Brufen",
+    "genericName": "Ibuprofen",
+    "aliases": ["Advil", "Nurofen", "Ibugesic", "Espride", "Ibupar", "Ibuvid", "Bufen"],
+    "commonStrengths": ["200mg", "400mg", "600mg"],
+    "forms": ["tablet", "syrup", "gel"]
+  },
+  {
+    "brandName": "Combiflam",
+    "genericName": "Paracetamol + Ibuprofen",
+    "aliases": ["Ibugesic Plus", "Flamegesic", "Paracetamol-Ibuprofen"],
+    "commonStrengths": ["325mg+200mg", "500mg+400mg"],
+    "forms": ["tablet", "suspension"]
+  },
+  {
+    "brandName": "Voveran",
+    "genericName": "Diclofenac",
+    "aliases": ["Voltaren", "Diclomax", "Diclomol", "Rolosol", "Dynapar", "Felsules", "Diclogesic", "Reactin"],
+    "commonStrengths": ["50mg", "75mg", "100mg"],
+    "forms": ["tablet", "gel", "injection", "suppository"]
+  },
+  {
+    "brandName": "Nise",
+    "genericName": "Nimesulide",
+    "aliases": ["Nimheal", "Nimulid", "Nimodol", "Nimucet", "Nicip", "Nimugesic", "Nimsaid"],
+    "commonStrengths": ["100mg"],
+    "forms": ["tablet", "suspension", "gel"]
+  },
+  {
+    "brandName": "Zerodol",
+    "genericName": "Aceclofenac",
+    "aliases": ["Aceclo", "Hifenac", "Movon", "Aceclofen", "Acefrac", "Dolokind", "Acefree"],
+    "commonStrengths": ["100mg", "200mg"],
+    "forms": ["tablet", "gel"]
+  },
+  {
+    "brandName": "Zerodol P",
+    "genericName": "Aceclofenac + Paracetamol",
+    "aliases": ["Aceclo Plus", "Hifenac P", "Movon P", "Aceclofen P", "Comfenak P"],
+    "commonStrengths": ["100mg+325mg", "100mg+500mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Meftal",
+    "genericName": "Mefenamic Acid",
+    "aliases": ["Ponstan", "Mefkind", "Mef", "Parkemed", "Mefamic", "Meftagesic"],
+    "commonStrengths": ["250mg", "500mg"],
+    "forms": ["tablet", "capsule", "suspension"]
+  },
+  {
+    "brandName": "Meftal Spas",
+    "genericName": "Mefenamic Acid + Dicyclomine",
+    "aliases": ["Mefspas", "Spasmonil", "Cyclopam", "Doloford Spas"],
+    "commonStrengths": ["250mg+10mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Ecosprin",
+    "genericName": "Aspirin",
+    "aliases": ["Disprin", "Loprin", "Ecotrin", "Aspin", "Ascard", "Minipress"],
+    "commonStrengths": ["75mg", "150mg", "325mg", "500mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Tramazac",
+    "genericName": "Tramadol",
+    "aliases": ["Ultracet", "Ultragesic", "Contramal", "Tramacip", "Tramadolor"],
+    "commonStrengths": ["50mg", "100mg"],
+    "forms": ["tablet", "capsule", "injection"]
+  },
+  {
+    "brandName": "Nucoxia",
+    "genericName": "Etoricoxib",
+    "aliases": ["Arcoxia", "Etova", "Torocoxia", "Coxrid", "Etobax", "Etoshine"],
+    "commonStrengths": ["60mg", "90mg", "120mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Celact",
+    "genericName": "Celecoxib",
+    "aliases": ["Celebrex", "Celcox", "Cobix", "Revibra", "Celib", "Celecox"],
+    "commonStrengths": ["100mg", "200mg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Torolac",
+    "genericName": "Ketorolac",
+    "aliases": ["Ketolac", "Ketorac", "Ketofen", "Ketanov"],
+    "commonStrengths": ["10mg", "30mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Mox",
+    "genericName": "Amoxicillin",
+    "aliases": ["Amoxil", "Wymox", "Amoxin", "Trimox", "Amoxilin"],
+    "commonStrengths": ["250mg", "500mg"],
+    "forms": ["capsule", "syrup"]
+  },
+  {
+    "brandName": "Augmentin",
+    "genericName": "Amoxicillin + Clavulanate",
+    "aliases": ["Moxclav", "Clavam", "Amoxyclav", "Co-amoxiclav", "Clavox", "Clavamel", "Clavamox", "Amoxiclav"],
+    "commonStrengths": ["375mg", "625mg", "1g"],
+    "forms": ["tablet", "syrup", "injection"]
+  },
+  {
+    "brandName": "Azithral",
+    "genericName": "Azithromycin",
+    "aliases": ["Zithromax", "Azee", "Azibest", "Aziwin", "Azithrocin", "Azicip", "Azicin", "Azivista", "Zithrox"],
+    "commonStrengths": ["250mg", "500mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Ciplox",
+    "genericName": "Ciprofloxacin",
+    "aliases": ["Cifran", "Ciprobid", "Ciproxin", "Ciprolet", "Cipact", "Baycip", "Cyflox"],
+    "commonStrengths": ["250mg", "500mg", "750mg"],
+    "forms": ["tablet", "injection", "eye drops"]
+  },
+  {
+    "brandName": "Levoflox",
+    "genericName": "Levofloxacin",
+    "aliases": ["Levomac", "Loxof", "Leof", "Levoquin", "Tavanic", "Glevo", "Levoday", "Levoflox"],
+    "commonStrengths": ["250mg", "500mg", "750mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Doxt",
+    "genericName": "Doxycycline",
+    "aliases": ["Vibramycin", "Doxicip", "Biodoxi", "Doxinate", "Doxy-1", "Doxitab", "Hipadox", "Doxypal"],
+    "commonStrengths": ["100mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Flagyl",
+    "genericName": "Metronidazole",
+    "aliases": ["Metrogyl", "Metron", "Aldezol", "Metrogear", "Metro", "Metrolyl", "Flagystatin"],
+    "commonStrengths": ["200mg", "400mg", "500mg"],
+    "forms": ["tablet", "suspension", "injection", "gel"]
+  },
+  {
+    "brandName": "Taxim-O",
+    "genericName": "Cefixime",
+    "aliases": ["Cefi", "Zifi", "Topcef", "Ceftum", "Ceftas", "Mahacef", "Suprax", "Cefspan"],
+    "commonStrengths": ["100mg", "200mg", "400mg"],
+    "forms": ["tablet", "capsule", "syrup"]
+  },
+  {
+    "brandName": "Cepodem",
+    "genericName": "Cefpodoxime",
+    "aliases": ["Cefpod", "Cefdiel", "Cepodem XP", "Olcef", "Vantin", "Cefoprox", "Pecef", "Proxetil"],
+    "commonStrengths": ["100mg", "200mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Cefpod CV",
+    "genericName": "Cefpodoxime + Clavulanate",
+    "aliases": ["Cepodem CV", "Cefpodoxime-Clavulanate", "Cefoprox CV"],
+    "commonStrengths": ["200mg+125mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Sporidex",
+    "genericName": "Cephalexin",
+    "aliases": ["Cephadex", "Keflex", "Cifadex", "Cephaxin", "Cefalex"],
+    "commonStrengths": ["250mg", "500mg"],
+    "forms": ["capsule", "syrup"]
+  },
+  {
+    "brandName": "Zinnat",
+    "genericName": "Cefuroxime",
+    "aliases": ["Ceftin", "Cefutas", "Cefunext", "Altacef", "Supacef"],
+    "commonStrengths": ["250mg", "500mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Monocef",
+    "genericName": "Ceftriaxone",
+    "aliases": ["Rocephin", "Cefaxone", "Oframax", "Milixim", "Biotax"],
+    "commonStrengths": ["250mg", "500mg", "1g"],
+    "forms": ["injection"]
+  },
+  {
+    "brandName": "Claribid",
+    "genericName": "Clarithromycin",
+    "aliases": ["Klacid", "Biaxin", "Klaricid", "Clarimac", "Clar", "Claricin"],
+    "commonStrengths": ["250mg", "500mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Erythrocin",
+    "genericName": "Erythromycin",
+    "aliases": ["Erytop", "Althrocin", "Eryped", "Ilosone", "E-Mycin"],
+    "commonStrengths": ["250mg", "500mg"],
+    "forms": ["tablet", "syrup", "gel"]
+  },
+  {
+    "brandName": "Septran",
+    "genericName": "Cotrimoxazole",
+    "aliases": ["Bactrim", "Trimosul", "Zotrim", "Co-trimoxazole", "Bactoprim", "Resprim"],
+    "commonStrengths": ["480mg", "960mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Zanocin",
+    "genericName": "Ofloxacin",
+    "aliases": ["Oflox", "Tarivid", "Occuflox", "Zenflox", "Floxur", "Ofloxal"],
+    "commonStrengths": ["200mg", "400mg"],
+    "forms": ["tablet", "eye drops", "ear drops", "injection"]
+  },
+  {
+    "brandName": "Norflox",
+    "genericName": "Norfloxacin",
+    "aliases": ["Norxacin", "Uroflox", "Norcin", "Norflox-TZ", "Uroflox-TZ"],
+    "commonStrengths": ["400mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Normet",
+    "genericName": "Norfloxacin + Metronidazole",
+    "aliases": ["Norflox TZ", "Normetazole", "Norilet", "Normef"],
+    "commonStrengths": ["400mg+500mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Oflomac OZ",
+    "genericName": "Ofloxacin + Ornidazole",
+    "aliases": ["Norflox OZ", "O2 Oflox", "Zenflox OZ", "Oflox OZ", "Ornof"],
+    "commonStrengths": ["200mg+500mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Tiniba",
+    "genericName": "Tinidazole",
+    "aliases": ["Fasigyn", "Tinimax", "Tinvista", "Tinadazol", "Tini"],
+    "commonStrengths": ["300mg", "500mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Furadantin",
+    "genericName": "Nitrofurantoin",
+    "aliases": ["Macrobid", "Macrodantin", "Nifuran", "Nitrofuran", "Urimac"],
+    "commonStrengths": ["50mg", "100mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Clincin",
+    "genericName": "Clindamycin",
+    "aliases": ["Dalacin", "Clindac", "Cleocin", "Clindamycin-T", "Clindagel", "Clindac A"],
+    "commonStrengths": ["75mg", "150mg", "300mg"],
+    "forms": ["capsule", "gel", "injection"]
+  },
+  {
+    "brandName": "Pan",
+    "genericName": "Pantoprazole",
+    "aliases": ["Pantop", "Pantocid", "Nexpro", "Pantocar", "Pantodac", "Pantosec", "Pantofast", "Pantakem"],
+    "commonStrengths": ["20mg", "40mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Pan D",
+    "genericName": "Pantoprazole + Domperidone",
+    "aliases": ["Pantocid D", "Pantop D", "Pantodom", "Nexpro D", "Pantocar D", "Domstal Pan"],
+    "commonStrengths": ["40mg+10mg", "40mg+30mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Omez",
+    "genericName": "Omeprazole",
+    "aliases": ["Prilosec", "Omesec", "Losec", "Ocid", "Omiped", "Omeget", "Omeheal"],
+    "commonStrengths": ["20mg", "40mg"],
+    "forms": ["tablet", "capsule", "injection"]
+  },
+  {
+    "brandName": "Razo",
+    "genericName": "Rabeprazole",
+    "aliases": ["Rabepraz", "Rabicip", "Rabeloc", "Happi", "Rabekind", "Rabloc", "Veloz"],
+    "commonStrengths": ["10mg", "20mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Nexium",
+    "genericName": "Esomeprazole",
+    "aliases": ["Nexpro SR", "Esoz", "Emanera", "Sompraz", "Zoleri", "Esomac"],
+    "commonStrengths": ["20mg", "40mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Lanzol",
+    "genericName": "Lansoprazole",
+    "aliases": ["Prevacid", "Lanzap", "Lansol", "Lano", "Lansoptol"],
+    "commonStrengths": ["15mg", "30mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Rantac",
+    "genericName": "Ranitidine",
+    "aliases": ["Zantac", "Aciloc", "Zinetac", "Histac", "Ranitidine"],
+    "commonStrengths": ["150mg", "300mg"],
+    "forms": ["tablet", "syrup", "injection"]
+  },
+  {
+    "brandName": "Famocid",
+    "genericName": "Famotidine",
+    "aliases": ["Topcid", "Famtac", "Famodil", "Famodin", "Pepcid", "Famotidin"],
+    "commonStrengths": ["20mg", "40mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Emeset",
+    "genericName": "Ondansetron",
+    "aliases": ["Zofran", "Vomikind", "Ondem", "Ondanset", "Emistat", "Ondansetron"],
+    "commonStrengths": ["4mg", "8mg"],
+    "forms": ["tablet", "syrup", "injection"]
+  },
+  {
+    "brandName": "Dompan",
+    "genericName": "Domperidone",
+    "aliases": ["Motilium", "Domstal", "Vomistop", "Domin", "Domperil", "Dompan"],
+    "commonStrengths": ["10mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Perinorm",
+    "genericName": "Metoclopramide",
+    "aliases": ["Reglan", "Maxolon", "Emeset", "Perinorm", "Pylomid"],
+    "commonStrengths": ["10mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Imodium",
+    "genericName": "Loperamide",
+    "aliases": ["Lopamide", "Eldoper", "Lopercap", "Lomodium", "Diarrest"],
+    "commonStrengths": ["2mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Dulcoflex",
+    "genericName": "Bisacodyl",
+    "aliases": ["Laxigesic", "Bisac-Evac", "Laxit", "Dulcolax"],
+    "commonStrengths": ["5mg", "10mg"],
+    "forms": ["tablet", "suppository"]
+  },
+  {
+    "brandName": "Duphalac",
+    "genericName": "Lactulose",
+    "aliases": ["Laxulam", "Lactulose Syrup", "Constilac", "Gatilax"],
+    "commonStrengths": ["3.35g/5ml"],
+    "forms": ["syrup"]
+  },
+  {
+    "brandName": "Isabgol",
+    "genericName": "Psyllium Husk",
+    "aliases": ["Metamucil", "Plantago", "Sat Isabgol", "Fibril"],
+    "commonStrengths": ["3.5g"],
+    "forms": ["powder", "granules"]
+  },
+  {
+    "brandName": "Sucral",
+    "genericName": "Sucralfate",
+    "aliases": ["Ulsanic", "Sucramal", "Sucrafil", "Sucralpro"],
+    "commonStrengths": ["1g"],
+    "forms": ["tablet", "suspension"]
+  },
+  {
+    "brandName": "Duspatalin",
+    "genericName": "Mebeverine",
+    "aliases": ["Mebevit", "Colospas", "Mebeverin"],
+    "commonStrengths": ["135mg", "200mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Amlong",
+    "genericName": "Amlodipine",
+    "aliases": ["Norvasc", "Amlip", "Amlovas", "Stamlo", "Calcigard", "Amlopin", "Amlorest"],
+    "commonStrengths": ["2.5mg", "5mg", "10mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Telma",
+    "genericName": "Telmisartan",
+    "aliases": ["Micardis", "Telmikind", "Telmisave", "Telsar", "Telsartan", "Cresar"],
+    "commonStrengths": ["20mg", "40mg", "80mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Telma AM",
+    "genericName": "Telmisartan + Amlodipine",
+    "aliases": ["Tazloc AM", "Temsan AM", "Telmisave A", "Sartel AM", "Cresar AM"],
+    "commonStrengths": ["40mg+5mg", "80mg+5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Losar",
+    "genericName": "Losartan",
+    "aliases": ["Cozaar", "Losacar", "Repace", "Losatec", "Losium", "Lortaan"],
+    "commonStrengths": ["25mg", "50mg", "100mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Valzaar",
+    "genericName": "Valsartan",
+    "aliases": ["Diovan", "Valsave", "Valtan", "Valsakind"],
+    "commonStrengths": ["40mg", "80mg", "160mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Olmy",
+    "genericName": "Olmesartan",
+    "aliases": ["Olsar", "Benicar", "Olmecip", "Olmark", "Benitec"],
+    "commonStrengths": ["10mg", "20mg", "40mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Cardace",
+    "genericName": "Ramipril",
+    "aliases": ["Hopace", "Rampril", "Ramigamma", "Tritace", "Altace", "Ramcor"],
+    "commonStrengths": ["1.25mg", "2.5mg", "5mg", "10mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Envas",
+    "genericName": "Enalapril",
+    "aliases": ["Enapril", "Renace", "Enacard", "Vasotec", "Enalril"],
+    "commonStrengths": ["2.5mg", "5mg", "10mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Listril",
+    "genericName": "Lisinopril",
+    "aliases": ["Cipril", "Lisinace", "Lipril", "Zestril", "Prinivil"],
+    "commonStrengths": ["2.5mg", "5mg", "10mg", "20mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Metolar",
+    "genericName": "Metoprolol",
+    "aliases": ["Betaloc", "Metoprolol XL", "Seloken", "Lopressor", "Metoblok"],
+    "commonStrengths": ["12.5mg", "25mg", "50mg", "100mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Tenormin",
+    "genericName": "Atenolol",
+    "aliases": ["Betacard", "Atpress", "Tenolol", "Ateno", "Aten"],
+    "commonStrengths": ["25mg", "50mg", "100mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Cardivas",
+    "genericName": "Carvedilol",
+    "aliases": ["Carca", "Carvil", "Carvitol", "Coreg", "Dilatrend"],
+    "commonStrengths": ["3.125mg", "6.25mg", "12.5mg", "25mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Concor",
+    "genericName": "Bisoprolol",
+    "aliases": ["Cardicor", "Biselect", "Bisocor", "Biselect", "Corbis"],
+    "commonStrengths": ["2.5mg", "5mg", "10mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Adalat",
+    "genericName": "Nifedipine",
+    "aliases": ["Nifcal", "Nifedip", "Nicardia", "Procardia"],
+    "commonStrengths": ["5mg", "10mg", "20mg", "30mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Dilzem",
+    "genericName": "Diltiazem",
+    "aliases": ["Angizem", "Altiazem", "Tildiem", "Cardizem", "Delzicor"],
+    "commonStrengths": ["30mg", "60mg", "90mg", "120mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Lasix",
+    "genericName": "Furosemide",
+    "aliases": ["Frusenex", "Frusemide", "Diuzone", "Frusid", "Salix"],
+    "commonStrengths": ["20mg", "40mg", "80mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Aldactone",
+    "genericName": "Spironolactone",
+    "aliases": ["Spiromide", "Lasilactone", "Spironol", "Spiractin", "Aldopur"],
+    "commonStrengths": ["25mg", "50mg", "100mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Natrilix",
+    "genericName": "Indapamide",
+    "aliases": ["Indatab", "Lorvas", "Indicontin", "Tensartan"],
+    "commonStrengths": ["1.5mg", "2.5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Glycomet",
+    "genericName": "Metformin",
+    "aliases": ["Glucophage", "Bigomet", "Obimet", "Metsmall", "Glucored", "Gluformin", "Riomet"],
+    "commonStrengths": ["250mg", "500mg", "850mg", "1000mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Glycomet GP",
+    "genericName": "Metformin + Glimepiride",
+    "aliases": ["Glimisave M", "Glimerite M", "Metformin-Glimepiride", "Gemer"],
+    "commonStrengths": ["500mg+1mg", "500mg+2mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Galvumet",
+    "genericName": "Metformin + Vildagliptin",
+    "aliases": ["Jalra M", "Vildamet", "Metformin-Vildagliptin"],
+    "commonStrengths": ["50mg+500mg", "50mg+850mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Amaryl",
+    "genericName": "Glimepiride",
+    "aliases": ["Glucoryl", "Glimisave", "Glimy", "Diaglim", "Glimestar", "Glimcer"],
+    "commonStrengths": ["1mg", "2mg", "3mg", "4mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Daonil",
+    "genericName": "Glibenclamide",
+    "aliases": ["Euglucon", "Glynase", "Dianorm", "Semi-Daonil", "Glucovance"],
+    "commonStrengths": ["2.5mg", "5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Diamicron",
+    "genericName": "Gliclazide",
+    "aliases": ["Gliclazide MR", "Glyclazid", "Glycinorm", "Glizid", "Glucored"],
+    "commonStrengths": ["40mg", "60mg", "80mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Januvia",
+    "genericName": "Sitagliptin",
+    "aliases": ["Sitaday", "Istamet", "Glactiv", "Sitagen", "Sitaglit"],
+    "commonStrengths": ["25mg", "50mg", "100mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Galvus",
+    "genericName": "Vildagliptin",
+    "aliases": ["Vildaglin", "Jalra", "Vildamac", "Zomelis"],
+    "commonStrengths": ["50mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Tenepure",
+    "genericName": "Teneligliptin",
+    "aliases": ["Tenliday", "Tenlia", "Teneli", "Tenliglu"],
+    "commonStrengths": ["20mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Forxiga",
+    "genericName": "Dapagliflozin",
+    "aliases": ["Dapaglyn", "Oxra", "Dapaglit", "Farxiga"],
+    "commonStrengths": ["5mg", "10mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Jardiance",
+    "genericName": "Empagliflozin",
+    "aliases": ["Empa", "Empaglit", "Empagrez"],
+    "commonStrengths": ["10mg", "25mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Pioz",
+    "genericName": "Pioglitazone",
+    "aliases": ["Pioglit", "Actos", "Piomed", "Piozone", "Glizone"],
+    "commonStrengths": ["7.5mg", "15mg", "30mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Basalog",
+    "genericName": "Insulin Glargine",
+    "aliases": ["Lantus", "Glaritus", "Toujeo", "Glargine", "Woglaar"],
+    "commonStrengths": ["100 IU/ml"],
+    "forms": ["injection"]
+  },
+  {
+    "brandName": "Huminsulin N",
+    "aliases": ["Insuman Basal", "Wosulin N", "Insulin Isophane"],
+    "genericName": "Insulin Isophane",
+    "commonStrengths": ["100 IU/ml"],
+    "forms": ["injection"]
+  },
+  {
+    "brandName": "Humalog",
+    "genericName": "Insulin Lispro",
+    "aliases": ["Admelog", "Insulin Lispro", "Lispro"],
+    "commonStrengths": ["100 IU/ml"],
+    "forms": ["injection"]
+  },
+  {
+    "brandName": "Atorva",
+    "genericName": "Atorvastatin",
+    "aliases": ["Lipitor", "Storvas", "Tonact", "Aztor", "Atocor", "Stator", "Atorfit"],
+    "commonStrengths": ["5mg", "10mg", "20mg", "40mg", "80mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Rozavel",
+    "genericName": "Rosuvastatin",
+    "aliases": ["Crestor", "Rosave", "Roseday", "Rosutor", "Rosuvast", "Rosubest"],
+    "commonStrengths": ["5mg", "10mg", "20mg", "40mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Atenlip",
+    "genericName": "Atorvastatin + Amlodipine",
+    "aliases": ["Caduet", "Amtas AT", "Amlodipine-Atorvastatin", "Atorlip AM"],
+    "commonStrengths": ["10mg+5mg", "20mg+5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Rosufit CF",
+    "genericName": "Rosuvastatin + Fenofibrate",
+    "aliases": ["Rosuvas F", "Rosuvastatin Fenofibrate", "Rosufit F"],
+    "commonStrengths": ["10mg+145mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Lipicard",
+    "genericName": "Fenofibrate",
+    "aliases": ["Tricor", "Fenolip", "Fenofib", "Fenostat", "Lipanthyl"],
+    "commonStrengths": ["67mg", "145mg", "160mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Clopivas",
+    "genericName": "Clopidogrel",
+    "aliases": ["Plavix", "Deplatt", "Clopilet", "Agrivas", "Clopicard", "Clopigrel"],
+    "commonStrengths": ["75mg", "150mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Aspavas",
+    "genericName": "Aspirin + Atorvastatin",
+    "aliases": ["Atova AS", "Ecosprin AV", "Asporvast"],
+    "commonStrengths": ["75mg+10mg", "75mg+20mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Warf",
+    "genericName": "Warfarin",
+    "aliases": ["Coumadin", "Warfin", "Wafarin", "Coumarin"],
+    "commonStrengths": ["1mg", "2mg", "5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Pradaxa",
+    "genericName": "Dabigatran",
+    "aliases": ["Dabigat", "Dabigatran Etexilate"],
+    "commonStrengths": ["75mg", "110mg", "150mg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Xarelto",
+    "genericName": "Rivaroxaban",
+    "aliases": ["Xarvio", "Reclot", "Rivaxo", "Rivastra"],
+    "commonStrengths": ["2.5mg", "10mg", "15mg", "20mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Eliquis",
+    "genericName": "Apixaban",
+    "aliases": ["Apixal", "Apixaban"],
+    "commonStrengths": ["2.5mg", "5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Nitrocin",
+    "genericName": "Nitroglycerine",
+    "aliases": ["Angised", "NTG", "Sorbitrate", "GTN", "Nitrostat"],
+    "commonStrengths": ["0.5mg", "2.5mg", "5mg"],
+    "forms": ["tablet", "patch", "spray"]
+  },
+  {
+    "brandName": "Monotrate",
+    "genericName": "Isosorbide Mononitrate",
+    "aliases": ["Isoket", "Sorbidin", "Ismo", "Monoket", "Imdur"],
+    "commonStrengths": ["10mg", "20mg", "60mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Shelcal",
+    "genericName": "Calcium Carbonate",
+    "aliases": ["Calcimax", "Calcium Sandoz", "Ostocalcium", "Caltrate", "CalciRol", "Calbo"],
+    "commonStrengths": ["500mg", "1250mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "D-Rise",
+    "genericName": "Vitamin D3",
+    "aliases": ["Calcirol", "Arachitol", "Cholecalciferol", "Uprise D3", "Ossopan", "Tayo", "D3 Must"],
+    "commonStrengths": ["60000 IU", "1000 IU", "2000 IU"],
+    "forms": ["tablet", "capsule", "injection", "sachet"]
+  },
+  {
+    "brandName": "Nervijen",
+    "genericName": "Methylcobalamin",
+    "aliases": ["Mecobalamin", "Mecobion", "Cobal", "Methycobal", "Neurobion Forte", "Cobadex CZS"],
+    "commonStrengths": ["500mcg", "1500mcg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Dexorange",
+    "genericName": "Iron + Folic Acid",
+    "aliases": ["Autrin", "Fefol", "Feronia XT", "Orofer", "Iberet", "Albfer", "Haemup"],
+    "commonStrengths": ["150mg+1.5mg"],
+    "forms": ["tablet", "capsule", "syrup"]
+  },
+  {
+    "brandName": "Orofer XT",
+    "genericName": "Ferrous Ascorbate",
+    "aliases": ["Feronia", "Targetol", "Ferium XT", "Ferroascorb"],
+    "commonStrengths": ["100mg+1.5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Becosules",
+    "genericName": "Multivitamin B-Complex",
+    "aliases": ["Supradyn", "Revital", "Centrum", "Neurobion", "Polybion", "Beplex Forte"],
+    "commonStrengths": [],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Zincovit",
+    "genericName": "Zinc + Multivitamin",
+    "aliases": ["Zinctus", "ZnC", "Zinconia", "Zevit"],
+    "commonStrengths": ["20mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Limcee",
+    "genericName": "Vitamin C",
+    "aliases": ["Celin", "Ascorbase", "Vit C", "Ascorbic Acid", "Cevit"],
+    "commonStrengths": ["500mg", "1000mg"],
+    "forms": ["tablet", "chewable"]
+  },
+  {
+    "brandName": "Folvite",
+    "genericName": "Folic Acid",
+    "aliases": ["Folsave", "Folinxt", "Folicap", "Folic Acid"],
+    "commonStrengths": ["0.5mg", "1mg", "5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Thyronorm",
+    "genericName": "Levothyroxine",
+    "aliases": ["Eltroxin", "Thyrox", "Thyroxine", "Levothyrox", "Synthroid", "T4"],
+    "commonStrengths": ["12.5mcg", "25mcg", "50mcg", "75mcg", "100mcg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Neomercazole",
+    "genericName": "Carbimazole",
+    "aliases": ["Carbimazol", "Neo-Mercazole", "Thyrozol", "Methimazole"],
+    "commonStrengths": ["5mg", "10mg", "20mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Inderal",
+    "genericName": "Propranolol",
+    "aliases": ["Propranolol HCl", "Ciplar", "Betacap", "Hemangeol"],
+    "commonStrengths": ["10mg", "20mg", "40mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Cetzine",
+    "genericName": "Cetirizine",
+    "aliases": ["Alerid", "Cetcip", "Zyrtec", "Allercet", "Histazine", "Cetrizet", "Okacet"],
+    "commonStrengths": ["5mg", "10mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Xyzal",
+    "genericName": "Levocetirizine",
+    "aliases": ["Levocet", "Levorid", "Lcz", "Levofexo", "Telekast L", "Teczine"],
+    "commonStrengths": ["2.5mg", "5mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Allegra",
+    "genericName": "Fexofenadine",
+    "aliases": ["Fexova", "Fexo", "Telfast", "Fexigra", "Histafex"],
+    "commonStrengths": ["60mg", "120mg", "180mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Clariwin",
+    "genericName": "Loratadine",
+    "aliases": ["Loratin", "Alavert", "Claritin", "Lorid", "Lorfast"],
+    "commonStrengths": ["10mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Deslor",
+    "genericName": "Desloratadine",
+    "aliases": ["Aerius", "Ristino", "Desnix", "Deslora"],
+    "commonStrengths": ["5mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Piriton",
+    "genericName": "Chlorpheniramine",
+    "aliases": ["Cheston Cold", "CTM", "Tixylix", "Chlorphenamine", "Polaramine"],
+    "commonStrengths": ["2mg", "4mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Atarax",
+    "genericName": "Hydroxyzine",
+    "aliases": ["Vistaril", "Ucarax", "Hydroxyzin", "Hytis"],
+    "commonStrengths": ["10mg", "25mg", "50mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Benadryl",
+    "genericName": "Diphenhydramine",
+    "aliases": ["Diphenhist", "Diphen", "Unisom"],
+    "commonStrengths": ["12.5mg/5ml", "25mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Montair",
+    "genericName": "Montelukast",
+    "aliases": ["Singulair", "Montek", "Montina", "Romilast", "Lukotas", "Airon"],
+    "commonStrengths": ["4mg", "5mg", "10mg"],
+    "forms": ["tablet", "chewable"]
+  },
+  {
+    "brandName": "Telekast L",
+    "genericName": "Montelukast + Levocetirizine",
+    "aliases": ["Montair LC", "Monlevo", "Levocet M", "Lukotas LC"],
+    "commonStrengths": ["10mg+5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Asthalin",
+    "genericName": "Salbutamol",
+    "aliases": ["Ventolin", "Salamol", "Albuterol", "Derihaler", "Salbair"],
+    "commonStrengths": ["2mg", "4mg", "100mcg/puff"],
+    "forms": ["tablet", "syrup", "inhaler"]
+  },
+  {
+    "brandName": "Foracort",
+    "genericName": "Budesonide + Formoterol",
+    "aliases": ["Budamate", "Symbicort", "Budecort F", "Formocort"],
+    "commonStrengths": ["200mcg+6mcg", "400mcg+6mcg"],
+    "forms": ["inhaler", "rotacap"]
+  },
+  {
+    "brandName": "Pulmicort",
+    "genericName": "Budesonide",
+    "aliases": ["Budecort", "Budesonide", "Rhinocort"],
+    "commonStrengths": ["100mcg", "200mcg", "400mcg"],
+    "forms": ["inhaler", "rotacap", "nasal spray"]
+  },
+  {
+    "brandName": "Seroflo",
+    "genericName": "Fluticasone + Salmeterol",
+    "aliases": ["Fortair", "Seretide", "Adoair"],
+    "commonStrengths": ["100mcg+25mcg", "250mcg+25mcg", "500mcg+50mcg"],
+    "forms": ["inhaler", "rotacap"]
+  },
+  {
+    "brandName": "Flohale",
+    "genericName": "Fluticasone",
+    "aliases": ["Flixotide", "Fluticasone Propionate", "Flutide"],
+    "commonStrengths": ["50mcg", "100mcg", "250mcg"],
+    "forms": ["inhaler"]
+  },
+  {
+    "brandName": "Beclate",
+    "genericName": "Beclomethasone",
+    "aliases": ["Becotide", "Beclojet", "Clenil", "Beclazone"],
+    "commonStrengths": ["100mcg", "250mcg"],
+    "forms": ["inhaler"]
+  },
+  {
+    "brandName": "Spiriva",
+    "genericName": "Tiotropium",
+    "aliases": ["Tiova", "Tiocopt", "Tiotrop", "Tiotropium Bromide"],
+    "commonStrengths": ["18mcg"],
+    "forms": ["inhaler", "rotacap"]
+  },
+  {
+    "brandName": "Deriphyllin",
+    "aliases": ["Theo-Dur", "Nuelin", "Aminophylline", "Deriphylline", "Theobid"],
+    "genericName": "Theophylline",
+    "commonStrengths": ["100mg", "200mg", "300mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Alex",
+    "genericName": "Dextromethorphan",
+    "aliases": ["Phensedyl", "Coscopin", "Grilinctus", "Robitussin DM"],
+    "commonStrengths": ["15mg"],
+    "forms": ["syrup"]
+  },
+  {
+    "brandName": "Brozedex",
+    "genericName": "Bromhexine",
+    "aliases": ["Mucolite", "Bisolv", "Bromex", "Bisolvon", "Bromhex"],
+    "commonStrengths": ["4mg", "8mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Ambrodil",
+    "genericName": "Ambroxol",
+    "aliases": ["Ambrolite", "Mucolite", "Ambrodil S", "Dristan", "Lazosolvon"],
+    "commonStrengths": ["15mg", "30mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Mucinac",
+    "genericName": "N-Acetylcysteine",
+    "aliases": ["Fluimucil", "NAC", "Acemuc", "Mucinac 600", "Flumucil"],
+    "commonStrengths": ["200mg", "600mg"],
+    "forms": ["tablet", "sachet"]
+  },
+  {
+    "brandName": "Ipravent",
+    "genericName": "Ipratropium",
+    "aliases": ["Atrovent", "Ipraspray", "Ipraxa"],
+    "commonStrengths": ["20mcg/puff"],
+    "forms": ["inhaler", "nebulizer solution"]
+  },
+  {
+    "brandName": "Densita",
+    "genericName": "Dutasteride",
+    "aliases": ["Densita M", "Dutas", "Duprost", "Dutagen", "Duodart", "Avodart", "Duagen"],
+    "commonStrengths": ["0.5mg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Finast",
+    "genericName": "Finasteride",
+    "aliases": ["Finpecia", "Propecia", "Fincar", "Finol", "Finastir", "Proscar", "Finara", "Finride"],
+    "commonStrengths": ["1mg", "5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Tugain",
+    "genericName": "Minoxidil",
+    "aliases": ["Mintop", "Morr-F", "Morr", "Regaine", "Rogaine", "Minokem", "Hair4U", "Minokem 5"],
+    "commonStrengths": ["2%", "5%", "10%"],
+    "forms": ["solution", "foam", "tablet"]
+  },
+  {
+    "brandName": "Nizoral",
+    "genericName": "Ketoconazole",
+    "aliases": ["Ketocip", "Ket", "Ketorest", "Fungotek", "Ketamet"],
+    "commonStrengths": ["200mg", "2%"],
+    "forms": ["tablet", "shampoo", "cream"]
+  },
+  {
+    "brandName": "Terbicip",
+    "genericName": "Terbinafine",
+    "aliases": ["Lamisil", "Terbiforce", "Fungiterbine", "Sebifin", "Terbin"],
+    "commonStrengths": ["125mg", "250mg", "1%"],
+    "forms": ["tablet", "cream"]
+  },
+  {
+    "brandName": "Zocon",
+    "genericName": "Fluconazole",
+    "aliases": ["Diflucan", "Fluka", "Forcan", "Syscan", "Funzela", "Flucazole", "Zocon-T"],
+    "commonStrengths": ["50mg", "100mg", "150mg", "200mg"],
+    "forms": ["tablet", "capsule", "injection"]
+  },
+  {
+    "brandName": "Sporanox",
+    "genericName": "Itraconazole",
+    "aliases": ["Itrasys", "Candistat", "Canditral", "Fungosome", "Itrafung", "Itral"],
+    "commonStrengths": ["100mg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Candid",
+    "genericName": "Clotrimazole",
+    "aliases": ["Canesten", "Clocip", "Lotriderm", "Clotrimol", "Candiderma"],
+    "commonStrengths": ["1%"],
+    "forms": ["cream", "solution", "pessary"]
+  },
+  {
+    "brandName": "Retin-A",
+    "genericName": "Tretinoin",
+    "aliases": ["Retino-A", "Stieva-A", "Tretin", "A-Ret", "Retinoic Acid"],
+    "commonStrengths": ["0.025%", "0.05%", "0.1%"],
+    "forms": ["cream", "gel"]
+  },
+  {
+    "brandName": "Deriva",
+    "genericName": "Adapalene",
+    "aliases": ["Acnestar", "Differin", "Adapin", "Acnegen"],
+    "commonStrengths": ["0.1%"],
+    "forms": ["cream", "gel"]
+  },
+  {
+    "brandName": "Persol",
+    "genericName": "Benzoyl Peroxide",
+    "aliases": ["Benzac", "Oxy-5", "Benzamycin", "Acnegel"],
+    "commonStrengths": ["2.5%", "5%", "10%"],
+    "forms": ["gel", "cream"]
+  },
+  {
+    "brandName": "Acutret",
+    "genericName": "Isotretinoin",
+    "aliases": ["Isotroin", "Acnetrex", "Sotret", "Retino", "Isorface", "Oratane"],
+    "commonStrengths": ["5mg", "10mg", "20mg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Grisovin",
+    "genericName": "Griseofulvin",
+    "aliases": ["Griseofulvin Micro", "Fulcin", "Grifulvin"],
+    "commonStrengths": ["125mg", "250mg", "500mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Tenovate",
+    "genericName": "Clobetasol",
+    "aliases": ["Dermovate", "Lobate", "Clobestol", "Clobitasol", "Tenovate-N"],
+    "commonStrengths": ["0.05%"],
+    "forms": ["cream", "ointment"]
+  },
+  {
+    "brandName": "Betnovate",
+    "genericName": "Betamethasone",
+    "aliases": ["Betnol", "Diprosone", "Betasone", "Beta-N", "Betafil"],
+    "commonStrengths": ["0.1%", "0.05%"],
+    "forms": ["cream", "ointment", "lotion"]
+  },
+  {
+    "brandName": "Elocon",
+    "genericName": "Mometasone",
+    "aliases": ["Momoz", "Momate", "Mometone", "Nasonex"],
+    "commonStrengths": ["0.1%"],
+    "forms": ["cream", "ointment", "nasal spray"]
+  },
+  {
+    "brandName": "Synalar",
+    "genericName": "Fluocinolone",
+    "aliases": ["Flucort", "Topcort", "Flucinol"],
+    "commonStrengths": ["0.01%", "0.025%"],
+    "forms": ["cream", "ointment"]
+  },
+  {
+    "brandName": "Protopic",
+    "genericName": "Tacrolimus",
+    "aliases": ["Tacroz", "Tacrophar", "Tacrobell", "Prograf"],
+    "commonStrengths": ["0.03%", "0.1%"],
+    "forms": ["ointment"]
+  },
+  {
+    "brandName": "HCQS",
+    "genericName": "Hydroxychloroquine",
+    "aliases": ["Plaquenil", "HCQ", "Hydroxychloroquin", "Quineprox", "HCQ 400"],
+    "commonStrengths": ["200mg", "400mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Folitrax",
+    "genericName": "Methotrexate",
+    "aliases": ["Methofar", "Biotrexate", "Imutrex", "Remtrex", "Neotrexate"],
+    "commonStrengths": ["2.5mg", "5mg", "7.5mg", "10mg", "15mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Acitret",
+    "genericName": "Acitretin",
+    "aliases": ["Soriatane", "Neotigason", "Acretin", "Acitretine"],
+    "commonStrengths": ["10mg", "25mg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Scavista",
+    "genericName": "Ivermectin",
+    "aliases": ["Ivermec", "Ivecop", "Ivermectol", "Iverscab", "Stromectol"],
+    "commonStrengths": ["3mg", "6mg", "12mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Zentel",
+    "genericName": "Albendazole",
+    "aliases": ["Albenza", "Bendex", "Noworm", "Bandy", "Valben"],
+    "commonStrengths": ["200mg", "400mg"],
+    "forms": ["tablet", "suspension"]
+  },
+  {
+    "brandName": "Gabapin",
+    "genericName": "Gabapentin",
+    "aliases": ["Neurontin", "Gaba", "Gabacap", "Gabantin", "Gabatop"],
+    "commonStrengths": ["100mg", "300mg", "400mg", "600mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Lyrica",
+    "genericName": "Pregabalin",
+    "aliases": ["Pregastar", "Nervigesic", "Pregalin", "Pregabid", "Prelin"],
+    "commonStrengths": ["25mg", "50mg", "75mg", "100mg", "150mg", "300mg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Nervomax P",
+    "genericName": "Pregabalin + Methylcobalamin",
+    "aliases": ["Pregabid ME", "Mecobion P", "Neurobion P"],
+    "commonStrengths": ["75mg+500mcg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Tryptomer",
+    "genericName": "Amitriptyline",
+    "aliases": ["Elavil", "Amitone", "Saroten", "Amitril"],
+    "commonStrengths": ["10mg", "25mg", "50mg", "75mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Nexito",
+    "genericName": "Escitalopram",
+    "aliases": ["Cipralex", "Stalopam", "Rexipra", "Escitalop", "Citoday"],
+    "commonStrengths": ["5mg", "10mg", "20mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Sertima",
+    "genericName": "Sertraline",
+    "aliases": ["Zoloft", "Daxid", "Sertral", "Sirlent", "Serenata"],
+    "commonStrengths": ["25mg", "50mg", "100mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Fludac",
+    "genericName": "Fluoxetine",
+    "aliases": ["Prozac", "Flunil", "Flutop", "Prodep", "Flutin"],
+    "commonStrengths": ["10mg", "20mg", "40mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Pexep",
+    "genericName": "Paroxetine",
+    "aliases": ["Paxil", "Seroxat", "Paroxet", "Paxidep", "Parotin"],
+    "commonStrengths": ["10mg", "20mg", "30mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Veniz",
+    "genericName": "Venlafaxine",
+    "aliases": ["Effexor", "Venlor", "Elvanse", "Venfax", "Venlalic"],
+    "commonStrengths": ["37.5mg", "75mg", "150mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Mirtaz",
+    "genericName": "Mirtazapine",
+    "aliases": ["Remeron", "Mirtazapin", "Zismirt", "Mirtawin"],
+    "commonStrengths": ["7.5mg", "15mg", "30mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Alprax",
+    "genericName": "Alprazolam",
+    "aliases": ["Xanax", "Restyl", "Tranax", "Alzolam", "Anxit"],
+    "commonStrengths": ["0.25mg", "0.5mg", "1mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Lonazep",
+    "genericName": "Clonazepam",
+    "aliases": ["Clonazep", "Klonopin", "Rivotril", "Clonotril", "Petril"],
+    "commonStrengths": ["0.25mg", "0.5mg", "1mg", "2mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Calmpose",
+    "genericName": "Diazepam",
+    "aliases": ["Valium", "Pax", "Diazep", "Zepose", "Diastat"],
+    "commonStrengths": ["2mg", "5mg", "10mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Nitrest",
+    "genericName": "Zolpidem",
+    "aliases": ["Stilnoct", "Zoldem", "Ambien", "Nidra", "Hypnite"],
+    "commonStrengths": ["5mg", "10mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Qutipin",
+    "genericName": "Quetiapine",
+    "aliases": ["Seroquel", "Qutan", "Qutipin SR", "Quetipin"],
+    "commonStrengths": ["25mg", "50mg", "100mg", "200mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Oleanz",
+    "genericName": "Olanzapine",
+    "aliases": ["Zyprexa", "Olandus", "Oliza", "Olansek", "Jolly"],
+    "commonStrengths": ["2.5mg", "5mg", "7.5mg", "10mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Risnia",
+    "genericName": "Risperidone",
+    "aliases": ["Risperidol", "Sizodon", "Respidon", "Risdone"],
+    "commonStrengths": ["0.5mg", "1mg", "2mg", "3mg", "4mg"],
+    "forms": ["tablet", "liquid"]
+  },
+  {
+    "brandName": "Aripzo",
+    "genericName": "Aripiprazole",
+    "aliases": ["Abilify", "Aristada", "Arip MT", "Ariza"],
+    "commonStrengths": ["5mg", "10mg", "15mg", "20mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Syndopa",
+    "genericName": "Levodopa + Carbidopa",
+    "aliases": ["Sinemet", "Tidomet", "Carbidopa-Levodopa", "Crescent", "Sinemet CR"],
+    "commonStrengths": ["100mg+25mg", "250mg+25mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Tegretol",
+    "genericName": "Carbamazepine",
+    "aliases": ["Mazetol", "Carbatol", "Zen", "Carbazepin", "Tegrital"],
+    "commonStrengths": ["100mg", "200mg", "400mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Valparin",
+    "genericName": "Sodium Valproate",
+    "aliases": ["Valproate", "Epilex", "Encorate", "Valprol", "Depakote"],
+    "commonStrengths": ["200mg", "500mg"],
+    "forms": ["tablet", "syrup", "injection"]
+  },
+  {
+    "brandName": "Topamax",
+    "genericName": "Topiramate",
+    "aliases": ["Topamac", "Topaz", "Topiramate", "Epitomax"],
+    "commonStrengths": ["25mg", "50mg", "100mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Trileptal",
+    "genericName": "Oxcarbazepine",
+    "aliases": ["Oxetol", "Oxcarb", "Oxalepsy", "Ocbz"],
+    "commonStrengths": ["150mg", "300mg", "600mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Sirdalud",
+    "genericName": "Tizanidine",
+    "aliases": ["Tizan", "Tizanil", "Tizarun", "Tizan"],
+    "commonStrengths": ["2mg", "4mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Myospaz",
+    "genericName": "Thiocolchicoside",
+    "aliases": ["Mydocalm", "Thiocoside", "Thiosol", "Muscoril"],
+    "commonStrengths": ["4mg", "8mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Lioresal",
+    "genericName": "Baclofen",
+    "aliases": ["Baclopar", "Baclospas", "Liofen", "Baclo"],
+    "commonStrengths": ["5mg", "10mg", "25mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Arthrex",
+    "genericName": "Diacerein",
+    "aliases": ["Diacel", "Diacor", "Articulin F", "Diacerhein"],
+    "commonStrengths": ["50mg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Urimax",
+    "genericName": "Tamsulosin",
+    "aliases": ["Veltam", "Flomax", "Tamlet", "Urimax D", "Tamsulosin HCl"],
+    "commonStrengths": ["0.2mg", "0.4mg"],
+    "forms": ["tablet", "capsule"]
+  },
+  {
+    "brandName": "Alfoo",
+    "genericName": "Alfuzosin",
+    "aliases": ["Veltam Plus", "Ugal", "Alfuzosin HCl", "Alfoo 10"],
+    "commonStrengths": ["5mg", "10mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Vesicare",
+    "genericName": "Solifenacin",
+    "aliases": ["Solimark", "Soliten", "Vesigard"],
+    "commonStrengths": ["5mg", "10mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Ditropan",
+    "genericName": "Oxybutynin",
+    "aliases": ["Oxytrol", "Cystrin", "Oxyspas"],
+    "commonStrengths": ["2.5mg", "5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Timoptic",
+    "genericName": "Timolol Eye Drops",
+    "aliases": ["Occupres", "Iotim", "Timodrop", "Timolol Maleate"],
+    "commonStrengths": ["0.25%", "0.5%"],
+    "forms": ["eye drops"]
+  },
+  {
+    "brandName": "Xalatan",
+    "genericName": "Latanoprost",
+    "aliases": ["Lataglau", "Lupin Latan", "Latoprost"],
+    "commonStrengths": ["0.005%"],
+    "forms": ["eye drops"]
+  },
+  {
+    "brandName": "Careprost",
+    "genericName": "Bimatoprost",
+    "aliases": ["Lumigan", "Bimat", "Grandelash"],
+    "commonStrengths": ["0.03%"],
+    "forms": ["eye drops"]
+  },
+  {
+    "brandName": "Vigamox",
+    "genericName": "Moxifloxacin Eye Drops",
+    "aliases": ["Moxicip", "Moxtof", "Moxifin"],
+    "commonStrengths": ["0.5%"],
+    "forms": ["eye drops"]
+  },
+  {
+    "brandName": "Tobrex",
+    "genericName": "Tobramycin Eye Drops",
+    "aliases": ["Tobacin", "Tobrin"],
+    "commonStrengths": ["0.3%"],
+    "forms": ["eye drops"]
+  },
+  {
+    "brandName": "Predmet",
+    "genericName": "Prednisolone Eye Drops",
+    "aliases": ["Omnipred", "Pred Forte"],
+    "commonStrengths": ["1%"],
+    "forms": ["eye drops"]
+  },
+  {
+    "brandName": "Zovirax",
+    "genericName": "Acyclovir",
+    "aliases": ["Acivir", "Cyclohex", "Valherp", "Acycloguanosine", "Herpex"],
+    "commonStrengths": ["200mg", "400mg", "800mg", "5%"],
+    "forms": ["tablet", "cream", "injection"]
+  },
+  {
+    "brandName": "Valcivir",
+    "genericName": "Valacyclovir",
+    "aliases": ["Valherp", "Valtrex", "Valtoval", "Vaclovir"],
+    "commonStrengths": ["500mg", "1000mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Antiflu",
+    "genericName": "Oseltamivir",
+    "aliases": ["Tamiflu", "Fluvir", "Flumivir", "Fluhalt"],
+    "commonStrengths": ["30mg", "45mg", "75mg"],
+    "forms": ["capsule", "suspension"]
+  },
+  {
+    "brandName": "Tenof",
+    "genericName": "Tenofovir",
+    "aliases": ["Viread", "Tenvir", "Tenofovin"],
+    "commonStrengths": ["300mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Hepcinat",
+    "genericName": "Sofosbuvir",
+    "aliases": ["Sofovir", "Natdac", "Sovaldi"],
+    "commonStrengths": ["400mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Entavir",
+    "genericName": "Entecavir",
+    "aliases": ["Baraclude", "Entaliv", "Encavir", "Enten"],
+    "commonStrengths": ["0.5mg", "1mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Wysolone",
+    "genericName": "Prednisolone",
+    "aliases": ["Deltacortril", "Predmet", "Omnipred", "Predsol", "Prednisol"],
+    "commonStrengths": ["5mg", "10mg", "20mg", "40mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Dexona",
+    "genericName": "Dexamethasone",
+    "aliases": ["Decadron", "Hexadrol", "Dexa", "Fortecortin"],
+    "commonStrengths": ["0.5mg", "1mg", "4mg", "8mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Medrol",
+    "genericName": "Methylprednisolone",
+    "aliases": ["Solu-Medrol", "Methylpred", "Medrone", "Depomedrol"],
+    "commonStrengths": ["4mg", "8mg", "16mg", "32mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Susten",
+    "genericName": "Progesterone",
+    "aliases": ["Lutinus", "Crinone", "Progest", "Cyclogest", "Gesterol"],
+    "commonStrengths": ["100mg", "200mg", "400mg"],
+    "forms": ["capsule", "gel", "injection"]
+  },
+  {
+    "brandName": "Provera",
+    "genericName": "Medroxyprogesterone",
+    "aliases": ["Depo-Provera", "Medroxyprogesterone Acetate", "Contracep"],
+    "commonStrengths": ["2.5mg", "5mg", "10mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Progynova",
+    "genericName": "Estradiol",
+    "aliases": ["Estradiol Valerate", "Estrogen", "Oestradiol"],
+    "commonStrengths": ["1mg", "2mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "I-Pill",
+    "genericName": "Levonorgestrel",
+    "aliases": ["Plan B", "Unwanted 72", "Norlevo", "Postinor"],
+    "commonStrengths": ["0.75mg", "1.5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Loette",
+    "genericName": "Ethinylestradiol + Levonorgestrel",
+    "aliases": ["Triquilar", "Ovral L", "Triphasil", "Ovral"],
+    "commonStrengths": ["20mcg+100mcg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Cordarone",
+    "genericName": "Amiodarone",
+    "aliases": ["Tachyra", "Nexterone", "Pacerone"],
+    "commonStrengths": ["100mg", "200mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Lanoxin",
+    "genericName": "Digoxin",
+    "aliases": ["Cardiged", "Digoxin"],
+    "commonStrengths": ["0.0625mg", "0.125mg", "0.25mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Divon Plus",
+    "genericName": "Diclofenac + Serratiopeptidase",
+    "aliases": ["Flexon S", "Voveran SP", "Dicloser"],
+    "commonStrengths": ["50mg+10mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Nimulid P",
+    "genericName": "Nimesulide + Paracetamol",
+    "aliases": ["Nicip Plus", "Nimepar", "NP Nimulid"],
+    "commonStrengths": ["100mg+325mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Cloxamp",
+    "genericName": "Amoxicillin + Cloxacillin",
+    "aliases": ["Bioclox", "Magnamycin", "Clamoxylin"],
+    "commonStrengths": ["250mg+250mg"],
+    "forms": ["capsule", "injection"]
+  },
+  {
+    "brandName": "Taxim-O CV",
+    "genericName": "Cefixime + Clavulanate",
+    "aliases": ["Zifi CV", "O2 Cefixime", "Cefixime Clavulanate"],
+    "commonStrengths": ["200mg+125mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Pioglitazone + Metformin",
+    "genericName": "Pioglitazone + Metformin",
+    "aliases": ["Pioz MF", "Glyciphage P", "Piozone MF"],
+    "commonStrengths": ["7.5mg+500mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Caduet",
+    "genericName": "Amlodipine + Atorvastatin",
+    "aliases": ["Amtas AT", "Atorlip AM", "Amlodipine Atorvastatin"],
+    "commonStrengths": ["5mg+10mg", "5mg+20mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Corbis",
+    "genericName": "Bisoprolol + Amlodipine",
+    "aliases": ["Bisacar AM", "Concor AM", "Bisoprolol Amlodipine"],
+    "commonStrengths": ["2.5mg+5mg", "5mg+5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Arkamin",
+    "genericName": "Clonidine",
+    "aliases": ["Catapres", "Kapvay", "Catapresan"],
+    "commonStrengths": ["0.1mg", "0.15mg", "0.2mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Minipress",
+    "genericName": "Prazosin",
+    "aliases": ["Pradif", "Prazo", "Prazosine"],
+    "commonStrengths": ["0.5mg", "1mg", "2mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Lasilactone",
+    "genericName": "Furosemide + Spironolactone",
+    "aliases": ["Frusemide Spiro", "Frusol SP"],
+    "commonStrengths": ["20mg+50mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Serenace",
+    "genericName": "Haloperidol",
+    "aliases": ["Haldol", "Halopil", "Haloperin"],
+    "commonStrengths": ["0.5mg", "1mg", "5mg", "10mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Cefadrox",
+    "genericName": "Cefadroxil",
+    "aliases": ["Droxyl", "Biodroxil", "Oracefal"],
+    "commonStrengths": ["250mg", "500mg"],
+    "forms": ["capsule", "syrup"]
+  },
+  {
+    "brandName": "Magnex",
+    "genericName": "Magnesium",
+    "aliases": ["Macrogit", "Magnesiox", "MgO", "Mg Oxide"],
+    "commonStrengths": ["250mg", "500mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Uprise G",
+    "genericName": "Vitamin D3 + Calcium",
+    "aliases": ["Caldikid Plus", "CalciRol G", "Shelcal D3"],
+    "commonStrengths": ["60000 IU+500mg"],
+    "forms": ["tablet", "sachet"]
+  },
+  {
+    "brandName": "Methylcobalamin + Gabapentin",
+    "genericName": "Methylcobalamin + Gabapentin",
+    "aliases": ["Gabapin ME", "Nuerel", "Neurotol ME"],
+    "commonStrengths": ["500mcg+300mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Morr-F",
+    "genericName": "Minoxidil + Finasteride",
+    "aliases": ["Tugain F", "Mintop Forte", "Minoxidil Finasteride"],
+    "commonStrengths": ["5%+0.1%"],
+    "forms": ["solution"]
+  },
+  {
+    "brandName": "Ketocip",
+    "genericName": "Ketoconazole Shampoo",
+    "aliases": ["Nizoral Shampoo", "Sebizole", "Ket Shampoo"],
+    "commonStrengths": ["2%"],
+    "forms": ["shampoo"]
+  },
+  {
+    "brandName": "Mebex",
+    "genericName": "Mebendazole",
+    "aliases": ["Vermox", "Wormin", "Mebex"],
+    "commonStrengths": ["100mg"],
+    "forms": ["tablet", "suspension"]
+  },
+  {
+    "brandName": "Lomecef O",
+    "genericName": "Cefuroxime + Ornidazole",
+    "aliases": ["Cefurox OZ"],
+    "commonStrengths": ["250mg+500mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Colospa",
+    "genericName": "Mebeverine",
+    "aliases": ["Duspatalin", "Colospas", "Mevacol"],
+    "commonStrengths": ["135mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Xavin",
+    "genericName": "Daflon / Micronised Purified Flavonoid Fraction",
+    "aliases": ["Daflon", "Phlebodia", "Veinorm", "Diosmin", "Rutoside"],
+    "commonStrengths": ["450mg+50mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Mucaine",
+    "genericName": "Aluminium Hydroxide + Magnesium Hydroxide",
+    "aliases": ["Gelusil", "Antacid", "Digene", "Maalox", "Polycrol"],
+    "commonStrengths": ["200mg+200mg"],
+    "forms": ["suspension", "tablet"]
+  },
+  {
+    "brandName": "Pentid",
+    "genericName": "Phenoxymethylpenicillin",
+    "aliases": ["Penicillin V", "Crystapen", "Pen V"],
+    "commonStrengths": ["125mg", "250mg"],
+    "forms": ["tablet", "syrup"]
+  },
+  {
+    "brandName": "Solvin",
+    "genericName": "Ambroxol + Salbutamol",
+    "aliases": ["Ascoril", "Solvin Plus", "Mucosolvan"],
+    "commonStrengths": ["30mg+2mg"],
+    "forms": ["syrup", "tablet"]
+  },
+  {
+    "brandName": "Phensedyl",
+    "genericName": "Codeine + Chlorpheniramine",
+    "aliases": ["Coscopin NR", "Wikoryl", "Grilinctus"],
+    "commonStrengths": ["10mg+4mg"],
+    "forms": ["syrup"]
+  },
+  {
+    "brandName": "Momate",
+    "genericName": "Mometasone Nasal Spray",
+    "aliases": ["Nasonex", "Nozomi", "Elocon Nasal"],
+    "commonStrengths": ["50mcg/spray"],
+    "forms": ["nasal spray"]
+  },
+  {
+    "brandName": "Otrivin",
+    "genericName": "Xylometazoline",
+    "aliases": ["Nasoclear", "Rhinomer", "Nasivin", "Otrivine"],
+    "commonStrengths": ["0.05%", "0.1%"],
+    "forms": ["nasal drops", "nasal spray"]
+  },
+  {
+    "brandName": "Reactine",
+    "genericName": "Cetirizine + Pseudoephedrine",
+    "aliases": ["Allercet D", "Cetcip D"],
+    "commonStrengths": ["5mg+60mg", "10mg+120mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Telekast",
+    "genericName": "Montelukast + Fexofenadine",
+    "aliases": ["Montair FX", "Monlevo FX", "Montair-F"],
+    "commonStrengths": ["10mg+120mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Livolin",
+    "genericName": "Essential Phospholipids",
+    "aliases": ["Essentiale Forte", "Phospholipon", "Livolin Forte"],
+    "commonStrengths": ["300mg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Udiliv",
+    "genericName": "Ursodeoxycholic Acid",
+    "aliases": ["Ursocol", "Actigall", "Ursofalk", "UDCA"],
+    "commonStrengths": ["150mg", "300mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Hepatitis B Vaccine",
+    "genericName": "Hepatitis B Vaccine",
+    "aliases": ["Engerix B", "Euvax B", "Shanvac B", "Revac B"],
+    "commonStrengths": ["10mcg", "20mcg"],
+    "forms": ["injection"]
+  },
+  {
+    "brandName": "Methotrexate Injection",
+    "genericName": "Methotrexate Injection",
+    "aliases": ["MTX Injection", "Folitrax Injection", "Methofar Injection"],
+    "commonStrengths": ["2.5mg/ml", "10mg/ml"],
+    "forms": ["injection"]
+  },
+  {
+    "brandName": "Lornoxicam",
+    "genericName": "Lornoxicam",
+    "aliases": ["Lorcam", "Lornox", "Xefocam"],
+    "commonStrengths": ["4mg", "8mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Piroxicam",
+    "genericName": "Piroxicam",
+    "aliases": ["Dolonex", "Pirox", "Feldene"],
+    "commonStrengths": ["10mg", "20mg"],
+    "forms": ["tablet", "gel"]
+  },
+  {
+    "brandName": "Flucort",
+    "genericName": "Fluocinolone Acetonide",
+    "aliases": ["Synalar", "Topcort", "Flucos"],
+    "commonStrengths": ["0.01%", "0.025%"],
+    "forms": ["cream", "ointment"]
+  },
+  {
+    "brandName": "Duovir",
+    "genericName": "Tenofovir + Lamivudine",
+    "aliases": ["Viraday", "Tenolam E", "Duovir-N"],
+    "commonStrengths": ["300mg+300mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Lamivir",
+    "genericName": "Lamivudine",
+    "aliases": ["Epivir", "Heptovir", "3TC", "Zeffix"],
+    "commonStrengths": ["100mg", "150mg", "300mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Nystatin",
+    "genericName": "Nystatin",
+    "aliases": ["Fungilin", "Mycostatin", "Nilstat"],
+    "commonStrengths": ["100000 IU"],
+    "forms": ["tablet", "suspension", "cream"]
+  },
+  {
+    "brandName": "Amphotericin B",
+    "genericName": "Amphotericin B",
+    "aliases": ["Fungizone", "Fungilin IV", "Amphocil", "Abelcet"],
+    "commonStrengths": ["50mg"],
+    "forms": ["injection"]
+  },
+  {
+    "brandName": "Amlopin",
+    "genericName": "Amlodipine + Olmesartan",
+    "aliases": ["Olmesar AM", "Amlo OL", "Amlodipine Olmesartan"],
+    "commonStrengths": ["5mg+20mg", "5mg+40mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Glipizide",
+    "genericName": "Glipizide",
+    "aliases": ["Glynase", "Minodiab", "Glucotrol", "Dibizide"],
+    "commonStrengths": ["2.5mg", "5mg", "10mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Acarbose",
+    "genericName": "Acarbose",
+    "aliases": ["Glucobay", "Rebose", "Glucar"],
+    "commonStrengths": ["25mg", "50mg", "100mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Insulin Aspart",
+    "genericName": "Insulin Aspart",
+    "aliases": ["Novorapid", "Novorapid Insulin"],
+    "commonStrengths": ["100 IU/ml"],
+    "forms": ["injection"]
+  },
+  {
+    "brandName": "Dexlansoprazole",
+    "genericName": "Dexlansoprazole",
+    "aliases": ["Dexilant", "Dexlan", "Dexlansoprazole"],
+    "commonStrengths": ["30mg", "60mg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Colchicine",
+    "genericName": "Colchicine",
+    "aliases": ["Colgout", "Colchicine", "Colchis"],
+    "commonStrengths": ["0.5mg", "1mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Zyloric",
+    "genericName": "Allopurinol",
+    "aliases": ["Zyloprim", "Alloril", "Uricept", "Lopurin"],
+    "commonStrengths": ["100mg", "200mg", "300mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Febuxostat",
+    "genericName": "Febuxostat",
+    "aliases": ["Febuget", "Zurig", "Febutaz", "Uloric"],
+    "commonStrengths": ["40mg", "80mg", "120mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Naproxen",
+    "genericName": "Naproxen",
+    "aliases": ["Naprosyn", "Aleve", "Flanax", "Naprogesic"],
+    "commonStrengths": ["250mg", "500mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Fexofenadine + Montelukast",
+    "genericName": "Fexofenadine + Montelukast",
+    "aliases": ["Montair FX", "Telekast F", "Fexomont"],
+    "commonStrengths": ["180mg+10mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Melatonin",
+    "genericName": "Melatonin",
+    "aliases": ["Melarest", "Melto", "Sleepin", "Meloset"],
+    "commonStrengths": ["0.5mg", "1mg", "3mg", "5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Liraglutide",
+    "genericName": "Liraglutide",
+    "aliases": ["Victoza", "Saxenda"],
+    "commonStrengths": ["0.6mg", "1.2mg", "1.8mg"],
+    "forms": ["injection"]
+  },
+  {
+    "brandName": "Semaglutide",
+    "genericName": "Semaglutide",
+    "aliases": ["Ozempic", "Rybelsus", "Wegovy"],
+    "commonStrengths": ["0.25mg", "0.5mg", "1mg"],
+    "forms": ["injection", "tablet"]
+  },
+  {
+    "brandName": "Cinnarizine",
+    "genericName": "Cinnarizine",
+    "aliases": ["Stugeron", "Cizin", "Tossavir"],
+    "commonStrengths": ["25mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Betahistine",
+    "genericName": "Betahistine",
+    "aliases": ["Vertin", "Betavert", "Histacalm"],
+    "commonStrengths": ["8mg", "16mg", "24mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Pregabalin + Alpha Lipoic Acid",
+    "genericName": "Pregabalin + Alpha Lipoic Acid",
+    "aliases": ["Pregalin ALA", "Nuroday ALA"],
+    "commonStrengths": ["75mg+100mg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Trihexyphenidyl",
+    "genericName": "Trihexyphenidyl",
+    "aliases": ["Pacitane", "Artane", "Parkin"],
+    "commonStrengths": ["2mg", "5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Donepezil",
+    "genericName": "Donepezil",
+    "aliases": ["Aricept", "Donepezil HCl", "Donaped", "Alzheimer"],
+    "commonStrengths": ["5mg", "10mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Memantine",
+    "genericName": "Memantine",
+    "aliases": ["Namenda", "Admenta", "Maquet", "Memantin"],
+    "commonStrengths": ["5mg", "10mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Cabergoline",
+    "genericName": "Cabergoline",
+    "aliases": ["Dostinex", "Cabgolin", "Cabeser"],
+    "commonStrengths": ["0.25mg", "0.5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Bromocriptine",
+    "genericName": "Bromocriptine",
+    "aliases": ["Parlodel", "Proctinal", "Sicriptin"],
+    "commonStrengths": ["1.25mg", "2.5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Vitamin E",
+    "genericName": "Vitamin E",
+    "aliases": ["Evion", "Tocopherol", "Evion 400", "E-Vit"],
+    "commonStrengths": ["200mg", "400mg", "600mg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Omega 3 Fatty Acids",
+    "genericName": "Omega 3 Fatty Acids",
+    "aliases": ["Romega", "Fisol", "Ecosuplin", "Mega 3", "Fish Oil"],
+    "commonStrengths": ["300mg", "1000mg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Biotin",
+    "genericName": "Biotin",
+    "aliases": ["Biotein", "Bioten", "Biotin forte", "Hairvit"],
+    "commonStrengths": ["2.5mg", "5mg", "10mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Sildenafil",
+    "genericName": "Sildenafil",
+    "aliases": ["Viagra", "Penegra", "Caverta", "Manly", "Suhagra"],
+    "commonStrengths": ["25mg", "50mg", "100mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Tadalafil",
+    "genericName": "Tadalafil",
+    "aliases": ["Cialis", "Tadacip", "Tazzle", "Valif"],
+    "commonStrengths": ["2.5mg", "5mg", "10mg", "20mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Pregabalin + Nortriptyline",
+    "genericName": "Pregabalin + Nortriptyline",
+    "aliases": ["Nortrivit P", "Pregabid NT", "Nervijen NT"],
+    "commonStrengths": ["75mg+10mg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Duloxetine",
+    "genericName": "Duloxetine",
+    "aliases": ["Cymbalta", "Duzela", "Duxet"],
+    "commonStrengths": ["20mg", "30mg", "60mg"],
+    "forms": ["capsule"]
+  },
+  {
+    "brandName": "Bupropion",
+    "genericName": "Bupropion",
+    "aliases": ["Wellbutrin", "Zyban", "Budeprion"],
+    "commonStrengths": ["75mg", "100mg", "150mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Lithium",
+    "genericName": "Lithium Carbonate",
+    "aliases": ["Licab", "Lithosun", "Priadel", "Camcolit"],
+    "commonStrengths": ["150mg", "300mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Levetiracetam",
+    "genericName": "Levetiracetam",
+    "aliases": ["Keppra", "Levera", "Levetirol", "Epimax"],
+    "commonStrengths": ["250mg", "500mg", "750mg", "1000mg"],
+    "forms": ["tablet", "syrup", "injection"]
+  },
+  {
+    "brandName": "Phenytoin",
+    "genericName": "Phenytoin",
+    "aliases": ["Eptoin", "Dilantin", "Fenitoina", "Phenytek"],
+    "commonStrengths": ["50mg", "100mg", "300mg"],
+    "forms": ["tablet", "capsule", "injection"]
+  },
+  {
+    "brandName": "Clonazepam + Escitalopram",
+    "genericName": "Clonazepam + Escitalopram",
+    "aliases": ["Nexito Plus", "Stalopam Plus"],
+    "commonStrengths": ["0.5mg+5mg"],
+    "forms": ["tablet"]
+  },
+  {
+    "brandName": "Tranostat",
+    "genericName": "Tranexamic Acid",
+    "aliases": ["Cyklokapron", "Traxyl", "Exacyl", "Relispray"],
+    "commonStrengths": ["250mg", "500mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Etamsylate",
+    "genericName": "Etamsylate",
+    "aliases": ["Dicynene", "Ethamsylate", "Dicynene"],
+    "commonStrengths": ["250mg", "500mg"],
+    "forms": ["tablet", "injection"]
+  },
+  {
+    "brandName": "Meronem",
+    "genericName": "Meropenem",
+    "aliases": ["Merotec", "Meromer", "Carbapenem"],
+    "commonStrengths": ["500mg", "1g"],
+    "forms": ["injection"]
+  },
+  {
+    "brandName": "Piperacillin Tazobactam",
+    "genericName": "Piperacillin + Tazobactam",
+    "aliases": ["Pipertaz", "Piptaz", "Zosyn", "Tazocin"],
+    "commonStrengths": ["2.25g", "4.5g"],
+    "forms": ["injection"]
+  },
+  {
+    "brandName": "Cefoperazone Sulbactam",
+    "genericName": "Cefoperazone + Sulbactam",
+    "aliases": ["Magnex", "Sulperazone", "Cefobid", "Cefoperazone"],
+    "commonStrengths": ["1g+1g"],
+    "forms": ["injection"]
+  }
+]
