@@ -2,7 +2,13 @@
   "expo": {
     "name": "MedMinder",
     "slug": "medminder",
-    "version": "0.1.0",
+    "version": "1.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/REPLACE_WITH_EAS_PROJECT_ID"
+    },
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "medminder",
@@ -10,7 +16,7 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#2156DA"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -18,31 +24,37 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.medminder.app",
+      "buildNumber": "1",
       "infoPlist": {
-        "NSCameraUsageDescription": "MedMinder uses the camera to scan your prescription.",
-        "NSPhotoLibraryUsageDescription": "MedMinder accesses your photos to upload a prescription image.",
-        "NSCalendarsUsageDescription": "MedMinder can add dose reminders to your calendar.",
-        "NSCalendarsFullAccessUsageDescription": "MedMinder can add dose reminders to your calendar.",
-        "NSFaceIDUsageDescription": "MedMinder uses Face ID to protect your medication data."
+        "NSCameraUsageDescription": "MedMinder uses your camera to scan and read your prescription so it can set up medication reminders automatically. The image is processed entirely on your device and is never uploaded.",
+        "NSPhotoLibraryUsageDescription": "MedMinder accesses your photo library so you can select a photo of your prescription. The image is processed on-device and is never uploaded.",
+        "NSCalendarsUsageDescription": "MedMinder can add your dose times to your calendar so you have a second reminder alongside in-app notifications.",
+        "NSCalendarsFullAccessUsageDescription": "MedMinder can add your dose times to your calendar so you have a second reminder alongside in-app notifications.",
+        "NSFaceIDUsageDescription": "MedMinder uses Face ID to keep your medication information private.",
+        "UIBackgroundModes": ["fetch"]
       }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#2156DA"
       },
       "package": "com.medminder.app",
+      "versionCode": 1,
       "permissions": [
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
+        "READ_MEDIA_IMAGES",
         "READ_CALENDAR",
         "WRITE_CALENDAR",
         "RECEIVE_BOOT_COMPLETED",
         "SCHEDULE_EXACT_ALARM",
         "USE_EXACT_ALARM",
         "USE_BIOMETRIC",
-        "USE_FINGERPRINT"
+        "USE_FINGERPRINT",
+        "POST_NOTIFICATIONS",
+        "VIBRATE"
       ]
     },
     "web": {
@@ -56,25 +68,27 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "MedMinder uses the camera to scan your prescription."
+          "cameraPermission": "MedMinder uses your camera to scan and read your prescription so it can set up medication reminders automatically. The image is processed entirely on your device and is never uploaded."
         }
       ],
       [
         "expo-image-picker",
         {
-          "photosPermission": "MedMinder accesses your photos to upload a prescription image."
+          "photosPermission": "MedMinder accesses your photo library so you can select a photo of your prescription. The image is processed on-device and is never uploaded."
         }
       ],
       [
         "expo-notifications",
         {
-          "color": "#4F46E5"
+          "icon": "./assets/images/notification-icon.png",
+          "color": "#2156DA",
+          "sounds": []
         }
       ],
       [
         "expo-local-authentication",
         {
-          "faceIDPermission": "MedMinder uses Face ID to protect your medication data."
+          "faceIDPermission": "MedMinder uses Face ID to keep your medication information private."
         }
       ],
       "expo-sqlite",
@@ -83,13 +97,19 @@
       [
         "expo-calendar",
         {
-          "calendarPermission": "MedMinder can add dose reminders to your calendar."
+          "calendarPermission": "MedMinder can add your dose times to your calendar so you have a second reminder alongside in-app notifications."
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "REPLACE_WITH_EAS_PROJECT_ID"
+      }
     }
   }
 }
