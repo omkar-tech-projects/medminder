@@ -22,6 +22,9 @@ src/db/migrations/
 .env.local
 .env.*.local
 
+# Google Play service account key — never commit
+google-play-key.json
+
 # IDE
 .vscode/settings.json
 .idea/
@@ -31,3 +34,29 @@ src/db/migrations/
 
 expo-env.d.ts
 # @end expo-cli
+
+# Dependencies & build output
+node_modules/
+.expo/
+dist/
+web-build/
+android/build/
+android/app/build/
+android/.gradle/
+ios/build/
+*.apk
+*.aab
+# Secrets — NEVER commit these
+*.keystore
+*.jks
+google-services.json
+GoogleService-Info.plist
+.env
+.env.*
+# Logs & OS files
+*.log
+npm-debug.*
+.DS_Store
+Thumbs.db
+# Editor
+.vscode/

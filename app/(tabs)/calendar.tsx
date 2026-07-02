@@ -12,6 +12,7 @@ import { ViewingAsBanner } from '@/components/ViewingAsBanner';
 import { useTheme } from '@/theme';
 import { useCalendarScreen } from '@/hooks/use-calendar-screen';
 import { useDoseConfirmation } from '@/hooks/use-dose-confirmation';
+import { useDoseStore } from '@/store/dose-store';
 import type { CalendarDose } from '@/hooks/use-calendar-screen';
 
 export default function CalendarScreen() {
@@ -30,6 +31,7 @@ export default function CalendarScreen() {
   } = useCalendarScreen();
 
   const { confirmTaken, confirmSkip } = useDoseConfirmation();
+  const revertToPending = useDoseStore((s) => s.revertToPending);
   const [sheetDose, setSheetDose] = useState<CalendarDose | null>(null);
 
   const showTodayButton = selectedDate !== today || selectedDate.slice(0, 7) !== today.slice(0, 7);
@@ -100,6 +102,11 @@ export default function CalendarScreen() {
         onClose={() => setSheetDose(null)}
         onConfirmTaken={(id) => {
           handleConfirmTaken(id);
+          setSheetDose(null);
+        }}
+        onRevertToPending={(id) => {
+          revertToPending(id);
+          refresh();
           setSheetDose(null);
         }}
         onSkip={(id) => {

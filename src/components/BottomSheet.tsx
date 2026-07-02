@@ -30,7 +30,7 @@ export function BottomSheet({
   children,
   height = Math.round(SCREEN_H * 0.45),
 }: BottomSheetProps) {
-  const { colors, radii, spacing } = useTheme();
+  const { colors, spacing } = useTheme();
   const insets = useSafeAreaInsets();
 
   const translateY = useAnimatedValue(height);
@@ -101,8 +101,8 @@ export function BottomSheet({
               height,
               paddingBottom: insets.bottom + spacing[2],
               backgroundColor: colors.surface,
-              borderTopLeftRadius: radii['2xl'],
-              borderTopRightRadius: radii['2xl'],
+              borderTopLeftRadius: 28,
+              borderTopRightRadius: 28,
               transform: [{ translateY }],
             },
           ]}

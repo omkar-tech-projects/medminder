@@ -2,6 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { View, Animated, StyleSheet, ActivityIndicator, useAnimatedValue } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text, Button } from '@/components';
 import { useTheme } from '@/theme';
@@ -11,6 +12,7 @@ import { analyseImages } from '@/services/analysis-service';
 
 export default function AnalyseScreen() {
   const { colors, spacing } = useTheme();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const pages = useCaptureStore((s) => s.pages);
   const { status, error, setLoading, setResult, setError } = useAnalysisStore();
@@ -39,9 +41,9 @@ export default function AnalyseScreen() {
         router.replace('/review');
       })
       .catch((err: unknown) => {
-        setError(err instanceof Error ? err.message : 'Analysis failed. Please try again.');
+        setError(err instanceof Error ? err.message : t('analyse.errorBody'));
       });
-  }, [pages, setError, setLoading, setResult]);
+  }, [pages, setError, setLoading, setResult, t]);
 
   useEffect(() => {
     runAnalysis();
@@ -62,7 +64,7 @@ export default function AnalyseScreen() {
           </View>
 
           <Text variant="headingMedium" align="center" style={{ marginTop: spacing[5] }}>
-            Analysis failed
+            {t('analyse.errorTitle')}
           </Text>
           <Text
             variant="bodyMedium"
@@ -70,27 +72,27 @@ export default function AnalyseScreen() {
             align="center"
             style={{ marginTop: spacing[2], maxWidth: 300 }}
           >
-            {error ?? 'Something went wrong. Check your connection and try again.'}
+            {error ?? t('analyse.errorBody')}
           </Text>
         </View>
 
         <View style={{ paddingHorizontal: spacing[5] }}>
           <Button
-            label="Try again"
+            label={t('analyse.retryButton')}
             onPress={runAnalysis}
             variant="primary"
             fullWidth
             size="lg"
             leftIcon="refresh-outline"
-            accessibilityLabel="Retry prescription analysis"
+            accessibilityLabel={t('analyse.retryA11y')}
           />
           <Button
-            label="Go back"
+            label={t('analyse.goBack')}
             onPress={() => router.back()}
             variant="ghost"
             fullWidth
             style={{ marginTop: spacing[2] }}
-            accessibilityLabel="Go back to prescription review"
+            accessibilityLabel={t('analyse.goBackA11y')}
           />
         </View>
       </View>
@@ -113,7 +115,7 @@ export default function AnalyseScreen() {
         </Animated.View>
 
         <Text variant="headingMedium" align="center" style={{ marginTop: spacing[5] }}>
-          Analysing prescription...
+          {t('analyse.loadingTitle')}
         </Text>
         <Text
           variant="bodyMedium"
@@ -121,14 +123,14 @@ export default function AnalyseScreen() {
           align="center"
           style={{ marginTop: spacing[2] }}
         >
-          Reading {pages.length} page{pages.length !== 1 ? 's' : ''} with AI
+          {t('analyse.loadingBody', { count: pages.length })}
         </Text>
 
         <ActivityIndicator
           size="small"
           color={colors.brandPrimary}
           style={{ marginTop: spacing[5] }}
-          accessibilityLabel="Analysing prescription"
+          accessibilityLabel={t('analyse.analysingA11y')}
         />
 
         <Text
@@ -137,7 +139,7 @@ export default function AnalyseScreen() {
           align="center"
           style={{ marginTop: spacing[3] }}
         >
-          This may take up to 30 seconds
+          {t('analyse.loadingCaption')}
         </Text>
       </View>
     </View>

@@ -28,7 +28,7 @@ function StatChip({ value, label, valueColor }: StatChipProps) {
 }
 
 export function AdherenceStats({ stats }: AdherenceStatsProps) {
-  const { colors, spacing, radii } = useTheme();
+  const { colors, spacing } = useTheme();
 
   const adherenceColor =
     stats.adhPct >= 80 ? colors.doseTaken : stats.adhPct >= 50 ? colors.warning : colors.doseMissed;
@@ -39,7 +39,7 @@ export function AdherenceStats({ stats }: AdherenceStatsProps) {
         styles.container,
         {
           backgroundColor: colors.surface,
-          borderRadius: radii.xl,
+          borderRadius: 20,
           borderColor: colors.border,
           padding: spacing[5],
           marginHorizontal: spacing[5],

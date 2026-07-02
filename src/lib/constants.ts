@@ -41,3 +41,13 @@ export const MEDICATION_COLORS = [
 
 export const DOSE_REMINDER_RE_REMIND_CAP_HOURS = 2;
 export const DOSE_LOG_GENERATE_DAYS_AHEAD = 14;
+// Only schedule notifications for doses in the next N hours to stay well under
+// Android's 500-exact-alarm cap. The window is re-armed on every app foreground
+// and after each dose confirmation.
+export const NOTIFICATION_WINDOW_HOURS = 48;
+
+// Number of nag notifications pre-scheduled as real Android alarms per dose.
+// These fire even when the app is killed. Nags beyond this index are chained
+// dynamically via addNotificationReceivedListener while the app is in the
+// foreground. Increasing this raises the alarm count (4 × doses in window).
+export const PRE_SCHEDULED_NAGS = 3;

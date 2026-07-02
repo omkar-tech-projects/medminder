@@ -83,7 +83,7 @@ function getIndex(): IndexEntry[] {
   return _index;
 }
 
-const FUZZY_THRESHOLD = 0.55;
+const FUZZY_THRESHOLD = 0.65;
 
 // Common English words that could false-positive match short brand names
 // (e.g. "food"→"Alfoo" score=0.57, "empty"→"Empa" score=0.57)

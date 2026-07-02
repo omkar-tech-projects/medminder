@@ -1,6 +1,7 @@
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Controller, type Control, type FieldErrors } from 'react-hook-form';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/theme';
 import { Text } from './Text';
 import { Input } from './Input';
@@ -38,6 +39,7 @@ export function MedicineFormCard({
   onRemove,
 }: MedicineFormCardProps) {
   const { colors, spacing, radii } = useTheme();
+  const { t } = useTranslation();
   const e = errors.medicines?.[index];
   const lowConf = (originalMed?.confidence ?? 1) < 0.7;
   // A field is flagged when AI extracted null for it
@@ -59,18 +61,18 @@ export function MedicineFormCard({
       <View style={[styles.header, { marginBottom: spacing[3] }]}>
         <View style={styles.headerLeft}>
           <Text variant="overline" color={colors.textTertiary}>
-            Medicine {index + 1}
+            {t('medicineForm.cardTitle', { n: index + 1 })}
           </Text>
           {lowConf && (
             <View style={{ marginTop: 2 }}>
-              <Badge label="Low confidence — check all fields" variant="warning" size="sm" />
+              <Badge label={t('medicineForm.lowConfidenceBadge')} variant="warning" size="sm" />
             </View>
           )}
         </View>
         <TouchableOpacity
           onPress={onRemove}
           accessibilityRole="button"
-          accessibilityLabel={`Remove medicine ${index + 1}`}
+          accessibilityLabel={t('medicineForm.removeA11y', { n: index + 1 })}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
           <Ionicons name="trash-outline" size={20} color={colors.danger} />
@@ -84,14 +86,14 @@ export function MedicineFormCard({
           name={`medicines.${index}.name`}
           render={({ field }) => (
             <Input
-              label="Medicine name *"
-              placeholder="e.g. Amoxicillin"
+              label={t('medicineForm.nameLabel')}
+              placeholder={t('medicineForm.namePlaceholder')}
               value={field.value}
               onChangeText={field.onChange}
               onBlur={field.onBlur}
               error={e?.name?.message}
               containerStyle={styles.field}
-              accessibilityLabel="Medicine name"
+              accessibilityLabel={t('medicineForm.nameA11y')}
             />
           )}
         />
@@ -105,8 +107,8 @@ export function MedicineFormCard({
             name={`medicines.${index}.strength`}
             render={({ field }) => (
               <Input
-                label="Strength"
-                placeholder="500mg"
+                label={t('medicineForm.strengthLabel')}
+                placeholder={t('medicineForm.strengthPlaceholder')}
                 value={field.value}
                 onChangeText={field.onChange}
                 onBlur={field.onBlur}
@@ -121,8 +123,8 @@ export function MedicineFormCard({
             name={`medicines.${index}.form`}
             render={({ field }) => (
               <Input
-                label="Form"
-                placeholder="tablet"
+                label={t('medicineForm.formLabel')}
+                placeholder={t('medicineForm.formPlaceholder')}
                 value={field.value}
                 onChangeText={field.onChange}
                 onBlur={field.onBlur}
@@ -141,8 +143,8 @@ export function MedicineFormCard({
             name={`medicines.${index}.dosageAmount`}
             render={({ field }) => (
               <Input
-                label="Dose amount *"
-                placeholder="1 tablet"
+                label={t('medicineForm.doseAmountLabel')}
+                placeholder={t('medicineForm.doseAmountPlaceholder')}
                 value={field.value}
                 onChangeText={field.onChange}
                 onBlur={field.onBlur}
@@ -158,11 +160,11 @@ export function MedicineFormCard({
             name={`medicines.${index}.frequencyPerDay`}
             render={({ field }) => (
               <Input
-                label="Times/day *"
-                placeholder="2"
+                label={t('medicineForm.timesPerDayLabel')}
+                placeholder={t('medicineForm.timesPerDayPlaceholder')}
                 value={field.value === 0 ? '' : String(field.value)}
-                onChangeText={(t) => {
-                  const n = parseInt(t, 10);
+                onChangeText={(txt) => {
+                  const n = parseInt(txt, 10);
                   field.onChange(isNaN(n) ? 0 : n);
                 }}
                 onBlur={field.onBlur}
@@ -216,15 +218,15 @@ export function MedicineFormCard({
           name={`medicines.${index}.durationDays`}
           render={({ field }) => (
             <Input
-              label="Duration (days)"
-              placeholder="Ongoing"
+              label={t('medicineForm.durationLabel')}
+              placeholder={t('medicineForm.durationPlaceholder')}
               value={field.value == null ? '' : String(field.value)}
-              onChangeText={(t) => {
-                if (!t.trim()) {
+              onChangeText={(txt) => {
+                if (!txt.trim()) {
                   field.onChange(null);
                   return;
                 }
-                const n = parseInt(t, 10);
+                const n = parseInt(txt, 10);
                 field.onChange(isNaN(n) ? null : n);
               }}
               onBlur={field.onBlur}
@@ -239,8 +241,8 @@ export function MedicineFormCard({
           name={`medicines.${index}.startDate`}
           render={({ field }) => (
             <Input
-              label="Start date *"
-              placeholder="YYYY-MM-DD"
+              label={t('medicineForm.startDateLabel')}
+              placeholder={t('medicineForm.startDatePlaceholder')}
               value={field.value}
               onChangeText={field.onChange}
               onBlur={field.onBlur}
@@ -257,22 +259,22 @@ export function MedicineFormCard({
         name={`medicines.${index}.stockCount`}
         render={({ field }) => (
           <Input
-            label="Current stock (pills) — optional"
-            placeholder="Leave blank to skip tracking"
+            label={t('medicineForm.stockLabel')}
+            placeholder={t('medicineForm.stockPlaceholder')}
             value={field.value == null ? '' : String(field.value)}
-            onChangeText={(t) => {
-              if (!t.trim()) {
+            onChangeText={(txt) => {
+              if (!txt.trim()) {
                 field.onChange(null);
                 return;
               }
-              const n = parseInt(t, 10);
+              const n = parseInt(txt, 10);
               field.onChange(isNaN(n) ? null : n);
             }}
             onBlur={field.onBlur}
             keyboardType="number-pad"
             error={e?.stockCount?.message}
             containerStyle={styles.field}
-            accessibilityLabel="Current pill stock count"
+            accessibilityLabel={t('medicineForm.stockA11y')}
           />
         )}
       />
@@ -283,8 +285,8 @@ export function MedicineFormCard({
         name={`medicines.${index}.instructions`}
         render={({ field }) => (
           <Input
-            label="Instructions"
-            placeholder="e.g. Take with water"
+            label={t('medicineForm.instructionsLabel')}
+            placeholder={t('medicineForm.instructionsPlaceholder')}
             value={field.value}
             onChangeText={field.onChange}
             onBlur={field.onBlur}

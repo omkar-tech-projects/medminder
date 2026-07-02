@@ -11,6 +11,9 @@ export const medicineExtractionSchema = z.object({
   durationDays: z.number().int().positive().nullable(),
   instructions: z.string().nullable(),
   confidence: z.number().min(0).max(1),
+  // JSON-serialised DayPattern for non-daily schedules (weekly, monthly, every N days).
+  // Kept as a string so Zod schema and form values remain free of schedule-generator types.
+  dayPattern: z.string().nullable().optional(),
 });
 
 export const analysisResponseSchema = z.object({

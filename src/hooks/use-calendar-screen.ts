@@ -7,12 +7,16 @@ import {
   type CalendarDose,
 } from '@/db/queries/dose-logs';
 import { useProfileStore } from '@/store/profile-store';
+import { useDoseStore } from '@/store/dose-store';
 
 export type { DayAdherence, CalendarDose };
 
 export function useCalendarScreen() {
   const today = format(new Date(), 'yyyy-MM-dd');
   const activeProfileId = useProfileStore((s) => s.activeProfileId);
+  // Re-render whenever any screen marks a dose taken/missed/skipped so calendar
+  // always reflects the same data as Home and notifications.
+  const doseVersion = useDoseStore((s) => s.doseVersion);
 
   const [viewMonth, setViewMonth] = useState<Date>(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<string>(today);
@@ -36,11 +40,11 @@ export function useCalendarScreen() {
 
   useEffect(() => {
     loadMonth();
-  }, [loadMonth]);
+  }, [loadMonth, doseVersion]);
 
   useEffect(() => {
     loadDay();
-  }, [loadDay]);
+  }, [loadDay, doseVersion]);
 
   const prevMonth = useCallback((): void => {
     setViewMonth((d) => subMonths(d, 1));

@@ -1,6 +1,7 @@
 import { View, FlatList, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text, Button, Badge } from '@/components';
 import { useTheme } from '@/theme';
@@ -14,6 +15,7 @@ const THUMB_SIZE = (SCREEN_W - GRID_PADDING * 2 - GRID_GAP) / 2;
 
 export default function CaptureReviewScreen() {
   const { colors, spacing, radii } = useTheme();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const pages = useCaptureStore((s) => s.pages);
   const removePage = useCaptureStore((s) => s.removePage);
@@ -48,7 +50,7 @@ export default function CaptureReviewScreen() {
         source={{ uri: item.uri }}
         style={[styles.thumb, { borderRadius: radii.lg }]}
         resizeMode="cover"
-        accessibilityLabel={`Prescription page ${index + 1}`}
+        accessibilityLabel={t('capture.pageImageA11y', { n: index + 1 })}
       />
 
       {/* Page number badge */}
@@ -63,7 +65,7 @@ export default function CaptureReviewScreen() {
       {/* Remove button */}
       <TouchableOpacity
         onPress={() => handleRemove(item)}
-        accessibilityLabel={`Remove page ${index + 1}`}
+        accessibilityLabel={t('capture.removePage', { n: index + 1 })}
         accessibilityRole="button"
         hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
         style={[styles.removeBtn, { backgroundColor: colors.danger, borderRadius: radii.full }]}
@@ -87,7 +89,7 @@ export default function CaptureReviewScreen() {
       <View style={[styles.header, { paddingHorizontal: spacing[5] }]}>
         <TouchableOpacity
           onPress={() => router.back()}
-          accessibilityLabel="Go back to camera"
+          accessibilityLabel={t('capture.goBackToCameraA11y')}
           accessibilityRole="button"
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
@@ -95,9 +97,9 @@ export default function CaptureReviewScreen() {
         </TouchableOpacity>
 
         <View style={styles.headerCenter}>
-          <Text variant="headingSmall">Review pages</Text>
+          <Text variant="headingSmall">{t('capture.reviewTitle')}</Text>
           <Badge
-            label={`${pages.length} page${pages.length !== 1 ? 's' : ''}`}
+            label={t('capture.pageCount', { count: pages.length })}
             variant="primary"
             size="sm"
           />
@@ -105,12 +107,12 @@ export default function CaptureReviewScreen() {
 
         <TouchableOpacity
           onPress={() => handleCancel()}
-          accessibilityLabel="Cancel and discard all pages"
+          accessibilityLabel={t('capture.discardA11y')}
           accessibilityRole="button"
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
           <Text variant="labelSmall" color={colors.danger}>
-            Discard
+            {t('capture.discard')}
           </Text>
         </TouchableOpacity>
       </View>
@@ -120,7 +122,7 @@ export default function CaptureReviewScreen() {
         color={colors.textTertiary}
         style={[styles.hint, { paddingHorizontal: spacing[5] }]}
       >
-        {'Tap ✕ to remove a page. Tap "Add more" to capture additional pages.'}
+        {t('capture.reviewHint')}
       </Text>
 
       {/* Thumbnail grid */}
@@ -151,7 +153,7 @@ export default function CaptureReviewScreen() {
         ]}
       >
         <Button
-          label="Add more pages"
+          label={t('capture.addMorePages')}
           onPress={handleAddMore}
           variant="secondary"
           fullWidth
@@ -159,14 +161,14 @@ export default function CaptureReviewScreen() {
           style={{ marginBottom: spacing[3] }}
         />
         <Button
-          label="Analyse prescription"
+          label={t('capture.analysePrescription')}
           onPress={handleAnalyse}
           variant="primary"
           fullWidth
           size="lg"
           leftIcon="sparkles-outline"
           disabled={pages.length === 0}
-          accessibilityLabel={`Analyse ${pages.length} prescription page${pages.length !== 1 ? 's' : ''} with AI`}
+          accessibilityLabel={t('capture.analyseA11y', { count: pages.length })}
         />
       </View>
     </View>

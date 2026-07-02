@@ -28,9 +28,10 @@ interface ButtonProps {
   accessibilityLabel?: string;
 }
 
-const HEIGHT: Record<Size, number> = { sm: 44, md: 48, lg: 56 };
-const ICON_SIZE: Record<Size, number> = { sm: 16, md: 18, lg: 20 };
-const H_PAD: Record<Size, number> = { sm: 16, md: 20, lg: 24 };
+const HEIGHT: Record<Size, number> = { sm: 40, md: 46, lg: 54 };
+const ICON_SIZE: Record<Size, number> = { sm: 15, md: 17, lg: 19 };
+const H_PAD: Record<Size, number> = { sm: 14, md: 18, lg: 22 };
+const RADIUS: Record<Size, number> = { sm: 10, md: 13, lg: 16 };
 
 export function Button({
   label,
@@ -45,19 +46,31 @@ export function Button({
   style,
   accessibilityLabel,
 }: ButtonProps) {
-  const { colors, radii } = useTheme();
+  const { colors } = useTheme();
   const isDisabled = disabled || loading;
 
-  const variantStyles: Record<Variant, { bg: string; border: string; text: string }> = {
+  const variantStyles: Record<
+    Variant,
+    { bg: string; border: string; text: string; shadow?: object }
+  > = {
     primary: {
       bg: isDisabled ? colors.brandPrimaryLight : colors.brandPrimary,
       border: 'transparent',
       text: isDisabled ? colors.brandPrimary : colors.textInverse,
+      shadow: isDisabled
+        ? {}
+        : {
+            shadowColor: 'rgba(33,86,218,1)',
+            shadowOffset: { width: 0, height: 10 },
+            shadowOpacity: 0.32,
+            shadowRadius: 20,
+            elevation: 8,
+          },
     },
     secondary: {
-      bg: 'transparent',
-      border: colors.brandPrimary,
-      text: isDisabled ? colors.textTertiary : colors.brandPrimary,
+      bg: colors.surface,
+      border: colors.border,
+      text: isDisabled ? colors.textTertiary : colors.textPrimary,
     },
     ghost: {
       bg: 'transparent',
@@ -65,9 +78,9 @@ export function Button({
       text: isDisabled ? colors.textTertiary : colors.brandPrimary,
     },
     destructive: {
-      bg: isDisabled ? colors.dangerLight : colors.danger,
+      bg: isDisabled ? colors.dangerLight : colors.dangerLight,
       border: 'transparent',
-      text: isDisabled ? colors.danger : colors.textInverse,
+      text: isDisabled ? colors.textTertiary : colors.danger,
     },
   };
 
@@ -80,7 +93,7 @@ export function Button({
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityRole="button"
       accessibilityState={{ disabled: isDisabled, busy: loading }}
-      activeOpacity={0.75}
+      activeOpacity={0.78}
       style={[
         styles.base,
         {
@@ -88,10 +101,11 @@ export function Button({
           paddingHorizontal: H_PAD[size],
           backgroundColor: vs.bg,
           borderColor: vs.border,
-          borderRadius: radii.lg,
+          borderRadius: RADIUS[size],
           borderWidth: variant === 'secondary' ? 1.5 : 0,
-          opacity: isDisabled && !loading ? 0.5 : 1,
+          opacity: isDisabled && !loading ? 0.55 : 1,
         },
+        vs.shadow,
         fullWidth && styles.full,
         style,
       ]}
@@ -109,9 +123,11 @@ export function Button({
             />
           )}
           <Text
-            variant={size === 'sm' ? 'labelSmall' : 'labelLarge'}
+            variant={size === 'sm' ? 'labelMedium' : size === 'lg' ? 'bodyLarge' : 'labelLarge'}
             color={vs.text}
             style={styles.label}
+            numberOfLines={1}
+            adjustsFontSizeToFit
           >
             {label}
           </Text>
@@ -130,13 +146,10 @@ export function Button({
 }
 
 const styles = StyleSheet.create({
-  base: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  base: { alignItems: 'center', justifyContent: 'center' },
   full: { width: '100%' },
   row: { flexDirection: 'row', alignItems: 'center' },
   label: { flexShrink: 1 },
-  leftIcon: { marginRight: 6 },
-  rightIcon: { marginLeft: 6 },
+  leftIcon: { marginRight: 7 },
+  rightIcon: { marginLeft: 7 },
 });

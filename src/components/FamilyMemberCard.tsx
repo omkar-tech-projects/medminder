@@ -37,7 +37,7 @@ export function FamilyMemberCard({
   onEdit,
   onDelete,
 }: FamilyMemberCardProps) {
-  const { colors, spacing, radii } = useTheme();
+  const { colors, spacing } = useTheme();
   const { t } = useTranslation();
 
   const adherencePct =
@@ -60,7 +60,7 @@ export function FamilyMemberCard({
         styles.card,
         {
           backgroundColor: colors.surface,
-          borderRadius: radii.lg,
+          borderRadius: 16,
           padding: spacing[4],
           borderWidth: 1.5,
           borderColor: isActive ? colors.brandPrimary : colors.border,

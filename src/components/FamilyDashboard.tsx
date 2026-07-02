@@ -42,7 +42,7 @@ export function FamilyDashboard({ summaries, missedNames }: FamilyDashboardProps
             styles.missedRow,
             {
               backgroundColor: colors.dangerLight,
-              borderRadius: 8,
+              borderRadius: 10,
               padding: spacing[2],
               marginTop: spacing[2],
             },

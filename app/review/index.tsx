@@ -1,18 +1,16 @@
 import { View, ScrollView, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text, Button } from '@/components';
 import { MedicineFormCard } from '@/components/MedicineFormCard';
 import { useTheme } from '@/theme';
 import { useMedicineForm } from '@/hooks/use-medicine-form';
 
-const DISCLAIMER =
-  'You are responsible for verifying that every detail below matches your actual prescription. ' +
-  'AI extraction can be wrong. Check with your pharmacist before starting any course of medication.';
-
 export default function ReviewScreen() {
   const { colors, spacing, radii } = useTheme();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const {
     form,
@@ -21,6 +19,7 @@ export default function ReviewScreen() {
     removeField,
     handleConfirm,
     originalMeds,
+    extractionFailed,
     isValid,
     isSubmitting,
   } = useMedicineForm();
@@ -29,10 +28,10 @@ export default function ReviewScreen() {
     return (
       <View style={[styles.root, styles.center, { backgroundColor: colors.background }]}>
         <Text variant="bodyMedium" color={colors.textSecondary}>
-          No medicines to review.
+          {t('review.noMedicines')}
         </Text>
         <Button
-          label="Go back"
+          label={t('review.goBack')}
           onPress={() => router.back()}
           variant="ghost"
           style={{ marginTop: spacing[4] }}
@@ -58,9 +57,9 @@ export default function ReviewScreen() {
           },
         ]}
       >
-        <Text variant="headingSmall">Verify medicines</Text>
+        <Text variant="headingSmall">{t('review.title')}</Text>
         <Text variant="caption" color={colors.textTertiary}>
-          {fields.length} medicine{fields.length !== 1 ? 's' : ''}
+          {t('review.medicineCount', { count: fields.length })}
         </Text>
       </View>
 
@@ -72,6 +71,36 @@ export default function ReviewScreen() {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
+        {/* Extraction failure banner — shown when OCR ran but found zero medicines */}
+        {extractionFailed && (
+          <View
+            style={[
+              styles.disclaimer,
+              {
+                backgroundColor: colors.dangerLight,
+                borderColor: colors.danger,
+                borderRadius: radii.lg,
+                padding: spacing[4],
+                marginBottom: spacing[3],
+              },
+            ]}
+            accessibilityRole="alert"
+            accessibilityLiveRegion="assertive"
+          >
+            <View style={styles.disclaimerRow}>
+              <Ionicons
+                name="alert-circle-outline"
+                size={20}
+                color={colors.danger}
+                style={{ marginRight: spacing[2], marginTop: 1 }}
+              />
+              <Text variant="bodySmall" color={colors.dangerDark} style={{ flex: 1 }}>
+                {t('review.extractionWarning')}
+              </Text>
+            </View>
+          </View>
+        )}
+
         {/* Persistent disclaimer — non-dismissable */}
         <View
           style={[
@@ -95,7 +124,7 @@ export default function ReviewScreen() {
               style={{ marginRight: spacing[2], marginTop: 1 }}
             />
             <Text variant="bodySmall" color={colors.warningDark} style={{ flex: 1 }}>
-              {DISCLAIMER}
+              {t('review.disclaimer')}
             </Text>
           </View>
         </View>
@@ -114,12 +143,12 @@ export default function ReviewScreen() {
 
         {/* Add another medicine */}
         <Button
-          label="Add another medicine"
+          label={t('review.addAnother')}
           onPress={appendBlank}
           variant="secondary"
           fullWidth
           leftIcon="add-circle-outline"
-          accessibilityLabel="Add a medicine manually"
+          accessibilityLabel={t('review.addAnotherA11y')}
         />
       </ScrollView>
 
@@ -137,23 +166,24 @@ export default function ReviewScreen() {
         ]}
       >
         <Button
-          label="Confirm schedule"
+          label={t('review.confirmSchedule')}
           onPress={handleConfirm}
           variant="primary"
           fullWidth
           size="lg"
           leftIcon="checkmark-circle-outline"
           disabled={!isValid || isSubmitting}
-          accessibilityLabel="Confirm medicines and set up reminders"
+          loading={isSubmitting}
+          accessibilityLabel={t('review.confirmA11y')}
         />
         <Button
-          label="Retake photo"
+          label={t('review.retakePhoto')}
           onPress={() => router.back()}
           variant="ghost"
           fullWidth
           leftIcon="camera-outline"
           style={{ marginTop: spacing[2] }}
-          accessibilityLabel="Go back and retake the prescription photo"
+          accessibilityLabel={t('review.retakeA11y')}
         />
       </View>
     </KeyboardAvoidingView>

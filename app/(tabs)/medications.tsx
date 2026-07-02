@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
-import { FlatList, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { useEffect } from 'react';
+import { Alert, FlatList, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { format, differenceInDays, parseISO } from 'date-fns';
+import { differenceInDays, parseISO, format } from 'date-fns';
+import { useShallow } from 'zustand/shallow';
 import { Screen, AppHeader, EmptyState, Badge, Text } from '@/components';
 import { ViewingAsBanner } from '@/components/ViewingAsBanner';
 import { useTheme } from '@/theme';
 import { useProfileStore } from '@/store/profile-store';
-import { getActiveMedicines } from '@/db/queries/medicines';
+import { useAnalysisStore } from '@/store/analysis-store';
+import { useMedicationStore, selectActiveMedications } from '@/store/medication-store';
 import type { Medicine } from '@/db/schema';
 
 function daysRemaining(endDate: string | null): number | null {
@@ -44,7 +46,13 @@ function MedicineCard({ medicine }: MedicineCardProps) {
         <View style={styles.cardMain}>
           <Text variant="bodyMedium">{medicine.name}</Text>
           <Text variant="caption" color={colors.textTertiary} style={{ marginTop: 2 }}>
-            {`${medicine.dosage} ${medicine.dosageUnit} · ${medicine.timesPerDay}×/day`}
+            {[
+              `${medicine.dosage} ${medicine.dosageUnit}`,
+              medicine.strength ?? null,
+              `${medicine.timesPerDay}×/day`,
+            ]
+              .filter(Boolean)
+              .join(' · ')}
           </Text>
           {medicine.startDate && (
             <Text variant="caption" color={colors.textTertiary}>
@@ -69,13 +77,30 @@ function MedicineCard({ medicine }: MedicineCardProps) {
   );
 }
 
+function handleAddPress(): void {
+  Alert.alert('Add Medicine', 'How would you like to add a medicine?', [
+    {
+      text: 'Scan prescription',
+      onPress: () => router.push('/capture' as never),
+    },
+    {
+      text: 'Add manually',
+      onPress: () => {
+        useAnalysisStore.getState().reset();
+        router.push('/review' as never);
+      },
+    },
+    { text: 'Cancel', style: 'cancel' },
+  ]);
+}
+
 export default function MedicationsScreen() {
   const { colors, spacing } = useTheme();
   const activeProfileId = useProfileStore((s) => s.activeProfileId);
-  const [meds, setMeds] = useState<Medicine[]>([]);
+  const meds = useMedicationStore(useShallow(selectActiveMedications));
 
   useEffect(() => {
-    setMeds(getActiveMedicines(activeProfileId));
+    useMedicationStore.getState().load();
   }, [activeProfileId]);
 
   return (
@@ -85,7 +110,7 @@ export default function MedicationsScreen() {
         title="Medicines"
         rightContent={
           <TouchableOpacity
-            onPress={() => router.push('/capture' as never)}
+            onPress={handleAddPress}
             accessibilityRole="button"
             accessibilityLabel="Add medicine"
             style={{ padding: spacing[1] }}

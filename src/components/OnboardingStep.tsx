@@ -39,13 +39,13 @@ export function OnboardingStep({
   keyboardAware = false,
   children,
 }: OnboardingStepProps) {
-  const { colors, spacing, radii } = useTheme();
+  const { colors, spacing } = useTheme();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const accent = iconColor ?? colors.brandPrimary;
 
   const inner = (
-    <View style={[styles.root, { backgroundColor: colors.background }]}>
+    <View style={[styles.root, { backgroundColor: colors.backgroundScreen }]}>
       {/* Progress + skip row */}
       <View
         style={[
@@ -53,17 +53,16 @@ export function OnboardingStep({
           { paddingHorizontal: spacing[5], paddingTop: insets.top + spacing[4] },
         ]}
       >
-        <View style={styles.dots}>
-          {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-            <View
-              key={i}
-              style={[
-                styles.dot,
-                { backgroundColor: i + 1 === step ? colors.brandPrimary : colors.border },
-                i + 1 === step && styles.dotActive,
-              ]}
-            />
-          ))}
+        <View style={styles.progressBarTrack}>
+          <View
+            style={[
+              styles.progressBarFill,
+              {
+                width: `${(step / TOTAL_STEPS) * 100}%`,
+                backgroundColor: colors.brandPrimary,
+              },
+            ]}
+          />
         </View>
         {skipToEnd != null && (
           <Button
@@ -87,7 +86,7 @@ export function OnboardingStep({
         <View
           style={[
             styles.iconCircle,
-            { backgroundColor: colors.brandPrimaryLight, borderRadius: radii.full },
+            { backgroundColor: colors.brandPrimaryLight, borderRadius: 9999 },
           ]}
           accessibilityElementsHidden
         >
@@ -103,7 +102,9 @@ export function OnboardingStep({
         </Text>
 
         {/* Optional children (e.g. input, disclaimer box) */}
-        {children != null && <View style={{ marginTop: spacing[6] }}>{children}</View>}
+        {children != null && (
+          <View style={{ marginTop: spacing[6], alignSelf: 'stretch' }}>{children}</View>
+        )}
       </ScrollView>
 
       {/* Fixed bottom actions */}
@@ -159,9 +160,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 8,
   },
-  dots: { flexDirection: 'row', gap: 6, alignItems: 'center' },
-  dot: { height: 6, width: 6, borderRadius: 3 },
-  dotActive: { width: 20 },
+  progressBarTrack: {
+    flex: 1,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#E8EDF3',
+    overflow: 'hidden',
+  },
+  progressBarFill: { height: 4, borderRadius: 2 },
   scroll: { flex: 1 },
   scrollContent: { alignItems: 'center', paddingTop: 32, paddingBottom: 24 },
   iconCircle: {

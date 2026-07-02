@@ -59,7 +59,16 @@ export const useMedicationStore = create<MedicationState>((set, get) => ({
   },
 }));
 
-const today = () => format(new Date(), 'yyyy-MM-dd');
+let _todayCache = '';
+let _todayCacheAt = 0;
+function todayStr(): string {
+  const now = Date.now();
+  if (now - _todayCacheAt > 60_000) {
+    _todayCache = format(new Date(), 'yyyy-MM-dd');
+    _todayCacheAt = now;
+  }
+  return _todayCache;
+}
 
 export const selectActiveMedications = (state: MedicationState): Medicine[] =>
-  state.medications.filter((m) => m.active === 1 && (m.endDate == null || m.endDate >= today()));
+  state.medications.filter((m) => m.active === 1 && (m.endDate == null || m.endDate >= todayStr()));

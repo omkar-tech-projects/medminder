@@ -45,7 +45,7 @@ function DayCell({
   cellWidth,
   onPress,
 }: DayCellProps) {
-  const { colors, radii } = useTheme();
+  const { colors } = useTheme();
   const dot = adherence != null ? dotColor(adherence, colors) : null;
 
   const bg = isSelected ? colors.brandPrimary : isToday ? colors.brandPrimaryLight : 'transparent';
@@ -63,7 +63,7 @@ function DayCell({
       accessibilityState={{ selected: isSelected }}
       style={[styles.cell, { width: cellWidth, height: cellWidth + 10 }]}
     >
-      <View style={[styles.dayCircle, { backgroundColor: bg, borderRadius: radii.full }]}>
+      <View style={[styles.dayCircle, { backgroundColor: bg, borderRadius: 9999 }]}>
         <Text variant="bodySmall" color={numColor} style={styles.dayNum}>
           {String(day)}
         </Text>

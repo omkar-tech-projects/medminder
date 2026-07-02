@@ -20,6 +20,8 @@ export const medicineFormSchema = z.object({
   startDate: z.string().regex(DATE_RE, 'Use YYYY-MM-DD format'),
   stockCount: z.number().int().min(1).nullable(),
   instructions: z.string(),
+  // Passed through from AI extraction; not user-editable. JSON-serialised DayPattern.
+  dayPattern: z.string().nullable().optional(),
 });
 
 export const reviewFormSchema = z.object({

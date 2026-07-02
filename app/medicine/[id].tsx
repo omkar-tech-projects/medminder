@@ -8,20 +8,28 @@ import { Button } from '@/components/Button';
 import { Badge } from '@/components/Badge';
 import { Screen } from '@/components/Screen';
 import { MedicineOverrideSheet } from '@/components/MedicineOverrideSheet';
+import { MedicineEditSheet } from '@/components/MedicineEditSheet';
 import { useTheme } from '@/theme';
 import { getMedicineById, pauseMedicine, resumeMedicine } from '@/db/queries/medicines';
-import { deactivateMedicine } from '@/services/refill-service';
+import { getSchedulesForMedicine } from '@/db/queries/schedules';
+import { deleteMedicineCompletely } from '@/services/refill-service';
 import { useSettingsStore } from '@/store/settings-store';
 import { useDoseStore } from '@/store/dose-store';
+import { useMedicationStore } from '@/store/medication-store';
 
 export default function MedicineDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { colors, spacing, radii } = useTheme();
   const gs = useSettingsStore();
   const [overrideOpen, setOverrideOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const [, forceUpdate] = useState(0);
+  // Lazy-mount: only add Modal to tree after first open to avoid Fabric addViewAt crash during navigation
+  const [overrideMounted, setOverrideMounted] = useState(false);
+  const [editMounted, setEditMounted] = useState(false);
 
   const medicine = id ? getMedicineById(id) : undefined;
+  const schedules = id ? getSchedulesForMedicine(id) : [];
 
   if (!medicine) {
     return (
@@ -66,6 +74,19 @@ export default function MedicineDetailScreen() {
   const medicineId = medicine.id;
   const medicineName = medicine.name;
 
+  const doseTimes =
+    schedules.length > 0
+      ? schedules
+          .map((s) => {
+            const [hh, mm] = s.timeOfDay.split(':');
+            const h = parseInt(hh ?? '0', 10);
+            const suffix = h >= 12 ? 'PM' : 'AM';
+            const displayH = h % 12 === 0 ? 12 : h % 12;
+            return `${displayH}:${mm} ${suffix}`;
+          })
+          .join(', ')
+      : null;
+
   async function handlePauseResume(): Promise<void> {
     if (isActive) {
       pauseMedicine(medicineId);
@@ -86,9 +107,13 @@ export default function MedicineDetailScreen() {
           text: 'Delete',
           style: 'destructive',
           onPress: () => {
-            void deactivateMedicine(medicineId)
+            void deleteMedicineCompletely(medicineId)
               .then(() => {
+                useMedicationStore.getState().load();
                 useDoseStore.getState().loadForDate(today);
+                // Bump doseVersion so the Calendar tab re-queries all dates
+                // and the deleted medicine's doses vanish across every month view.
+                useDoseStore.setState((s) => ({ doseVersion: s.doseVersion + 1 }));
                 router.back();
               })
               .catch(() => undefined);
@@ -100,7 +125,7 @@ export default function MedicineDetailScreen() {
 
   return (
     <Screen edges={['top']}>
-      <ScrollView contentContainerStyle={{ paddingBottom: spacing[8] }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: spacing[6] }}>
         {/* Header */}
         <View style={[styles.header, { paddingHorizontal: spacing[5], paddingTop: spacing[4] }]}>
           <TouchableOpacity
@@ -114,7 +139,17 @@ export default function MedicineDetailScreen() {
           <Text variant="headingSmall" style={styles.title}>
             {medicine.name}
           </Text>
-          <View style={{ width: 24 }} />
+          <TouchableOpacity
+            onPress={() => {
+              setEditMounted(true);
+              setEditOpen(true);
+            }}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            accessibilityRole="button"
+            accessibilityLabel="Edit medicine"
+          >
+            <Ionicons name="create-outline" size={22} color={colors.brandPrimary} />
+          </TouchableOpacity>
         </View>
 
         {/* Identity card */}
@@ -133,7 +168,7 @@ export default function MedicineDetailScreen() {
         >
           <View style={styles.nameRow}>
             <View style={[styles.dot, { backgroundColor: medicine.color }]} />
-            <Text variant="headingMedium">{medicine.name}</Text>
+            <Text variant="headingMedium" style={styles.cardName}>{medicine.name}</Text>
             <Badge
               label={isActive ? 'Active' : 'Paused'}
               variant={isActive ? 'success' : 'neutral'}
@@ -145,6 +180,7 @@ export default function MedicineDetailScreen() {
           {medicine.strength && <InfoRow label="Strength" value={medicine.strength} />}
           {medicine.form && <InfoRow label="Form" value={medicine.form} />}
           <InfoRow label="Frequency" value={`${medicine.timesPerDay}× daily`} />
+          {doseTimes && <InfoRow label="Times" value={doseTimes} />}
           {medicine.instructions && <InfoRow label="Instructions" value={medicine.instructions} />}
           <InfoRow
             label="Started"
@@ -166,14 +202,17 @@ export default function MedicineDetailScreen() {
 
         {/* Notification overrides */}
         <View
-          style={[styles.sectionHeader, { paddingHorizontal: spacing[5], marginTop: spacing[5] }]}
+          style={[styles.sectionHeader, { paddingHorizontal: spacing[5], marginTop: spacing[4] }]}
         >
           <Text variant="overline" color={colors.textTertiary}>
             Notification overrides
           </Text>
         </View>
         <TouchableOpacity
-          onPress={() => setOverrideOpen(true)}
+          onPress={() => {
+            setOverrideMounted(true);
+            setOverrideOpen(true);
+          }}
           accessibilityRole="button"
           accessibilityLabel="Edit notification overrides for this medicine"
           style={[
@@ -202,7 +241,7 @@ export default function MedicineDetailScreen() {
         </TouchableOpacity>
 
         {/* Actions */}
-        <View style={[styles.actions, { paddingHorizontal: spacing[5], marginTop: spacing[6] }]}>
+        <View style={[{ paddingHorizontal: spacing[5], marginTop: spacing[5] }]}>
           <Button
             label={isActive ? 'Pause reminders' : 'Resume reminders'}
             variant="secondary"
@@ -223,12 +262,27 @@ export default function MedicineDetailScreen() {
         </View>
       </ScrollView>
 
-      <MedicineOverrideSheet
-        medicine={medicine}
-        visible={overrideOpen}
-        onClose={() => setOverrideOpen(false)}
-        onSaved={() => forceUpdate((n) => n + 1)}
-      />
+      {overrideMounted && (
+        <MedicineOverrideSheet
+          medicine={medicine}
+          visible={overrideOpen}
+          onClose={() => setOverrideOpen(false)}
+          onSaved={() => forceUpdate((n) => n + 1)}
+        />
+      )}
+
+      {editMounted && (
+        <MedicineEditSheet
+          medicine={medicine}
+          schedules={schedules}
+          visible={editOpen}
+          onClose={() => setEditOpen(false)}
+          onSaved={() => {
+            useDoseStore.getState().loadForDate(today);
+            forceUpdate((n) => n + 1);
+          }}
+        />
+      )}
     </Screen>
   );
 }
@@ -249,10 +303,11 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 
 const styles = StyleSheet.create({
   center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  header: { flexDirection: 'row', alignItems: 'center' },
+  header: { flexDirection: 'row', alignItems: 'flex-start' },
   title: { flex: 1, textAlign: 'center' },
   card: { borderWidth: 1.5 },
   nameRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 12 },
+  cardName: { flex: 1 },
   dot: { width: 12, height: 12, borderRadius: 6 },
   infoRow: { flexDirection: 'row', alignItems: 'flex-start' },
   infoLabel: { width: 96, flexShrink: 0 },
@@ -260,5 +315,4 @@ const styles = StyleSheet.create({
   sectionHeader: { marginBottom: 4 },
   overrideRow: { flexDirection: 'row', alignItems: 'center' },
   overrideText: { flex: 1 },
-  actions: {},
 });

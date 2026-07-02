@@ -12,25 +12,30 @@ interface BadgeProps {
 }
 
 export function Badge({ label, variant = 'neutral', size = 'md' }: BadgeProps) {
-  const { colors, radii } = useTheme();
+  const { colors } = useTheme();
 
-  const palette: Record<BadgeVariant, { bg: string; text: string }> = {
-    success: { bg: colors.successLight, text: colors.successDark },
-    danger: { bg: colors.dangerLight, text: colors.dangerDark },
-    warning: { bg: colors.warningLight, text: colors.warningDark },
-    info: { bg: colors.infoLight, text: colors.infoDark },
-    neutral: { bg: colors.backgroundTertiary, text: colors.textSecondary },
-    primary: { bg: colors.brandPrimaryLight, text: colors.brandPrimaryDark },
+  const palette: Record<BadgeVariant, { bg: string; text: string; border?: string }> = {
+    success: { bg: colors.successLight, text: colors.success },
+    danger: { bg: colors.dangerLight, text: colors.danger },
+    warning: { bg: colors.warningLight, text: colors.warning, border: colors.warningBorder },
+    info: { bg: colors.infoLight, text: colors.info },
+    neutral: { bg: colors.backgroundSecondary, text: colors.textSecondary },
+    primary: { bg: colors.brandPrimaryLight, text: colors.brandPrimary },
   };
 
-  const { bg, text } = palette[variant];
+  const { bg, text, border } = palette[variant];
 
   return (
     <View
       style={[
         styles.base,
         size === 'sm' ? styles.sm : styles.md,
-        { backgroundColor: bg, borderRadius: radii.full },
+        {
+          backgroundColor: bg,
+          borderRadius: 6,
+          borderWidth: border != null ? 1 : 0,
+          borderColor: border ?? 'transparent',
+        },
       ]}
       accessibilityRole="text"
     >
@@ -47,7 +52,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  sm: { paddingHorizontal: 6, paddingVertical: 2 },
-  md: { paddingHorizontal: 10, paddingVertical: 4 },
-  label: { fontWeight: '600' },
+  sm: { paddingHorizontal: 7, paddingVertical: 3 },
+  md: { paddingHorizontal: 10, paddingVertical: 5 },
+  label: { fontWeight: '800' },
 });

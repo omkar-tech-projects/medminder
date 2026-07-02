@@ -16,7 +16,7 @@ interface RefillWarningCardProps {
 export function RefillWarningCard({ warning, onDismiss, onSetReminder }: RefillWarningCardProps) {
   const [showOptions, setShowOptions] = useState(false);
   const [setting, setSetting] = useState(false);
-  const { colors, spacing, radii } = useTheme();
+  const { colors, spacing } = useTheme();
 
   const isEndingSoon = warning.type === 'ending-soon';
   const accentColor = isEndingSoon ? colors.warning : colors.danger;
@@ -48,7 +48,7 @@ export function RefillWarningCard({ warning, onDismiss, onSetReminder }: RefillW
         {
           backgroundColor: colors.surface,
           borderColor: accentColor,
-          borderRadius: radii.xl,
+          borderRadius: 20,
           padding: spacing[4],
           marginBottom: spacing[3],
         },
@@ -89,7 +89,7 @@ export function RefillWarningCard({ warning, onDismiss, onSetReminder }: RefillW
                 styles.optionBtn,
                 {
                   borderColor: colors.brandPrimary,
-                  borderRadius: radii.md,
+                  borderRadius: 10,
                   paddingHorizontal: spacing[3],
                   paddingVertical: spacing[1],
                 },

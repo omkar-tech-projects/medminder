@@ -10,6 +10,8 @@ import {
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 import { useTheme } from '@/theme';
 
+type ScreenVariant = 'app' | 'screen';
+
 interface ScreenProps {
   children: React.ReactNode;
   scroll?: boolean;
@@ -20,6 +22,7 @@ interface ScreenProps {
   refreshing?: boolean;
   onRefresh?: () => void;
   testID?: string;
+  variant?: ScreenVariant;
 }
 
 export function Screen({
@@ -32,9 +35,12 @@ export function Screen({
   refreshing,
   onRefresh,
   testID,
+  variant = 'app',
 }: ScreenProps) {
   const { colors } = useTheme();
-  const bg = { backgroundColor: colors.background };
+  const bg = {
+    backgroundColor: variant === 'screen' ? colors.backgroundScreen : colors.background,
+  };
 
   const inner = scroll ? (
     <ScrollView

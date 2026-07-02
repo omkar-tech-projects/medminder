@@ -23,7 +23,7 @@ interface CourseEndModalProps {
 
 export function CourseEndModal({ medicine, onDone, onDismiss }: CourseEndModalProps) {
   const [busy, setBusy] = useState(false);
-  const { colors, spacing, radii } = useTheme();
+  const { colors, spacing } = useTheme();
   const refillWarningDays = useSettingsStore((s) => s.refillWarningDays);
 
   async function handleDeactivate(): Promise<void> {
@@ -54,7 +54,7 @@ export function CourseEndModal({ medicine, onDone, onDismiss }: CourseEndModalPr
             styles.card,
             {
               backgroundColor: colors.surface,
-              borderRadius: radii['2xl'],
+              borderRadius: 28,
               padding: spacing[6],
               marginHorizontal: spacing[5],
             },
@@ -106,7 +106,7 @@ export function CourseEndModal({ medicine, onDone, onDismiss }: CourseEndModalPr
                   styles.extendBtn,
                   {
                     borderColor: colors.brandPrimary,
-                    borderRadius: radii.lg,
+                    borderRadius: 16,
                     paddingVertical: spacing[2],
                     flex: 1,
                   },

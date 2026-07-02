@@ -71,7 +71,7 @@ export function useHistoryScreen() {
   const activeProfileId = useProfileStore((s) => s.activeProfileId);
 
   const [filters, setFilters] = useState<ActiveFilters>({
-    rangeKey: '30d',
+    rangeKey: '7d',
     medicineId: null,
     status: null,
   });

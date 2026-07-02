@@ -51,6 +51,15 @@ export function getMedicineIdForDoseLog(doseLogId: string): string | null {
   return row?.medicineId ?? null;
 }
 
+export function getDoseLogStatus(doseLogId: string): DoseStatus | null {
+  const row = db
+    .select({ status: doseLogs.status })
+    .from(doseLogs)
+    .where(eq(doseLogs.id, doseLogId))
+    .get();
+  return row ? (row.status as DoseStatus) : null;
+}
+
 export function setDoseLogCalendarEventId(id: string, eventId: string | null): void {
   db.update(doseLogs).set({ calendarEventId: eventId }).where(eq(doseLogs.id, id)).run();
 }
@@ -61,6 +70,11 @@ export function setDoseLogGoogleCalendarEventId(id: string, eventId: string | nu
 
 export function getDoseLogsForMedicine(medicineId: string): DoseLog[] {
   return db.select().from(doseLogs).where(eq(doseLogs.medicineId, medicineId)).all();
+}
+
+export function deleteDoseLogsForMedicine(medicineId: string): number {
+  const rows = db.delete(doseLogs).where(eq(doseLogs.medicineId, medicineId)).run();
+  return rows.changes ?? 0;
 }
 
 export function getAllDoseLogsForProfile(profileId: string): DoseLog[] {
@@ -413,6 +427,45 @@ export interface PendingDoseForReschedule {
   nagIntervalMinutesOverride: number | null;
   maxNagsOverride: number | null;
   quietHoursOverride: number | null;
+}
+
+/** Returns pending dose logs scheduled between fromIso and toIso (inclusive). */
+export function getPendingDoseLogsInWindow(fromIso: string, toIso: string): PendingDoseForReschedule[] {
+  const rows = db
+    .select({
+      doseLogId: doseLogs.id,
+      medicineId: doseLogs.medicineId,
+      medicineName: medicines.name,
+      dosageNum: medicines.dosage,
+      dosageUnit: medicines.dosageUnit,
+      scheduledAt: doseLogs.scheduledAt,
+      leadMinutesOverride: medicines.leadMinutesOverride,
+      nagIntervalMinutesOverride: medicines.nagIntervalMinutesOverride,
+      maxNagsOverride: medicines.maxNagsOverride,
+      quietHoursOverride: medicines.quietHoursOverride,
+    })
+    .from(doseLogs)
+    .innerJoin(medicines, eq(doseLogs.medicineId, medicines.id))
+    .where(
+      and(
+        eq(doseLogs.status, DOSE_STATUS.PENDING),
+        gte(doseLogs.scheduledAt, fromIso),
+        lte(doseLogs.scheduledAt, toIso),
+      ),
+    )
+    .all();
+
+  return rows.map((r) => ({
+    doseLogId: r.doseLogId,
+    medicineId: r.medicineId,
+    medicineName: r.medicineName,
+    dosage: `${r.dosageNum} ${r.dosageUnit}`,
+    scheduledAt: r.scheduledAt,
+    leadMinutesOverride: r.leadMinutesOverride ?? null,
+    nagIntervalMinutesOverride: r.nagIntervalMinutesOverride ?? null,
+    maxNagsOverride: r.maxNagsOverride ?? null,
+    quietHoursOverride: r.quietHoursOverride ?? null,
+  }));
 }
 
 /** Returns all pending future dose logs joined with per-medicine override columns. */

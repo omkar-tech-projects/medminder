@@ -30,7 +30,7 @@ export function ListItem({
   destructive = false,
   accessibilityLabel,
 }: ListItemProps) {
-  const { colors, spacing, radii } = useTheme();
+  const { colors, spacing } = useTheme();
 
   const titleColor = destructive
     ? colors.danger
@@ -43,13 +43,18 @@ export function ListItem({
       style={[
         styles.row,
         {
-          minHeight: 52,
+          minHeight: 54,
           paddingHorizontal: spacing[4],
           paddingVertical: spacing[3],
           backgroundColor: colors.surface,
-          borderRadius: radii.lg,
-          borderWidth: StyleSheet.hairlineWidth,
+          borderRadius: 16,
+          borderWidth: 1,
           borderColor: colors.border,
+          shadowColor: 'rgba(15,27,45,1)',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.03,
+          shadowRadius: 4,
+          elevation: 1,
         },
       ]}
     >
@@ -59,7 +64,7 @@ export function ListItem({
             ? leftContent
             : leftIcon != null && (
                 <View style={[styles.iconCircle, { backgroundColor: colors.brandPrimaryLight }]}>
-                  <Ionicons name={leftIcon} size={18} color={colors.brandPrimary} />
+                  <Ionicons name={leftIcon} size={17} color={colors.brandPrimary} />
                 </View>
               )}
         </View>
@@ -71,8 +76,8 @@ export function ListItem({
         </Text>
         {subtitle != null && (
           <Text
-            variant="bodySmall"
-            color={disabled ? colors.textDisabled : colors.textSecondary}
+            variant="caption"
+            color={disabled ? colors.textDisabled : colors.textTertiary}
             numberOfLines={2}
             style={styles.subtitle}
           >
@@ -86,7 +91,7 @@ export function ListItem({
       {showChevron && (
         <Ionicons
           name="chevron-forward"
-          size={16}
+          size={15}
           color={colors.textTertiary}
           style={{ marginLeft: spacing[2] }}
         />
@@ -99,7 +104,7 @@ export function ListItem({
       <TouchableOpacity
         onPress={onPress}
         disabled={disabled}
-        activeOpacity={0.7}
+        activeOpacity={0.75}
         accessibilityLabel={accessibilityLabel ?? title}
         accessibilityRole="button"
         accessibilityState={{ disabled }}

@@ -1,6 +1,6 @@
 import '@/lib/i18n';
-import { useEffect } from 'react';
-import { View, useColorScheme } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, useColorScheme, AppState } from 'react-native';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
@@ -21,11 +21,19 @@ import { useAutoMiss } from '@/hooks/use-auto-miss';
 import { useAppLock } from '@/hooks/use-app-lock';
 import { runRefillCheck } from '@/services/refill-service';
 import { runGoogleCalendarMigrationIfNeeded } from '@/services/google-calendar-service';
+import { scheduleWindowNotifications } from '@/services/reschedule-service';
 import { useSettingsStore } from '@/store/settings-store';
 
 void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  // Load settings synchronously before the first render so the theme preference
+  // (light/dark/system) is available immediately and avoids a flash of wrong colours
+  // on Android when useColorScheme() returns null on the very first render.
+  useState(() => {
+    useSettingsStore.getState().load();
+  });
+
   const colorScheme = useColorScheme();
   const segments = useSegments();
   const router = useRouter();
@@ -46,6 +54,19 @@ export default function RootLayout() {
     const refillWarningDays = useSettingsStore.getState().refillWarningDays;
     void runRefillCheck(refillWarningDays).catch(() => undefined);
     void runGoogleCalendarMigrationIfNeeded().catch(() => undefined);
+    // Arm the notification window on first launch.
+    void scheduleWindowNotifications().catch(() => undefined);
+  }, []);
+
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (nextState) => {
+      if (nextState === 'active') {
+        // Re-arm rolling window whenever app comes to foreground so tomorrow's
+        // doses always have alarms ready.
+        void scheduleWindowNotifications().catch(() => undefined);
+      }
+    });
+    return () => sub.remove();
   }, []);
 
   const isOnboardingLoaded = useOnboardingStore((s) => s.isLoaded);
@@ -92,7 +113,9 @@ export default function RootLayout() {
           void setupNotificationCategories();
         },
       )
-      .catch(() => {});
+      .catch((err: unknown) => {
+        if (__DEV__) console.warn('[notifications] setup failed:', err);
+      });
   }, []);
 
   return (

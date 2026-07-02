@@ -709,7 +709,7 @@
   {
     "brandName": "D-Rise",
     "genericName": "Vitamin D3",
-    "aliases": ["Calcirol", "Arachitol", "Cholecalciferol", "Uprise D3", "Ossopan", "Tayo", "D3 Must"],
+    "aliases": ["Calcirol", "Arachitol", "Cholecalciferol", "Uprise D3", "Ossopan", "Tayo", "D3 Must", "VitD3", "VitaminD3"],
     "commonStrengths": ["60000 IU", "1000 IU", "2000 IU"],
     "forms": ["tablet", "capsule", "injection", "sachet"]
   },
@@ -2021,5 +2021,12 @@
     "aliases": ["Magnex", "Sulperazone", "Cefobid", "Cefoperazone"],
     "commonStrengths": ["1g+1g"],
     "forms": ["injection"]
+  },
+  {
+    "brandName": "Trichospire",
+    "genericName": "Finasteride + Minoxidil Topical Kit",
+    "aliases": ["Trichospire-M", "Trichospire M", "Hairgen-F", "Tugain-F Kit", "Morr-F Kit"],
+    "commonStrengths": ["1mg+5%"],
+    "forms": ["tablet", "solution", "lotion"]
   }
 ]

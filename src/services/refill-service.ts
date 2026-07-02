@@ -1,7 +1,16 @@
 import { format, addDays, parseISO, subDays } from 'date-fns';
-import { getAllMedicines, getEndedCourses, updateMedicine } from '@/db/queries/medicines';
+import {
+  getAllMedicines,
+  getEndedCourses,
+  updateMedicine,
+  deleteMedicine,
+} from '@/db/queries/medicines';
 import { getSchedulesForMedicine } from '@/db/queries/schedules';
-import { getDoseLogsForMedicine, regenerateFutureDoseLogs } from '@/db/queries/dose-logs';
+import {
+  getDoseLogsForMedicine,
+  deleteDoseLogsForMedicine,
+  regenerateFutureDoseLogs,
+} from '@/db/queries/dose-logs';
 import { useSettingsStore } from '@/store/settings-store';
 import {
   scheduleRefillWarningNotification,
@@ -69,6 +78,49 @@ export async function deactivateMedicine(medicineId: string): Promise<void> {
       }
     }),
   );
+}
+
+/**
+ * Permanently deletes a medicine and all associated data:
+ * cancels every notification, removes every calendar event, deletes all
+ * dose logs, then hard-deletes the medicine row.
+ */
+export async function deleteMedicineCompletely(medicineId: string): Promise<void> {
+  await cancelRefillNotificationsForMedicine(medicineId);
+
+  const logs = getDoseLogsForMedicine(medicineId);
+  if (__DEV__) {
+    console.log(`[deleteMedicine] id=${medicineId} totalLogs=${logs.length}`);
+  }
+
+  let cancelled = 0;
+  await Promise.all(
+    logs.map(async (l) => {
+      await cancelNotificationsForDoseLog(l.id).catch(() => undefined);
+      cancelled++;
+      if (l.calendarEventId) {
+        await deleteDoseCalendarEvent(l.calendarEventId).catch(() => undefined);
+      }
+      if (l.googleCalendarEventId) {
+        await deleteGoogleCalendarEvent(l.googleCalendarEventId).catch(() => undefined);
+      }
+    }),
+  );
+
+  const deletedLogs = deleteDoseLogsForMedicine(medicineId);
+
+  if (__DEV__) {
+    const remaining = getDoseLogsForMedicine(medicineId).length;
+    console.log(
+      `[deleteMedicine] logsDeleted=${deletedLogs} remaining=${remaining} notificationsCancelled=${cancelled}`,
+    );
+  }
+
+  deleteMedicine(medicineId);
+
+  if (__DEV__) {
+    console.log(`[deleteMedicine] medicineDeleted=1 id=${medicineId}`);
+  }
 }
 
 export async function extendCourse(

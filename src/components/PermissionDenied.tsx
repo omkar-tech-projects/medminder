@@ -22,7 +22,7 @@ export function PermissionDenied({
   canRequest = false,
   onRequest,
 }: PermissionDeniedProps) {
-  const { colors, spacing, radii } = useTheme();
+  const { colors, spacing } = useTheme();
   const insets = useSafeAreaInsets();
 
   const openSettings = () => {
@@ -34,7 +34,7 @@ export function PermissionDenied({
       style={[
         styles.root,
         {
-          backgroundColor: colors.background,
+          backgroundColor: colors.backgroundScreen,
           paddingTop: insets.top + spacing[4],
           paddingBottom: insets.bottom + spacing[5],
           paddingHorizontal: spacing[6],
@@ -42,10 +42,7 @@ export function PermissionDenied({
       ]}
     >
       <View
-        style={[
-          styles.iconCircle,
-          { backgroundColor: colors.warningLight, borderRadius: radii.full },
-        ]}
+        style={[styles.iconCircle, { backgroundColor: colors.warningLight, borderRadius: 9999 }]}
         accessibilityElementsHidden
       >
         <Ionicons name={icon} size={40} color={colors.warning} />

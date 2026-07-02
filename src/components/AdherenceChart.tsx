@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, useWindowDimensions } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { format, parseISO } from 'date-fns';
 import { Text } from './Text';
 import { useTheme } from '@/theme';
@@ -13,7 +13,6 @@ interface AdherenceChartProps {
 type Period = '7d' | '30d';
 
 const BAR_MAX_H = 72;
-const H_PAD = 20;
 
 function barColor(
   point: AdherenceTrendPoint,
@@ -33,7 +32,7 @@ interface BarProps {
 }
 
 function Bar({ point, barWidth, showLabel, is30 }: BarProps) {
-  const { colors, radii } = useTheme();
+  const { colors } = useTheme();
   const barH = point.total > 0 ? Math.max(Math.round((point.adhPct / 100) * BAR_MAX_H), 3) : 2;
   const color = barColor(point, colors);
   const label = is30 ? '' : format(parseISO(`${point.date}T00:00:00`), 'EEE');
@@ -47,7 +46,7 @@ function Bar({ point, barWidth, showLabel, is30 }: BarProps) {
             {
               height: barH,
               backgroundColor: color,
-              borderRadius: radii.sm,
+              borderRadius: 4,
               width: Math.max(barWidth - (is30 ? 2 : 4), 2),
             },
           ]}
@@ -64,12 +63,11 @@ function Bar({ point, barWidth, showLabel, is30 }: BarProps) {
 
 export function AdherenceChart({ trend7, trend30 }: AdherenceChartProps) {
   const [period, setPeriod] = useState<Period>('7d');
-  const { colors, spacing, radii } = useTheme();
-  const { width } = useWindowDimensions();
+  const { colors, spacing } = useTheme();
+  const [chartWidth, setChartWidth] = useState(0);
 
   const trend = period === '7d' ? trend7 : trend30;
-  const chartWidth = width - H_PAD * 2;
-  const barWidth = Math.floor(chartWidth / trend.length);
+  const barWidth = chartWidth > 0 ? Math.floor(chartWidth / trend.length) : 0;
   const is30 = period === '30d';
 
   const avgAdh =
@@ -82,7 +80,7 @@ export function AdherenceChart({ trend7, trend30 }: AdherenceChartProps) {
         styles.container,
         {
           backgroundColor: colors.surface,
-          borderRadius: radii.xl,
+          borderRadius: 20,
           borderColor: colors.border,
           marginHorizontal: spacing[5],
           marginBottom: spacing[4],
@@ -95,10 +93,7 @@ export function AdherenceChart({ trend7, trend30 }: AdherenceChartProps) {
           Adherence trend
         </Text>
         <View
-          style={[
-            styles.tabs,
-            { backgroundColor: colors.backgroundTertiary, borderRadius: radii.md },
-          ]}
+          style={[styles.tabs, { backgroundColor: colors.backgroundTertiary, borderRadius: 10 }]}
         >
           {(['7d', '30d'] as Period[]).map((p) => (
             <TouchableOpacity
@@ -109,7 +104,7 @@ export function AdherenceChart({ trend7, trend30 }: AdherenceChartProps) {
               accessibilityLabel={`${p === '7d' ? '7 day' : '30 day'} view`}
               style={[
                 styles.tab,
-                { borderRadius: radii.sm },
+                { borderRadius: 7 },
                 period === p && { backgroundColor: colors.surface },
               ]}
             >
@@ -124,10 +119,14 @@ export function AdherenceChart({ trend7, trend30 }: AdherenceChartProps) {
         </View>
       </View>
 
-      <View style={[styles.chart, { height: BAR_MAX_H + (is30 ? 4 : 20) }]}>
-        {trend.map((point) => (
-          <Bar key={point.date} point={point} barWidth={barWidth} showLabel={!is30} is30={is30} />
-        ))}
+      <View
+        style={[styles.chart, { height: BAR_MAX_H + (is30 ? 4 : 20) }]}
+        onLayout={(e) => setChartWidth(e.nativeEvent.layout.width)}
+      >
+        {chartWidth > 0 &&
+          trend.map((point) => (
+            <Bar key={point.date} point={point} barWidth={barWidth} showLabel={!is30} is30={is30} />
+          ))}
       </View>
 
       <Text variant="caption" color={colors.textTertiary} style={{ marginTop: spacing[2] }}>

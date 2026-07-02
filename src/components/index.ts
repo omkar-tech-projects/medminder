@@ -18,6 +18,7 @@ export { PermissionDenied } from './PermissionDenied';
 export { MedicineReviewCard } from './MedicineReviewCard';
 export { MedicineFormCard } from './MedicineFormCard';
 export { TimeChipsField } from './TimeChipsField';
+export { TimePickerModal } from './TimePickerModal';
 export { TimingSelector } from './TimingSelector';
 export { CalendarSyncSection } from './CalendarSyncSection';
 export { ViewingAsBanner } from './ViewingAsBanner';

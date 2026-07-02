@@ -27,10 +27,10 @@ export function Card({
     borderColor: colors.border,
     padding: padding ?? spacing[4],
     ...(elevated && {
-      shadowColor: colors.shadow,
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 0.06,
-      shadowRadius: 4,
+      shadowColor: 'rgba(15,27,45,1)',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.04,
+      shadowRadius: 6,
       elevation: 2,
     }),
   };
@@ -52,7 +52,6 @@ export function Card({
   return <View style={[cardStyle, style]}>{children}</View>;
 }
 
-// Convenience sub-component for a row of actions at the bottom of a card
 interface CardFooterProps {
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;

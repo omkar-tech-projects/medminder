@@ -47,9 +47,9 @@ export function AppHeader({
           accessibilityLabel={leftAction.accessibilityLabel}
           accessibilityRole="button"
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-          style={styles.iconBtn}
+          style={[styles.iconBtn, { backgroundColor: colors.backgroundSecondary }]}
         >
-          <Ionicons name={leftAction.icon} size={24} color={colors.textPrimary} />
+          <Ionicons name={leftAction.icon} size={22} color={colors.textPrimary} />
         </TouchableOpacity>
       )}
       <View style={styles.textBlock}>
@@ -58,8 +58,8 @@ export function AppHeader({
         </Text>
         {subtitle != null && (
           <Text
-            variant="bodyMedium"
-            color={colors.textSecondary}
+            variant="bodySmall"
+            color={colors.textTertiary}
             style={{ marginTop: 2 }}
             numberOfLines={1}
           >

@@ -1,10 +1,9 @@
-import { useState, useRef } from 'react';
-import { View, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/theme';
 import { Text } from './Text';
-
-const TIME_RE = /^([01]\d|2[0-3]):([0-5]\d)$/;
+import { TimePickerModal } from './TimePickerModal';
 
 interface TimeChipsFieldProps {
   value: string[];
@@ -14,40 +13,30 @@ interface TimeChipsFieldProps {
 
 export function TimeChipsField({ value, onChange, error }: TimeChipsFieldProps) {
   const { colors, spacing, radii } = useTheme();
-  const [adding, setAdding] = useState(false);
-  const [draft, setDraft] = useState('');
-  const [draftError, setDraftError] = useState('');
-  const inputRef = useRef<TextInput>(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [editingTime, setEditingTime] = useState<string | null>(null);
 
-  const removeTime = (time: string) => onChange(value.filter((t) => t !== time));
+  const removeTime = (time: string): void => onChange(value.filter((t) => t !== time));
 
-  const commitDraft = () => {
-    const trimmed = draft.trim();
-    if (!TIME_RE.test(trimmed)) {
-      setDraftError('Enter a valid time (HH:MM)');
-      return;
-    }
-    if (value.includes(trimmed)) {
-      setDraftError('That time is already added');
-      return;
-    }
-    onChange([...value, trimmed].sort());
-    setDraft('');
-    setDraftError('');
-    setAdding(false);
+  const handleAdd = (): void => {
+    setEditingTime(null);
+    setPickerOpen(true);
   };
 
-  const cancelDraft = () => {
-    setDraft('');
-    setDraftError('');
-    setAdding(false);
+  const handleEdit = (time: string): void => {
+    setEditingTime(time);
+    setPickerOpen(true);
   };
 
-  const startAdding = () => {
-    setAdding(true);
-    setDraft('');
-    setDraftError('');
-    setTimeout(() => inputRef.current?.focus(), 50);
+  const handleConfirm = (selected: string): void => {
+    setPickerOpen(false);
+    if (editingTime !== null) {
+      const updated = value.map((t) => (t === editingTime ? selected : t));
+      onChange([...new Set(updated)].sort());
+    } else if (!value.includes(selected)) {
+      onChange([...value, selected].sort());
+    }
+    setEditingTime(null);
   };
 
   const hasError = (error ?? '').length > 0;
@@ -60,8 +49,12 @@ export function TimeChipsField({ value, onChange, error }: TimeChipsFieldProps) 
 
       <View style={styles.chipsRow}>
         {value.map((time) => (
-          <View
+          <TouchableOpacity
             key={time}
+            onPress={() => handleEdit(time)}
+            onLongPress={() => removeTime(time)}
+            accessibilityRole="button"
+            accessibilityLabel={`${time} — tap to edit, long-press to remove`}
             style={[
               styles.chip,
               {
@@ -84,74 +77,47 @@ export function TimeChipsField({ value, onChange, error }: TimeChipsFieldProps) 
             >
               <Ionicons name="close-circle" size={14} color={colors.brandPrimary} />
             </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
         ))}
 
-        {adding ? (
-          <View
-            style={[
-              styles.chip,
-              {
-                backgroundColor: colors.inputBackground,
-                borderRadius: radii.full,
-                borderWidth: 1,
-                borderColor: colors.inputBorderFocus,
-                paddingHorizontal: spacing[2],
-                paddingVertical: spacing[1],
-              },
-            ]}
+        <TouchableOpacity
+          onPress={handleAdd}
+          accessibilityLabel="Add dose time"
+          accessibilityRole="button"
+          style={[
+            styles.addBtn,
+            {
+              borderColor: hasError ? colors.danger : colors.borderStrong,
+              borderRadius: radii.full,
+            },
+          ]}
+        >
+          <Ionicons name="add" size={14} color={hasError ? colors.danger : colors.textSecondary} />
+          <Text
+            variant="labelSmall"
+            color={hasError ? colors.danger : colors.textSecondary}
+            style={{ marginLeft: 2 }}
           >
-            <TextInput
-              ref={inputRef}
-              value={draft}
-              onChangeText={(t) => {
-                setDraft(t);
-                setDraftError('');
-              }}
-              onSubmitEditing={commitDraft}
-              onBlur={cancelDraft}
-              placeholder="08:00"
-              placeholderTextColor={colors.textPlaceholder}
-              keyboardType="numbers-and-punctuation"
-              maxLength={5}
-              style={{ fontSize: 13, color: colors.inputText, minWidth: 44 }}
-              accessibilityLabel="New dose time"
-            />
-          </View>
-        ) : (
-          <TouchableOpacity
-            onPress={startAdding}
-            accessibilityLabel="Add dose time"
-            accessibilityRole="button"
-            style={[
-              styles.addBtn,
-              {
-                borderColor: hasError ? colors.danger : colors.borderStrong,
-                borderRadius: radii.full,
-              },
-            ]}
-          >
-            <Ionicons
-              name="add"
-              size={14}
-              color={hasError ? colors.danger : colors.textSecondary}
-            />
-            <Text
-              variant="labelSmall"
-              color={hasError ? colors.danger : colors.textSecondary}
-              style={{ marginLeft: 2 }}
-            >
-              Add
-            </Text>
-          </TouchableOpacity>
-        )}
+            Add
+          </Text>
+        </TouchableOpacity>
       </View>
 
-      {(draftError || hasError) && (
+      {hasError && (
         <Text variant="caption" color={colors.danger} style={{ marginTop: 4 }}>
-          {draftError || error}
+          {error}
         </Text>
       )}
+
+      <TimePickerModal
+        visible={pickerOpen}
+        initial={editingTime ?? '08:00'}
+        onConfirm={handleConfirm}
+        onCancel={() => {
+          setPickerOpen(false);
+          setEditingTime(null);
+        }}
+      />
     </View>
   );
 }

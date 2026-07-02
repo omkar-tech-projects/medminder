@@ -25,13 +25,15 @@ jest.mock('@/store/settings-store', () => ({
   useSettingsStore: { getState: () => mockGetSettings() },
 }));
 
+let _responseSeq = 0;
 function fakeResponse(
   actionIdentifier: string,
   data: Record<string, unknown>,
 ): Notifications.NotificationResponse {
   return {
     actionIdentifier,
-    notification: { request: { content: { data } } },
+    // Unique identifier per call so the module-level dedup Set doesn't swallow repeated tests.
+    notification: { request: { content: { data }, identifier: `test-${_responseSeq++}` } },
   } as unknown as Notifications.NotificationResponse;
 }
 

@@ -17,6 +17,8 @@ export const DEFAULT_SETTINGS = {
   theme: 'system',
   calendar_sync: 'false',
   google_calendar_enabled: 'false',
+  device_calendar_id: '',
+  device_calendar_name: '',
   onboarding_done: 'false',
 } as const;
 

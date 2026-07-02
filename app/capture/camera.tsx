@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Animated, ActivityIndicator } from 'react-native';
 import { CameraView, useCameraPermissions, type CameraType } from 'expo-camera';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text, PermissionDenied } from '@/components';
 import { useTheme } from '@/theme';
@@ -11,6 +12,7 @@ import { processAndStore } from '@/lib/image-pipeline';
 
 export default function CaptureCamera() {
   const { colors, spacing, radii } = useTheme();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const [permission, requestPermission] = useCameraPermissions();
   const [facing, setFacing] = useState<CameraType>('back');
@@ -55,14 +57,25 @@ export default function CaptureCamera() {
     }
   };
 
-  if (permission == null) return <View style={[styles.root, { backgroundColor: '#000' }]} />;
+  // Permission still loading — show spinner on black background instead of blank flash
+  if (permission == null) {
+    return (
+      <View style={[styles.root, styles.loadingCenter]}>
+        <ActivityIndicator
+          color="#fff"
+          size="large"
+          accessibilityLabel={t('analyse.analysingA11y')}
+        />
+      </View>
+    );
+  }
 
   if (!permission.granted) {
     return (
       <PermissionDenied
         icon="camera-outline"
-        title="Camera access needed"
-        message="MedMinder needs camera access to photograph your prescription. Grant access in your device settings."
+        title={t('capture.cameraPermissionTitle')}
+        message={t('capture.cameraPermissionMessage')}
         canRequest={permission.canAskAgain}
         onRequest={requestPermission}
         onBack={() => router.back()}
@@ -91,7 +104,9 @@ export default function CaptureCamera() {
       >
         <TouchableOpacity
           onPress={goBack}
-          accessibilityLabel={pageCount > 0 ? 'Review captured pages' : 'Go back'}
+          accessibilityLabel={
+            pageCount > 0 ? t('capture.reviewCapturedA11y') : t('capture.goBackA11y')
+          }
           accessibilityRole="button"
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           style={[styles.overlayBtn, { borderRadius: radii.full }]}
@@ -102,7 +117,7 @@ export default function CaptureCamera() {
         {pageCount > 0 && (
           <View style={[styles.countPill, { borderRadius: radii.full }]}>
             <Text variant="labelSmall" color="#fff">
-              {pageCount} {pageCount === 1 ? 'page' : 'pages'} captured
+              {t('capture.pagesCapture', { count: pageCount })}
             </Text>
           </View>
         )}
@@ -110,7 +125,7 @@ export default function CaptureCamera() {
         {pageCount > 0 ? (
           <TouchableOpacity
             onPress={goToReview}
-            accessibilityLabel={`Review ${pageCount} pages`}
+            accessibilityLabel={t('capture.reviewPagesA11y', { count: pageCount })}
             accessibilityRole="button"
             style={[
               styles.doneBtn,
@@ -118,7 +133,7 @@ export default function CaptureCamera() {
             ]}
           >
             <Text variant="labelSmall" color="#fff">
-              Done
+              {t('capture.done')}
             </Text>
             <Ionicons name="arrow-forward" size={14} color="#fff" style={{ marginLeft: 4 }} />
           </TouchableOpacity>
@@ -137,7 +152,7 @@ export default function CaptureCamera() {
         {/* Flip button */}
         <TouchableOpacity
           onPress={() => setFacing((f) => (f === 'back' ? 'front' : 'back'))}
-          accessibilityLabel="Flip camera"
+          accessibilityLabel={t('capture.flipCamera')}
           accessibilityRole="button"
           style={[styles.overlayBtn, { borderRadius: radii.full }]}
         >
@@ -148,7 +163,7 @@ export default function CaptureCamera() {
         <TouchableOpacity
           onPress={() => void takePicture()}
           disabled={capturing}
-          accessibilityLabel="Take photo"
+          accessibilityLabel={t('capture.takePhoto')}
           accessibilityRole="button"
           accessibilityState={{ busy: capturing }}
           activeOpacity={0.8}
@@ -165,6 +180,7 @@ export default function CaptureCamera() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: '#000' },
+  loadingCenter: { justifyContent: 'center', alignItems: 'center' },
   flash: { backgroundColor: '#fff' },
   topBar: {
     position: 'absolute',

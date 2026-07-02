@@ -48,6 +48,9 @@ export function useDoseConfirmation() {
 
   const confirmSkip = useCallback(
     (doseLogId: string): void => {
+      // Explicit skip stops all pending nags for this dose immediately.
+      // The dose is recorded as "skipped" in history; nagging is not useful once
+      // the user has made a deliberate choice to skip.
       void cancelNotificationsForDoseLog(doseLogId);
       skip(doseLogId);
     },

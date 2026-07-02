@@ -17,6 +17,12 @@ export async function analyseImages(uris: string[]): Promise<AnalysisResponse> {
   );
 
   const fullText = chunks.join('\n').trim();
+
+  if (__DEV__) {
+    console.warn('[OCR] Raw text length:', fullText.length);
+    console.warn('[OCR] Raw text:\n', fullText);
+  }
+
   if (!fullText) {
     return { medicines: [], overallConfidence: 0, needsReview: true };
   }

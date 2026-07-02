@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { ProfileSwitcherSheet } from '@/components/ProfileSwitcherSheet';
 import { ViewingAsBanner } from '@/components/ViewingAsBanner';
 import {
@@ -19,12 +20,16 @@ import { useTheme } from '@/theme';
 import { useHomeScreen } from '@/hooks/use-home-screen';
 import { useDoseConfirmation } from '@/hooks/use-dose-confirmation';
 import { useRefillWarnings } from '@/hooks/use-refill-warnings';
+import { useAnalysisStore } from '@/store/analysis-store';
+import { useDoseStore } from '@/store/dose-store';
 import type { TodayDose } from '@/repositories/dose-repository';
 
 export default function HomeScreen() {
   const { colors, spacing } = useTheme();
+  const { t } = useTranslation();
   const { greeting, name, dateLabel, doses, summary, hasMedications } = useHomeScreen();
   const { confirmTaken } = useDoseConfirmation();
+  const revertToPending = useDoseStore((s) => s.revertToPending);
   const [selectedDose, setSelectedDose] = useState<TodayDose | null>(null);
   const [profileOpen, setProfileOpen] = useState(false);
   const {
@@ -37,6 +42,11 @@ export default function HomeScreen() {
 
   const headingText = name.trim().length > 0 ? `${greeting}, ${name}` : greeting;
 
+  const handleAddManually = () => {
+    useAnalysisStore.getState().reset();
+    router.push('/review');
+  };
+
   return (
     <Screen scroll edges={['top']} contentContainerStyle={{ paddingBottom: 48 }}>
       <ViewingAsBanner />
@@ -47,7 +57,7 @@ export default function HomeScreen() {
         rightAction={{
           icon: 'person-outline',
           onPress: () => setProfileOpen(true),
-          accessibilityLabel: 'Edit profile',
+          accessibilityLabel: t('home.editProfileA11y'),
         }}
       />
 
@@ -78,27 +88,42 @@ export default function HomeScreen() {
           <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
             <Card style={styles.summaryCard} elevated={false}>
               <Text variant="overline" color={colors.textTertiary} style={styles.summaryHeading}>
-                {"Today's progress"}
+                {t('home.todayProgress')}
               </Text>
 
               <Text
                 variant="bodyMedium"
                 color={colors.textSecondary}
                 style={styles.summaryLine}
-                accessibilityLabel={`${summary.taken} of ${summary.total} doses taken today`}
+                accessibilityLabel={t('home.takenStatA11y', {
+                  taken: summary.taken,
+                  total: summary.total,
+                })}
               >
                 <Text variant="headingLarge" color={colors.success}>
                   {summary.taken}
                 </Text>{' '}
-                of {summary.total} taken
+                {t('home.ofTaken', { total: summary.total })}
               </Text>
 
               <View style={styles.statsRow}>
-                <StatCell label="Taken" value={summary.taken} color={colors.success} />
+                <StatCell
+                  label={t('doseStatus.taken')}
+                  value={summary.taken}
+                  color={colors.success}
+                />
                 <View style={[styles.statDivider, { backgroundColor: colors.border }]} />
-                <StatCell label="Upcoming" value={summary.pending} color={colors.brandPrimary} />
+                <StatCell
+                  label={t('doseStatus.pending')}
+                  value={summary.pending}
+                  color={colors.brandPrimary}
+                />
                 <View style={[styles.statDivider, { backgroundColor: colors.border }]} />
-                <StatCell label="Missed" value={summary.missed} color={colors.danger} />
+                <StatCell
+                  label={t('doseStatus.missed')}
+                  value={summary.missed}
+                  color={colors.danger}
+                />
               </View>
             </Card>
           </View>
@@ -106,7 +131,7 @@ export default function HomeScreen() {
           {/* Timeline */}
           <View style={[styles.section, { paddingHorizontal: spacing[5] }]}>
             <Text variant="overline" color={colors.textTertiary} style={styles.sectionLabel}>
-              {"Today's schedule"}
+              {t('home.todaySchedule')}
             </Text>
 
             <View>
@@ -126,9 +151,8 @@ export default function HomeScreen() {
         <View style={[styles.emptyWrapper, { paddingHorizontal: spacing[5] }]}>
           <EmptyState
             icon="medical-outline"
-            title="No medications yet"
-            subtitle="Scan a prescription and we'll set up your reminders automatically."
-            action={{ label: 'Scan a prescription', onPress: () => router.push('/capture') }}
+            title={t('home.noMedicationsTitle')}
+            subtitle={t('home.noMedicationsSubtitle')}
           />
         </View>
       )}
@@ -136,22 +160,22 @@ export default function HomeScreen() {
       {/* CTAs — always visible */}
       <View style={[styles.ctaBlock, { paddingHorizontal: spacing[5] }]}>
         <Button
-          label="Scan a prescription"
+          label={t('home.scanPrescription')}
           onPress={() => router.push('/capture')}
           variant="primary"
           fullWidth
           leftIcon="scan-outline"
           size="lg"
-          accessibilityLabel="Scan a prescription to extract medicine details automatically"
+          accessibilityLabel={t('home.scanPrescriptionA11y')}
         />
         <Button
-          label="Add medicine manually"
-          onPress={() => undefined}
+          label={t('home.addManually')}
+          onPress={handleAddManually}
           variant="ghost"
           fullWidth
           leftIcon="add-circle-outline"
           style={{ marginTop: spacing[3] }}
-          accessibilityLabel="Add a medicine by filling in the details manually"
+          accessibilityLabel={t('home.addManuallyA11y')}
         />
       </View>
 
@@ -162,6 +186,10 @@ export default function HomeScreen() {
         onClose={() => setSelectedDose(null)}
         onConfirmTaken={(id) => {
           confirmTaken(id);
+          setSelectedDose(null);
+        }}
+        onRevertToPending={(id) => {
+          revertToPending(id);
           setSelectedDose(null);
         }}
         onMedicineSettings={
@@ -187,7 +215,7 @@ function StatCell({ label, value, color }: { label: string; value: number; color
       <Text variant="headingMedium" color={color}>
         {String(value)}
       </Text>
-      <Text variant="caption" color={colors.textTertiary}>
+      <Text variant="caption" color={colors.textTertiary} numberOfLines={1} adjustsFontSizeToFit>
         {label}
       </Text>
     </View>

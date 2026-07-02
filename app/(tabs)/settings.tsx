@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Alert, Switch, StyleSheet, Share, Platform } from 'react-native';
+import { View, Alert, Switch, StyleSheet, Share, Platform, Linking } from 'react-native';
 import { router } from 'expo-router';
 import { File, Paths } from 'expo-file-system';
 import { format } from 'date-fns';
@@ -21,8 +21,11 @@ import { useSettingsStore } from '@/store/settings-store';
 import { useProfileStore } from '@/store/profile-store';
 import { useAppLockStore } from '@/store/app-lock-store';
 import { rescheduleAllFutureNotifications } from '@/services/reschedule-service';
+import { scheduleTestNotification, hasExactAlarmPermission } from '@/services/notification-service';
 import { getAllMedicines, deleteMedicine } from '@/db/queries/medicines';
 import { getAllDoseLogsForProfile } from '@/db/queries/dose-logs';
+import { useMedicationStore } from '@/store/medication-store';
+import { useDoseStore } from '@/store/dose-store';
 
 export default function SettingsScreen() {
   const { colors, spacing } = useTheme();
@@ -48,6 +51,32 @@ export default function SettingsScreen() {
         : t('settings.themeSystem');
 
   const nameLabel = activeName.trim().length > 0 ? activeName : 'Not set';
+
+  async function handleSendTestNotification(): Promise<void> {
+    // On Android 12 (API 31-32), SCHEDULE_EXACT_ALARM needs a manual user grant.
+    // TIME_INTERVAL triggers don't require exact alarms, so the test notification
+    // itself will fire regardless — but we still surface the permission gap here
+    // so the user can fix it before real dose reminders are affected.
+    if (Platform.OS === 'android') {
+      const exactOk = await hasExactAlarmPermission();
+      if (!exactOk) {
+        Alert.alert(t('settings.alarmPermTitle'), t('settings.alarmPermBody'), [
+          { text: t('settings.alarmPermLater'), style: 'cancel' },
+          {
+            text: t('settings.alarmPermOpenSettings'),
+            onPress: () => void Linking.openSettings(),
+          },
+        ]);
+        return;
+      }
+    }
+    try {
+      await scheduleTestNotification();
+      Alert.alert(t('settings.testNotifSentTitle'), t('settings.testNotifSentBody'));
+    } catch (err) {
+      Alert.alert('Error', err instanceof Error ? err.message : 'Failed to schedule notification');
+    }
+  }
 
   function handleResetAll(): void {
     Alert.alert(t('settings.resetConfirmTitle'), t('settings.resetConfirmBody'), [
@@ -100,6 +129,8 @@ export default function SettingsScreen() {
           for (const m of meds) {
             deleteMedicine(m.id);
           }
+          useMedicationStore.getState().load();
+          useDoseStore.getState().loadForDate(format(new Date(), 'yyyy-MM-dd'));
           router.replace('/(tabs)');
         },
       },
@@ -191,6 +222,14 @@ export default function SettingsScreen() {
             showChevron
             onPress={() => setRefillSheetOpen(true)}
             accessibilityLabel={t('settings.refillAlertsItem')}
+          />
+          <ListItem
+            title={t('settings.sendTestNotif')}
+            subtitle={t('settings.sendTestNotifSubtitle')}
+            leftIcon="paper-plane-outline"
+            showChevron
+            onPress={() => void handleSendTestNotification()}
+            accessibilityLabel={t('settings.sendTestNotif')}
           />
         </View>
       </View>

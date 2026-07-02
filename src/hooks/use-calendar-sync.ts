@@ -18,9 +18,13 @@ interface MedicineMeta {
   instructions: string | null;
 }
 
-async function syncLogToDevice(log: DoseLog, meta: DoseEventParams): Promise<void> {
-  if (log.calendarEventId) return;
-  const eventId = await createDoseCalendarEvent(meta);
+async function syncLogToDevice(
+  log: DoseLog,
+  meta: DoseEventParams,
+  calendarId?: string,
+): Promise<void> {
+  if (log.calendarEventId) return; // idempotent: skip already-synced logs
+  const eventId = await createDoseCalendarEvent(meta, calendarId);
   if (eventId) setDoseLogCalendarEventId(log.id, eventId);
 }
 
@@ -52,6 +56,7 @@ function buildGoogleSyncParams(med: Medicine) {
 export function useCalendarSync() {
   const calendarSync = useSettingsStore((s) => s.calendarSync);
   const googleCalendarEnabled = useSettingsStore((s) => s.googleCalendarEnabled);
+  const deviceCalendarId = useSettingsStore((s) => s.deviceCalendarId) || undefined;
 
   const syncAfterSave = useCallback(
     async (medId: string, medicine: MedicineMeta, createdLogs: DoseLog[]): Promise<void> => {
@@ -66,7 +71,7 @@ export function useCalendarSync() {
             scheduledAt: log.scheduledAt,
             instructions: medicine.instructions,
           };
-          await syncLogToDevice(log, meta);
+          await syncLogToDevice(log, meta, deviceCalendarId);
         }),
       );
 
@@ -79,7 +84,7 @@ export function useCalendarSync() {
         }
       }
     },
-    [calendarSync, googleCalendarEnabled],
+    [calendarSync, googleCalendarEnabled, deviceCalendarId],
   );
 
   const syncAll = useCallback(async (): Promise<void> => {
@@ -93,12 +98,16 @@ export function useCalendarSync() {
           const dosage = `${m.dosage} ${m.dosageUnit}`;
           await Promise.all(
             logs.map((log) =>
-              syncLogToDevice(log, {
-                medicineName: m.name,
-                dosage,
-                scheduledAt: log.scheduledAt,
-                instructions: m.instructions ?? null,
-              }),
+              syncLogToDevice(
+                log,
+                {
+                  medicineName: m.name,
+                  dosage,
+                  scheduledAt: log.scheduledAt,
+                  instructions: m.instructions ?? null,
+                },
+                deviceCalendarId,
+              ),
             ),
           );
 
@@ -109,7 +118,7 @@ export function useCalendarSync() {
           }
         }),
     );
-  }, [googleCalendarEnabled]);
+  }, [googleCalendarEnabled, deviceCalendarId]);
 
   const desyncAll = useCallback(async (): Promise<void> => {
     const meds = useMedicationStore.getState().medications;
@@ -145,12 +154,16 @@ export function useCalendarSync() {
       const dosage = `${med.dosage} ${med.dosageUnit}`;
       await Promise.all(
         logs.map(async (log) => {
-          await syncLogToDevice(log, {
-            medicineName: med.name,
-            dosage,
-            scheduledAt: log.scheduledAt,
-            instructions: med.instructions ?? null,
-          });
+          await syncLogToDevice(
+            log,
+            {
+              medicineName: med.name,
+              dosage,
+              scheduledAt: log.scheduledAt,
+              instructions: med.instructions ?? null,
+            },
+            deviceCalendarId,
+          );
         }),
       );
 
@@ -160,7 +173,7 @@ export function useCalendarSync() {
         await syncMedicineToGoogle(syncParams, scheduleTimes);
       }
     },
-    [calendarSync, googleCalendarEnabled],
+    [calendarSync, googleCalendarEnabled, deviceCalendarId],
   );
 
   return { syncAfterSave, syncAll, desyncAll, syncMedicineToggle };

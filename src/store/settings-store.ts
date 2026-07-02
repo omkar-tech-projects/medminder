@@ -16,6 +16,8 @@ type SettingsState = {
   theme: 'light' | 'dark' | 'system';
   calendarSync: boolean;
   googleCalendarEnabled: boolean;
+  deviceCalendarId: string;
+  deviceCalendarName: string;
   onboardingDone: boolean;
   load: () => void;
   update: (key: SettingKey, value: string) => void;
@@ -37,6 +39,8 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
   theme: 'system',
   calendarSync: false,
   googleCalendarEnabled: false,
+  deviceCalendarId: '',
+  deviceCalendarName: '',
   onboardingDone: false,
 
   load() {
@@ -55,6 +59,8 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
       theme: getSetting('theme') as 'light' | 'dark' | 'system',
       calendarSync: getSetting('calendar_sync') === 'true',
       googleCalendarEnabled: getSetting('google_calendar_enabled') === 'true',
+      deviceCalendarId: getSetting('device_calendar_id'),
+      deviceCalendarName: getSetting('device_calendar_name'),
       onboardingDone: getSetting('onboarding_done') === 'true',
     });
   },

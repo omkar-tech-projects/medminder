@@ -3,9 +3,8 @@ import { format, parseISO } from 'date-fns';
 import { Text } from './Text';
 import { Badge } from './Badge';
 import { useTheme } from '@/theme';
-import { DOSE_STATUS } from '@/lib/constants';
+import { getDoseDisplayStatus, DISPLAY_STATUS_BADGE, DISPLAY_STATUS_LABEL } from '@/lib/dose-display';
 import type { TodayDose } from '@/repositories/dose-repository';
-import type { BadgeVariant } from './Badge';
 
 interface DoseTimelineItemProps {
   dose: TodayDose;
@@ -13,30 +12,18 @@ interface DoseTimelineItemProps {
   onPress?: () => void;
 }
 
-const STATUS_BADGE: Record<string, BadgeVariant> = {
-  [DOSE_STATUS.TAKEN]: 'success',
-  [DOSE_STATUS.MISSED]: 'danger',
-  [DOSE_STATUS.PENDING]: 'primary',
-  [DOSE_STATUS.SKIPPED]: 'warning',
-};
-
-const STATUS_LABEL: Record<string, string> = {
-  [DOSE_STATUS.TAKEN]: 'Taken',
-  [DOSE_STATUS.MISSED]: 'Missed',
-  [DOSE_STATUS.PENDING]: 'Upcoming',
-  [DOSE_STATUS.SKIPPED]: 'Skipped',
-};
-
 export function DoseTimelineItem({ dose, isLast, onPress }: DoseTimelineItemProps) {
-  const { colors, spacing, radii } = useTheme();
-  const isFuture = dose.status === DOSE_STATUS.PENDING || dose.status === DOSE_STATUS.SKIPPED;
+  const { colors, spacing } = useTheme();
+
+  const displayStatus = getDoseDisplayStatus(dose.status, dose.scheduledAt);
+  const isFuture = displayStatus === 'upcoming';
+  const badgeVariant = DISPLAY_STATUS_BADGE[displayStatus];
+  const statusLabel = DISPLAY_STATUS_LABEL[displayStatus];
 
   const dotBorderColor = isFuture ? colors.brandPrimary : dose.medicationColor;
   const dotBgColor = isFuture ? colors.brandPrimaryLight : dose.medicationColor;
 
   const timeLabel = format(parseISO(dose.scheduledAt), 'h:mm a');
-  const badgeVariant: BadgeVariant = STATUS_BADGE[dose.status] ?? 'neutral';
-  const statusLabel = STATUS_LABEL[dose.status] ?? dose.status;
   const a11yLabel = `${dose.medicationName} ${dose.dosage} at ${timeLabel}, ${statusLabel}`;
 
   const cardBaseStyle = [
@@ -44,24 +31,23 @@ export function DoseTimelineItem({ dose, isLast, onPress }: DoseTimelineItemProp
     {
       backgroundColor: colors.surface,
       borderColor: isFuture ? colors.border : 'transparent',
-      borderRadius: radii.lg,
+      borderRadius: 16,
       marginBottom: spacing[3],
-      shadowColor: colors.shadow,
+      shadowColor: 'rgba(15,27,45,1)',
     },
   ];
 
   const cardInner = (
     <>
       <View
-        style={[styles.accent, { backgroundColor: dose.medicationColor, borderRadius: radii.sm }]}
+        style={[styles.accent, { backgroundColor: dose.medicationColor, borderRadius: 4 }]}
         accessibilityElementsHidden
       />
       <View style={styles.content}>
         <View style={styles.topRow}>
           <View style={styles.nameBlock}>
-            <Text variant="labelLarge" numberOfLines={1}>
-              {dose.medicationName}
-            </Text>
+            {/* numberOfLines removed — allow long names to wrap to a second line */}
+            <Text variant="labelLarge">{dose.medicationName}</Text>
             <Text variant="bodySmall" color={colors.textSecondary}>
               {dose.dosage}
             </Text>

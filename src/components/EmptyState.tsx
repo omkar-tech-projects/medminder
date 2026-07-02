@@ -22,7 +22,7 @@ export function EmptyState({ icon, title, subtitle, action }: EmptyStateProps) {
   return (
     <View style={styles.container} accessibilityRole="text">
       <View style={[styles.iconWrapper, { backgroundColor: colors.brandPrimaryLight }]}>
-        <Ionicons name={icon} size={32} color={colors.brandPrimary} />
+        <Ionicons name={icon} size={30} color={colors.brandPrimary} />
       </View>
 
       <Text
@@ -66,9 +66,9 @@ const styles = StyleSheet.create({
     paddingVertical: 48,
   },
   iconWrapper: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
+    width: 68,
+    height: 68,
+    borderRadius: 34,
     alignItems: 'center',
     justifyContent: 'center',
   },

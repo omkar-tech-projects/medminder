@@ -19,8 +19,11 @@ import { useProfileStore } from '@/store/profile-store';
 import { clearAllPages } from '@/lib/image-pipeline';
 import { insertMedicine } from '@/db/queries/medicines';
 import { replaceSchedulesForMedicine } from '@/db/queries/schedules';
+import type { DayPattern } from '@/lib/schedule-generator';
 import { regenerateFutureDoseLogs } from '@/db/queries/dose-logs';
-import { scheduleNotificationsForDoseLog } from '@/services/notification-service';
+import { hasExactAlarmPermission } from '@/services/notification-service';
+import { rescheduleAllFutureNotifications } from '@/services/reschedule-service';
+import { Alert, Linking, Platform } from 'react-native';
 import { scheduleRefillWarningForMedicine } from '@/services/refill-service';
 import { useSettingsStore } from '@/store/settings-store';
 import { useCalendarSync } from '@/hooks/use-calendar-sync';
@@ -55,6 +58,7 @@ function aiToForm(med: MedicineExtraction): MedicineFormValues {
     startDate: format(new Date(), 'yyyy-MM-dd'),
     stockCount: null,
     instructions: med.instructions ?? '',
+    dayPattern: med.dayPattern ?? null,
   };
 }
 
@@ -71,10 +75,11 @@ function blankMed(): MedicineFormValues {
     startDate: format(new Date(), 'yyyy-MM-dd'),
     stockCount: null,
     instructions: '',
+    dayPattern: null,
   };
 }
 
-function parseDosageAmount(raw: string): { dosage: number; dosageUnit: string } {
+export function parseDosageAmount(raw: string): { dosage: number; dosageUnit: string } {
   const m = /^(\d+(?:\.\d+)?)\s*(.*)$/.exec(raw.trim());
   if (m) {
     const n = parseFloat(m[1] ?? '1');
@@ -186,22 +191,22 @@ export function useMedicineForm() {
           notificationLeadMin,
           reRemindIntervalMin,
           maxNags: globalMaxNags,
-          quietHoursEnabled,
-          quietHoursStart,
-          quietHoursEnd,
-          notificationSoundEnabled,
         } = useSettingsStore.getState();
 
-        const scheduleRows = replaceSchedulesForMedicine(
-          medId,
-          med.specificTimes,
-          { type: 'daily' },
-          {
-            leadMinutes: notificationLeadMin,
-            nagIntervalMinutes: reRemindIntervalMin,
-            maxNags: globalMaxNags,
-          },
-        );
+        let dayPattern: DayPattern = { type: 'daily' };
+        if (med.dayPattern) {
+          try {
+            dayPattern = JSON.parse(med.dayPattern) as DayPattern;
+          } catch {
+            // malformed JSON — fall back to daily
+          }
+        }
+
+        const scheduleRows = replaceSchedulesForMedicine(medId, med.specificTimes, dayPattern, {
+          leadMinutes: notificationLeadMin,
+          nagIntervalMinutes: reRemindIntervalMin,
+          maxNags: globalMaxNags,
+        });
 
         const createdLogs = regenerateFutureDoseLogs(
           medId,
@@ -210,30 +215,30 @@ export function useMedicineForm() {
         );
 
         const dosageLabel = `${dosage} ${dosageUnit}`;
-        await Promise.all(
-          createdLogs.map(async (log) => {
-            const sch = scheduleRows.find((s) => s.id === log.scheduleId);
-            if (!sch) return;
-            await scheduleNotificationsForDoseLog({
-              doseLogId: log.id,
-              medicineName: med.name,
-              dosage: dosageLabel,
-              scheduledAt: log.scheduledAt,
-              leadMinutes: sch.leadMinutes,
-              nagIntervalMinutes: sch.nagIntervalMinutes,
-              maxNags: sch.maxNags,
-              quietHoursEnabled,
-              quietHoursStart,
-              quietHoursEnd,
-              soundEnabled: notificationSoundEnabled,
-            }).catch(() => undefined);
-          }),
-        );
+        // Bypass the 60-second debounce so the newly added medicine is scheduled
+        // immediately even if the user saves within 60 s of app launch.
+        await rescheduleAllFutureNotifications();
         await syncAfterSave(
           medId,
           { name: med.name, dosage: dosageLabel, instructions: med.instructions || null },
           createdLogs,
         ).catch(() => undefined);
+      }
+
+      // On Android 12 (API 31-32), warn the user if exact alarms aren't granted so
+      // they know reminders may arrive late and how to fix it.
+      if (Platform.OS === 'android') {
+        const exactOk = await hasExactAlarmPermission();
+        if (!exactOk) {
+          Alert.alert(
+            'Allow Timed Reminders',
+            'To receive dose reminders at the right time, please open Settings and enable "Alarms & reminders" for MedMinder.',
+            [
+              { text: 'Later', style: 'cancel' },
+              { text: 'Open Settings', onPress: () => void Linking.openSettings() },
+            ],
+          );
+        }
       }
 
       clearAllPages(pages.map((p) => p.uri));
@@ -254,6 +259,8 @@ export function useMedicineForm() {
     removeField: remove,
     handleConfirm,
     originalMeds: result?.medicines ?? [],
+    // True when a scan was run but yielded zero recognised medicines.
+    extractionFailed: result !== null && result !== undefined && result.medicines.length === 0,
     isValid: form.formState.isValid,
     isSubmitting: form.formState.isSubmitting,
   };
